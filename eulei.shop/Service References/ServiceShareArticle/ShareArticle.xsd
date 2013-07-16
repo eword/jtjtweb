@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/eulei.shop.Services" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/eulei.shop.Services" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:24911/Services/ShareArticle.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ShareArticleEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ShareArticleArticleID" type="xs:int" />
+      <xs:element minOccurs="0" name="ShareArticleAuthor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleCitedArticleID" type="xs:int" />
+      <xs:element minOccurs="0" name="ShareArticleCitedTypeID" type="xs:int" />
+      <xs:element minOccurs="0" name="ShareArticleContent" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleFrameworkName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ShareArticleIsApplyReturn" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShareArticleIsNew" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShareArticleIsPicTheme" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShareArticleIsShare" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShareArticleIsemp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ShareArticleLabel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleLastOperatDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ShareArticleLastOperstor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleOperationgRecord" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticlePictureTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticlePusher" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticlePusherFriendName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticlePusherID" type="ser:guid" />
+      <xs:element minOccurs="0" name="ShareArticleSendDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ShareArticleShareDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ShareArticleState" type="xs:int" />
+      <xs:element minOccurs="0" name="ShareArticleStatusID" type="xs:int" />
+      <xs:element minOccurs="0" name="ShareArticleTitle" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShareArticleUrl" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ShareArticleEntity" nillable="true" type="tns:ShareArticleEntity" />
+</xs:schema>

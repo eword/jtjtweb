@@ -1,0 +1,126 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<%@ Import Namespace="eulei.shop.Code" %>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link rel="icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+    </title>
+    <asp:ContentPlaceHolder ID="headOtherInfo" runat="server" />
+    <link href="~/Content/JqueryUI/css/smoothness/jquery-ui-1.9.1.custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Libs/ligerUI/skins/Aqua/css/ligerui-all.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
+</head>
+<body>
+    <center>
+        <script src="<%: Url.Content("~/Scripts/jquery-1.7.2.min.js") %>" type="text/javascript"></script>
+        <script type="text/javascript" src="<%: Url.Content("~/Content/js/AjaxLoad.js") %>"></script>
+        <script src="<%: Url.Content("~/Content/js/weiboshare.js") %>" type="text/javascript"></script>
+        <script src="<%: Url.Content("~/Content/JqueryUI/js/jquery-ui-1.9.1.custom.min.js") %>"
+            type="text/javascript"></script>
+        <script type="text/javascript">
+            $(function () {
+                $("#accordion").accordion();
+                ajaxLoad('#WordAD', '<%:Url.Content("~/Common/WordADList/") %><%=(int)AdvertisementType.ArticlePageMaster %>', '<%:Url.Content("~/Content/images/Loding.gif") %>');
+            });    
+        </script>
+        <%--菜单--%>
+        <div class="page">
+            <%--顶部--%>
+            <div class="page-head-top">
+                <%--LOGO--%>
+                <div class="page-head-top-logodiv">
+                    <img class="page-head-top-logo" src="<%: Url.Content("~/Content/images/logo.gif") %>"
+                        alt="<%:ConfigurationManager.AppSettings["webTitle"].ToString()%>" width="290"
+                        height="100" />
+                </div>
+                <div class="page-head-top-menuBox">
+                    <%:Html.MvcSiteMap().Menu("MenuHelperModelForArticlePage")%>
+                </div>
+            </div>
+            <%--中间--%>
+            <div class="article-page-middle">
+                <%--左边--%>
+                <div class="article-page-middle-left">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                </div>
+                <%--右边--%>
+                <div class="article-page-middle-right">
+                    <div>
+                        <object id="flashAD" data="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/"+((int)AdvertisementType.ArticlePageMaster).ToString()) %>?XMLPath=PicPlayerConfig"
+                            type="application/x-shockwave-flash" width="180" height="120">
+                            <param name="menu" value="false">
+                              <param name="wmode" value="Opaque" />
+                            <param name="movie" value="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/"+((int)AdvertisementType.ArticlePageMaster).ToString()) %>?XMLPath=PicPlayerConfig" />
+                            <embed src="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/"+((int)AdvertisementType.ArticlePageMaster).ToString()) %>?XMLPath=PicPlayerConfig"
+                                type="application/x-shockwave-flash"  wmode="Opaque"></embed>
+                        </object>
+                    </div>
+                    <%--公告--%>
+                    <div class="ui-box page-middle-right-bottom-right-bulletin">
+                        <div class="ui-box-title">
+                            <h3>
+                                公告栏</h3>
+                        </div>
+                        <div class="ui-box-content">
+                            <%Html.RenderAction("Bulletin", "Common", new { @area = "", @id = 18 }); %>
+                        </div>
+                    </div>
+                    <asp:ContentPlaceHolder ID="RightContent" runat="server" />
+                    <a href="#" title="图片广告链接">
+                        <img src="<%: Url.Content("~/Content/images/968856.png") %>" title="图片广告位" alt="图片广告位"
+                            width="180" height="60" class="tmargin" />
+                    </a><a href="#" title="图片广告链接">
+                        <img src="<%: Url.Content("~/Content/images/968856.png") %>" title="图片广告位" alt="图片广告位"
+                            width="180" height="60" class="tmargin" />
+                    </a>
+                    <div id="WordAD">
+                    </div>
+                    <%--                    <ul class="tmargin bmargin">
+                        <li class="list-dot tleft"><a class=" tblue" href="#" title="文字广告位">文字广告位标题内容</a></li>
+                        <li class="list-dot tleft"><a class=" tblue" href="#" title="文字广告位">文字广告位标题内容</a></li>
+                    </ul>--%>
+                    <hr />
+                    <div class="ui-box ">
+                        <div class="ui-box-title">
+                            <h3>
+                                关注我们</h3>
+                        </div>
+                        <div id="attention" class=" tmargin">
+                            <img src="<%: Url.Content("~/Content/images/attention.jpg") %>" title="微博关注图标" alt="微博关注图标"
+                                width="60" height="60" class="fl" />
+                            <h6 class="fl tleft">
+                                在新浪微博关注IC卡公交车运用</h6>
+                            <a href="javascript:attention()" class=" fl tmargin lmargin"><strong>+</strong>加关注</a>
+                        </div>
+                        <div class="tleft">
+                            了解交通IC卡在公交车上的运用服务，可关注本微博与我们在线沟通。
+                        </div>
+                        <div class="ui-share-item-icon tmargin">
+                            <label class=" fl line-height16">
+                                分享到：</label>
+                            <a class="ui-icon-sns ui-icon-sns-sina lmargin" href="javascript:sharesina()" title="分享到新浪微博">
+                            </a><a class="ui-icon-sns ui-icon-sns-qq lmargin" href="javascript:shareQQ()" title="分享到QQ微博">
+                            </a><a class="ui-icon-sns ui-icon-sns-renren lmargin" href="javascript:shareRenRen()"
+                                title="分享到人人网"></a><a class="ui-icon-sns ui-icon-sns-kaixin lmargin" href="javascript:shareKX()"
+                                    title="分享到开心网"></a><a class="ui-icon-sns ui-icon-sns-douban lmargin" href="javascript:shareDB()"
+                                        title="分享到豆瓣"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="bottomHr" />
+            <%--底部--%>
+            <div class="bottom">
+                <%--版权信息--%>
+                <% Html.RenderAction("CopyRight", "Common", new { @area = "" }); %>
+            </div>
+        </div>
+    </center>
+</body>
+</html>

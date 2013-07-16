@@ -1,0 +1,158 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+    </title>
+    <link href="../../Content/JqueryUI/css/smoothness/jquery-ui-1.9.1.custom.min.css"
+        rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
+</head>
+<body>
+    <center>
+        <script src="<%: Url.Content("~/Scripts/jquery-1.4.4.min.js") %>" type="text/javascript"></script>
+        <script src="<%: Url.Content("~/Content/js/weiboshare.js") %>" type="text/javascript"></script>
+        <script src="<%: Url.Content("~/Content/JqueryUI/js/jquery-ui-1.9.1.custom.min.js") %>"
+            type="text/javascript"></script>
+        <script type="text/javascript">
+            $(function () { $("#accordion").accordion(); });    
+        </script>
+        <div class="page">
+            <%--顶部--%>
+            <div class="page-head-top">
+                <%--LOGO--%>
+                <div>
+                    <img class="page-head-top-logo" src="../../Content/images/logo.gif" alt="<%:ConfigurationManager.AppSettings["webTitle"].ToString()%>"
+                        width="290" height="100" />
+                </div>
+                <%--菜单--%>
+                <div class="page-head-top-menuBox">
+                    <ul id="menu">
+                        <li><a href="#" title="首页">首页</a></li>
+                        <li><a href="#" title="首页">交通卡概况</a></li>
+                        <li><a href="#" title="首页">交通卡类型</a></li>
+                        <li><a href="#" title="首页">办理须知</a></li>
+                        <li><a href="#" title="首页">应用范围</a></li>
+                        <li><a href="#" title="首页">特色定制</a></li>
+                        <li><a href="#" title="首页">办理地点</a></li>
+                    </ul>
+                </div>
+            </div>
+            <%--中间--%>
+            <div class="page-middle">
+                <%--左边--%>
+                <div class="page-middle-left">
+                    <asp:ContentPlaceHolder ID="LeftContent" runat="server" />
+                </div>
+                <%--右边--%>
+                <div class="page-middle-right">
+                    <%--上部分--%>
+                    <div class="page-middle-right-top">
+                        <object id="flashAD" data="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/1") %>"
+                            type="application/x-shockwave-flash" width="815" height="205">
+                            <param name="menu" value="false">
+                            <param name="movie" value="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/1") %>" />
+                            <embed src="<%: Url.Content("~/Content/flash/flashAD.swf") %>?xml=<%: Url.Content("~/Common/GetFlashADXML/1") %>"
+                                type="application/x-shockwave-flash"></embed>
+                        </object>
+                    </div>
+                    <%--下部分--%>
+                    <div class="page-middle-right-bottom">
+                        <%--右部分--%>
+                        <div class="page-middle-right-bottom-left">
+                            <div class="page-middle-right-bottom-left-box">
+                                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                            </div>
+                        </div>
+                        <%--右部分--%>
+                        <div class="page-middle-right-bottom-right">
+                            <%--公告--%>
+                            <div class="ui-box page-middle-right-bottom-right-bulletin">
+                                <div class="ui-box-title">
+                                    <h3>
+                                        公告栏</h3>
+                                </div>
+                                <div class="ui-box-content">
+                                    <ul id="bulletin">
+                                        <li class="list-dot">最新公告内容1 </li>
+                                        <li class="list-dot">最新公告内容2 </li>
+                                        <li class="list-dot">最新公告内容3 </li>
+                                        <li class="list-dot">最新公告内容4 </li>
+                                        <li class="list-dot">最新公告内容5 </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <a href="#" title="图片广告链接">
+                                <img src="../../Content/images/968856.png" title="图片广告位" alt="图片广告位" width="180"
+                                    height="60" class="tmargin" />
+                            </a><a href="#" title="图片广告链接">
+                                <img src="../../Content/images/968856.png" title="图片广告位" alt="图片广告位" width="180"
+                                    height="60" class="tmargin" />
+                            </a>
+                            <ul class=" tmargin bmargin">
+                                <li class="list-dot tleft"><a class=" tblue" href="#" title="文字广告位">文字广告位标题内容</a></li>
+                                <li class="list-dot tleft"><a class=" tblue" href="#" title="文字广告位">文字广告位标题内容</a></li>
+                            </ul>
+                            <hr />
+                            <div class="ui-box ">
+                                <div class="ui-box-title">
+                                    <h3>
+                                        关注我们</h3>
+                                </div>
+                                <div id="attention" class=" tmargin">
+                                    <img src="../../Content/images/attention.jpg" title="微博关注图标" alt="微博关注图标" width="60"
+                                        height="60" class="fl" />
+                                    <h6 class="fl tleft">
+                                        在新浪微博关注IC卡公交车运用</h6>
+                                    <a href="javascript:attention()" class=" fl tmargin lmargin"><strong>+</strong>加关注</a>
+                                </div>
+                                <div class="tleft">
+                                    了解交通IC卡在公交车上的运用服务，可关注本微博与我们在线沟通。
+                                </div>
+                                <div class="ui-share-item-icon tmargin">
+                                    <label class=" fl line-hight16">
+                                        分享到：</label>
+                                    <a class="ui-icon-sns ui-icon-sns-sina lmargin" href="javascript:sharesina()" title="分享到新浪微博">
+                                    </a><a class="ui-icon-sns ui-icon-sns-qq lmargin" href="javascript:shareQQ()" title="分享到QQ微博">
+                                    </a><a class="ui-icon-sns ui-icon-sns-renren lmargin" href="javascript:shareRenRen()"
+                                        title="分享到人人网"></a><a class="ui-icon-sns ui-icon-sns-kaixin lmargin" href="javascript:shareKX()"
+                                            title="分享到开心网"></a><a class="ui-icon-sns ui-icon-sns-douban lmargin" href="javascript:shareDB()"
+                                                title="分享到豆瓣"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <%--底部--%>
+            <div class="bottom">
+                <%--版权信息--%>
+                <div class="copyright">
+                    <div class="copyright-first">
+                        <ul>
+                            <li><a href="#" title="xxxx">关于交通IC卡</a></li>
+                            <li class="divide"><a href="#" title="xxxx">官方网站</a></li>
+                            <li class="divide"><a href="#" title="xxxx"></a>站点帮助</li>
+                            <li class="divide"><a href="#" title="xxxx"></a>联系我们</li>
+                            <li class="divide"><a href="#" title="xxxx"></a>About qzjtjt.com</li>
+                        </ul>
+                        <label class="divide fl line-hight32">
+                            泉州市交通运输集团有限责任公司版权所有 CopyRight©2012</label>
+                        <a href="http://www.miibeian.gov.cn/" title="闽ICP备11005906号">
+                            <label class="divide fl line-hight32">
+                                闽ICP备11005906号</label></a>
+                    </div>
+                    <div>
+                        地址：福建省泉州市丰泽区丰泽街公交大厦10楼 邮编：362000</div>
+                </div>
+            </div>
+        </div>
+    </center>
+</body>
+</html>

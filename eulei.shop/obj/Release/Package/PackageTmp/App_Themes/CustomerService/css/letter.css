@@ -1,0 +1,136 @@
+﻿
+
+.LetterTopContent {
+    background-position: left top;
+    border: 1px solid #CCCCCC;
+    text-align: left;
+    background-image: url('../images/tzxx.gif');
+    background-repeat: no-repeat;
+    padding-left: 128px;
+    min-height: 128px;
+    margin: 10px 0px;
+}
+
+    .LetterTopContent .SearchBoxOut {
+    }
+
+    .LetterTopContent .SearchBoxIn {
+        background-color: White;
+        margin: 5px;
+        text-align: left;
+        vertical-align: bottom;
+    }
+
+    .LetterTopContent .searchBox {
+        width: 400px;
+        float: left;
+    }
+
+.LetterListBox {
+    margin: 10px;
+}
+
+.LetterTopContent .SearchTextSender {
+    background-image: url('../images/search.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 22px;
+    width: 80px;
+}
+
+.LetterTopContent .SearchTextTEL {
+    background-image: url('../images/search.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 22px;
+    width: 80px;
+}
+
+.LetterTopContent .createLetter {
+    background-image: url('../images/btnWyxx.jpg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 110px;
+    height: 26px;
+    display: block;
+    float: left;
+    margin: 0 5px 0 10px;
+}
+
+.LetterTopContent .LetterHelp {
+    display: block;
+    background-image: url('../images/btnCjwt.jpg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 110px;
+    height: 26px;
+    float: left;
+    margin: 0 5px 0 10px;
+}
+
+#CreateAjaxBox .editor-field {
+    width: 200px;
+}
+
+#CreateAjaxBox .editor-label {
+    width: 100px;
+}
+
+#CreateAjaxBox .editor-field input, #CreateAjaxBox .editor-field textarea, #CreateAjaxBox .editor-field select {
+    width: 100%;
+    text-align: left;
+    vertical-align: top;
+}
+
+#CreateAjaxBox .editor-label {
+    text-align: right;
+}
+
+.leaveWordList {
+    border: 1px solid #CCCCCC;
+    width: 998px;
+    text-align: left;
+    vertical-align: top;
+    margin: 5px 0px;
+    float: left;
+    overflow: hidden;
+}
+
+    .leaveWordList, .leaveWordList * {
+        overflow: hidden;
+    }
+
+        .leaveWordList .top {
+            width: 996px;
+        }
+             .leaveWordList .bottom {
+            width: 996px;
+              border-top: 1px solid #CCCCCC;
+        }
+        .leaveWordList .left {
+            width: 200px;
+            float: left;
+        }
+
+            .leaveWordList .left img {
+                width: 128px;
+                height: 128px;
+                text-align: center;
+                margin-left: 25px;
+            }
+
+        .leaveWordList .right {
+            min-height: 180px;
+            border-left: 1px solid #CCCCCC;
+            float: left;
+            width: 780px;
+            padding: 0px 5px;
+        }
+
+            .leaveWordList .right strong {
+                line-height: 20px;
+            }
+
+        .leaveWordList .title {
+            border-bottom: 1px solid #cccccc;
+        }

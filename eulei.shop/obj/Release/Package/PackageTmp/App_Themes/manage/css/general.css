@@ -1,0 +1,500 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+/*整站会社去掉注释即可*/
+/*
+html{filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);}  
+*/
+html, .bcolor {
+    background-color: #eef2fb;
+}
+
+html, body, body * {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    /*  background-color: #CCFFFF;  */
+    font: 75% Tahoma, Helvetica, Arial, 'Microsoft Yahei', sans-serif;
+    color: #000000;
+    background-color: #eef2fb;
+    background-repeat: repeat-x;
+}
+
+.page {
+    min-width: 1000px;
+    background-color: #fff;
+}
+
+.page {
+    overflow: hidden;
+}
+
+a:link, a:visited, a:active {
+    color: #000000;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #1d60ff;
+    text-decoration: none;
+}
+/* TABLE
+----------------------------------------------------------*/
+/*====== 表格 基本 样式=========*/
+
+table {
+    font-family: verdana, 宋体, sans-serif;
+    width: 100%;
+    border: solid 1px #e8ccf4;
+    border-collapse: collapse;
+    table-layout: fixed;
+}
+
+    table td, table th, table tr {
+        border: solid 1px #e8ccf4;
+        padding: 0px;
+        margin: 0px;
+        border-collapse: collapse;
+    }
+
+        table td.editor-label {
+            text-align: right;
+            vertical-align: middle;
+            width: 80px;
+        }
+
+        table td.editor-field {
+            text-align: left;
+            vertical-align: middle;
+        }
+
+            table td.editor-field input, table td.editor-field select, table td.editor-field textarea {
+                width: 100%;
+                text-align: left;
+            }
+/*===============*/
+/*------FORM LAYOUT ELEMENTS----------------------------------------------------------*/
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 0 1.4em 1.4em 1.4em;
+    margin: 0 0 1.5em 0;
+}
+
+legend {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+textarea {
+    min-height: 75px;
+}
+
+input[type="text"] {
+    width: 200px;
+    border: 1px solid #CCC;
+    height: 20px;
+    text-align: left;
+    vertical-align: middle;
+}
+
+input[type="password"] {
+    height: 20px;
+    text-align: left;
+    vertical-align: middle;
+    width: 200px;
+    border: 1px solid #CCC;
+}
+
+input#searchSubmit {
+    border-style: none;
+    background-image: url('../images/search_button.jpg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 85px;
+    height: 23px;
+}
+
+input[type="submit"], input[type="reset"], .btnsubmit {
+    background: url('../images/btnCance.jpg');
+    background-repeat: no-repeat;
+    background-position: center center;
+    width: 80px;
+    height: 26px;
+}
+
+.btnSearchSubmit {
+    border-style: none;
+    background-image: url('../images/search_button.jpg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    width: 85px;
+    height: 23px;
+}
+
+.buttonBg {
+    border-width: thin;
+    background-image: url('../images/btnCance.jpg');
+    background-repeat: repeat-x;
+    background-position: center center;
+    display: block;
+    border-style: outset;
+    text-align: center;
+    vertical-align: middle;
+}
+
+    .buttonBg:active {
+        border-style: inset;
+    }
+
+/*===========
+分页
+============*/
+.pager {
+}
+/* Styles for pagination
+----------------------------------------------------------*/
+a.paginationlink {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    padding: 0px 6px;
+    text-decoration: none;
+    float: left;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin-right: 2px;
+}
+
+    a.paginationlink.selected, a.paginationlink:hover {
+        font-weight: bold;
+        color: #fff;
+        background-color: #5C87B2;
+    }
+
+/* Styles for sorting
+----------------------------------------------------------*/
+a.sortlink.selected {
+    padding-right: 16px;
+}
+
+a.sortlink.up, a.sortlink.down:hover {
+    background-repeat: no-repeat;
+    background-image: url(/Content/Images/bullet_arrow_up.png);
+    background-position: right;
+}
+
+    a.sortlink.down, a.sortlink.up:hover {
+        background-repeat: no-repeat;
+        background-image: url(/Content/Images/bullet_arrow_down.png);
+        background-position: right;
+    }
+
+/* Styles for custom pagination
+----------------------------------------------------------*/
+a.custompaginationlink {
+    display: block;
+    height: 20px;
+    line-height: 20px;
+    padding: 0px 6px;
+    text-decoration: none;
+    float: left;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin-right: 2px;
+}
+
+    a.custompaginationlink.selected, a.custompaginationlink:hover {
+        font-weight: bold;
+        color: #fff;
+        background-color: #5C87B2;
+    }
+
+
+
+
+.rmargin15 {
+    margin-right: 15px;
+}
+
+.rmargin {
+    margin-right: 5px;
+}
+
+.lmargin200 {
+    margin-left: 200px;
+}
+
+.widtPercent100 {
+    width: 100%;
+}
+
+.widtPercent33 {
+    width: 33%;
+}
+
+.minwidth180 {
+    min-width: 180px;
+}
+
+.maxwidth180 {
+    max-width: 180px;
+}
+
+.datecss {
+    width: 120px;
+}
+
+.minwidth120 {
+    min-width: 120px;
+}
+
+.maxwidth120 {
+    max-width: 120px;
+}
+
+.minwidth80 {
+    min-width: 80px;
+}
+
+.maxwidth80 {
+    max-width: 80px;
+}
+
+.minwidth60 {
+    min-width: 60px;
+}
+
+.maxwidth60 {
+    max-width: 60px;
+}
+
+.w60 {
+    width: 60px;
+}
+
+.minwidth40 {
+    min-width: 40px;
+}
+
+.maxwidth40 {
+    max-width: 40px;
+}
+
+.w40 {
+    width: 40px;
+}
+
+.w80 {
+    width: 80px;
+}
+
+.w120 {
+    width: 120px;
+}
+
+.w160 {
+    width: 160px;
+}
+
+.w180 {
+    width: 180px;
+}
+
+.w200 {
+    width: 200px;
+}
+
+.w240 {
+    width: 240px;
+}
+
+.w280 {
+    width: 280px;
+}
+
+.w320 {
+    width: 320px;
+}
+
+.w400 {
+    width: 400px;
+}
+
+.minheight300 {
+    min-height: 300px;
+}
+
+.minheight100 {
+    min-height: 100px;
+}
+
+
+.minwidth160 {
+    min-width: 160px;
+}
+
+.maxwidth160 {
+    max-width: 160px;
+}
+
+
+.minwidth240 {
+    min-width: 240px;
+}
+
+.maxwidth240 {
+    max-width: 240px;
+}
+
+.line-height32 {
+    line-height: 32px;
+}
+
+.line-height16 {
+    line-height: 16px;
+}
+
+.line-height24 {
+    line-height: 24px;
+}
+
+.clear {
+    clear: both;
+}
+
+.fl {
+    float: left;
+}
+
+.fr {
+    float: right;
+}
+
+.hide {
+    display: none;
+}
+
+.tc {
+    text-align: center;
+}
+
+.tl {
+    text-align: left;
+}
+
+.tb {
+    vertical-align: bottom;
+}
+
+.tt {
+    vertical-align: top;
+}
+
+.tr {
+    text-align: right;
+}
+
+.vt {
+    vertical-align: top;
+}
+
+.vb {
+    vertical-align: bottom;
+}
+
+.tred {
+    color: #FF0000;
+}
+
+.tblack {
+    color: #000;
+}
+
+.tTeal {
+    color: Teal;
+}
+
+.nob {
+    border-style: none;
+}
+
+.create {
+    background-image: url('../images/22.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 0 0 0 20px;
+    float: right;
+    margin: 0 10px 0 0;
+}
+
+.error, .role_error {
+    color: Red;
+}
+
+.tlink, .tlink a.link {
+    font-weight: bolder;
+    color: #0000FF;
+}
+
+.create {
+    background-image: url('../images/22.gif');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding: 0 0 0 20px;
+    float: right;
+    margin: 5px 10px 0 0;
+}
+
+.editlink {
+    background-position: left center;
+    display: block;
+    padding-left: 14px;
+    background-image: url('../images/33.gif');
+    background-repeat: no-repeat;
+    float: left;
+    margin: 0 5px 0 0;
+}
+
+.detailslink {
+    background-position: left center;
+    display: block;
+    padding-left: 14px;
+    float: left;
+    background-image: url('../images/22.gif');
+    background-repeat: no-repeat;
+    margin: 0 5px 0 0;
+}
+
+.deletelink {
+    background-position: left center;
+    display: block;
+    padding-left: 14px;
+    float: left;
+    background-image: url('../images/11.gif');
+    background-repeat: no-repeat;
+    margin: 0 5px 0 0;
+}
+
+.ReAuditinglink, .Auditinglink {
+    background-position: left center;
+    display: block;
+    padding-left: 14px;
+    float: left;
+    background-image: url('../images/22.gif');
+    background-repeat: no-repeat;
+    margin: 0 5px 0 0;
+    vertical-align: bottom;
+}
+
+.border-none {
+    border-style: none;
+}
+
+.border-left {
+    border-left: 1px solid #CCCCCC;
+}

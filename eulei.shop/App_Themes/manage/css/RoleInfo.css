@@ -1,0 +1,26 @@
+﻿.main-table {
+    width: 100%;
+    table-layout: fixed;
+    vertical-align: top;
+    text-align: left;
+}
+
+.td-left {
+    width: 300px;
+    vertical-align: top;
+    text-align: left;
+}
+.td-middle {
+    width: 300px;
+    vertical-align: top;
+    text-align: left;
+}
+.td-right {
+    vertical-align: top;
+    text-align: left;
+}
+
+#authorityList,#ArticleTypeList {
+    height: 400px;
+    overflow: scroll;
+}

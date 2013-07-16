@@ -1,0 +1,637 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="webJTJT" Class="Linq_DefaultDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=10.10.8.180;Initial Catalog=webJTJT;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="webJTJTConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.SA_ArticleOperationLog" Member="SA_ArticleOperationLog">
+    <Type Name="SA_ArticleOperationLog">
+      <Column Name="OperationLogID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OperationLogArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogOperateTime" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="OperationLogOperaterUserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogOperaterFriendlyName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogOperateDesp" Type="System.String" DbType="VarChar(1000) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_SiteInfo" Member="TB_SiteInfo">
+    <Type Name="TB_SiteInfo">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CustomerCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_AuthorityInfo" Member="SA_AuthorityInfo">
+    <Type Name="SA_AuthorityInfo">
+      <Column Name="AuthorityID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="AuthorityParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorityContent" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="AuthorityQueueOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_Flow" Member="SA_Flow">
+    <Type Name="SA_Flow">
+      <Column Name="FlowID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FlowSourceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusDesp" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSynergy" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_FlowUser" Member="SA_FlowUser">
+    <Type Name="SA_FlowUser">
+      <Column Name="FlowUserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="FlowUserFlowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserOperaterID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserOperaterName" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserOperaterOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_Framework" Member="SA_Framework">
+    <Type Name="SA_Framework">
+      <Column Name="FrameworkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FrameworkName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FrameworkParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FrameworkOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FrameworkLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_Menu" Member="SA_Menu">
+    <Type Name="SA_Menu">
+      <Column Name="MenuID" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MenuParentID" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuModel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuNameSpace" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MenuControllerName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuActionName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuParameterID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuUrlString" Type="System.String" DbType="VarChar(1550)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_RoleAuthority" Member="SA_RoleAuthority">
+    <Type Name="SA_RoleAuthority">
+      <Column Name="RoleID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RoleAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="RoleArticleTypeAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_ShareArticle" Member="SA_ShareArticle">
+    <Type Name="SA_ShareArticle">
+      <Column Name="ShareArticleID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ShareArticleType" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ShareArticleUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ShareArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShareArticleShareDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleOperationgRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLastOperstor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleFrameworkName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusher" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusherID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusherFriendName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleCitedTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShareArticleCitedUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ShareArticleCitedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ShareArticleCitedArticleID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SA_UserInfo" Member="SA_UserInfo">
+    <Type Name="SA_UserInfo">
+      <Column Name="UserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoFrameworkID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="UserInfoArticleTypeAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Advertisement" Member="TB_Advertisement">
+    <Type Name="TB_Advertisement">
+      <Column Name="AdvertisementID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="AdvertisementTitle" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="AdvertisementUrl" Type="System.String" DbType="VarChar(2000) NOT NULL" CanBeNull="false" />
+      <Column Name="AdvertisementState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdvertisementType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdvertisementRemindDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Article" Member="TB_Article">
+    <Type Name="TB_Article">
+      <Column Name="ArticleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ArticlePictureUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtilcleOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Dictionary" Member="TB_Dictionary">
+    <Type Name="TB_Dictionary">
+      <Column Name="DictionaryID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DictionaryParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryDescription" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryEasyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DictionaryOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryParameter" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_FlashADXML" Member="TB_FlashADXML">
+    <Type Name="TB_FlashADXML">
+      <Column Name="FlashADXMLID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="FlashADXMLTitle" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLPicUrl" Type="System.String" DbType="VarChar(550) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLRedirectUrl" Type="System.String" DbType="VarChar(1550) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLRemindDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Link" Member="TB_Link">
+    <Type Name="TB_Link">
+      <Column Name="LinkID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="LinkName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkTitle" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkUrl" Type="System.String" DbType="VarChar(2050) NOT NULL" CanBeNull="false" />
+      <Column Name="LinkOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LinkIsPicLink" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LinkPicUrl" Type="System.String" DbType="VarChar(2050)" CanBeNull="true" />
+      <Column Name="LinkState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Menu" Member="TB_Menu">
+    <Type Name="TB_Menu">
+      <Column Name="MenuID" Type="System.String" DbType="VarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MenuParentID" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuModel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MenuNameSpace" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MenuControllerName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MenuActionName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MenuParameterID" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MenuUrlString" Type="System.String" DbType="VarChar(1550)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Merchandise" Member="TB_Merchandise">
+    <Type Name="TB_Merchandise">
+      <Column Name="MerchandiseID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MerchandiseType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitle" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseName" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitlePicUrl" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitleDescription" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseDescription" Type="System.String" DbType="VarChar(1050) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseSynopsis" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseAfterSaleService" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="MerchandiseLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="MerchandiseClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseBeginDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_ProductType" Member="TB_ProductType">
+    <Type Name="TB_ProductType">
+      <Column Name="ProductTypeID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="ProductTypeParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeIsLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.aspnet_Users" Member="aspnet_Users">
+    <Type Name="aspnet_Users">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredUserName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="MobileAlias" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Column Name="IsAnonymous" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LastActivityDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TV_Article" Member="TV_Article">
+    <Type Name="TV_Article">
+      <Column Name="ArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ArticlePictureUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtilcleOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleCurrentFlowName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FrameworkName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TV_Merchandise" Member="TV_Merchandise">
+    <Type Name="TV_Merchandise">
+      <Column Name="MerchandiseID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitle" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseName" Type="System.String" DbType="VarChar(150) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitlePicUrl" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseTitleDescription" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseDescription" Type="System.String" DbType="VarChar(1050) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseSynopsis" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseAfterSaleService" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+      <Column Name="MerchandiseClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseBeginDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeIsLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ProductTypeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MerchandiseLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TV_FlashADXML" Member="TV_FlashADXML">
+    <Type Name="TV_FlashADXML">
+      <Column Name="FlashADXMLID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLTitle" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLPicUrl" Type="System.String" DbType="VarChar(550) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLRedirectUrl" Type="System.String" DbType="VarChar(1550) NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLType" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlashADXMLRemindDate" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryDescription" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DictionaryEasyCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="DictionaryOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_ArticleHandled" Member="VW_SA_ArticleHandled">
+    <Type Name="VW_SA_ArticleHandled">
+      <Column Name="ArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ArticlePictureUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtilcleOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleCurrentFlowName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogOperaterUserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_WorkFlow" Member="VW_SA_WorkFlow">
+    <Type Name="VW_SA_WorkFlow">
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowSourceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeModel" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeLevel" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ParentArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_ArticleMySend" Member="VW_SA_ArticleMySend">
+    <Type Name="VW_SA_ArticleMySend">
+      <Column Name="ArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ArticlePictureUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtilcleOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleCurrentFlowName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_ArticleNeedHandle" Member="VW_SA_ArticleNeedHandle">
+    <Type Name="VW_SA_ArticleNeedHandle">
+      <Column Name="ArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ArticlePictureUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArtilcleOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowStatusID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowStatusDesp" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FlowState" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FlowSendMoveMsg" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FlowAlowEdit" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FlowUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="FlowIsSynergy" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="FlowSynergy" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+      <Column Name="FlowUserOperaterOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleCurrentFlowName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FlowUserOperaterName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="FlowUserOperaterID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_ArticleOperationLogGroupBy" Member="VW_SA_ArticleOperationLogGroupBy">
+    <Type Name="VW_SA_ArticleOperationLogGroupBy">
+      <Column Name="OperationLogArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OperationLogOperaterUserName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_FlowHelper" Member="VW_SA_FlowHelper">
+    <Type Name="VW_SA_FlowHelper">
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusDesp" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSynergy" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+      <Column Name="FlowIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_FlowInfo" Member="VW_SA_FlowInfo">
+    <Type Name="VW_SA_FlowInfo">
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowStatusDesp" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="FlowUserOperaterID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="FlowUserOperaterName" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+      <Column Name="FlowIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowSynergy" Type="System.String" DbType="VarChar(2000)" CanBeNull="true" />
+      <Column Name="FlowUserOperaterOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_RoleInfo" Member="VW_SA_RoleInfo">
+    <Type Name="VW_SA_RoleInfo">
+      <Column Name="ApplicationId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="RoleId" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="RoleName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="LoweredRoleName" Type="System.String" DbType="NVarChar(256) NOT NULL" CanBeNull="false" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="RoleArticleTypeAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="RoleAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_ShareArticle" Member="VW_SA_ShareArticle">
+    <Type Name="VW_SA_ShareArticle">
+      <Column Name="ShareArticleID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleType" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleDescription" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsPicTheme" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePictureTitle" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="ShareArticleUrl" Type="System.String" DbType="VarChar(2500)" CanBeNull="true" />
+      <Column Name="ShareArticleSendDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShareArticleShareDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsNew" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsemp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleOperationgRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleLastOperstor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleFrameworkName" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusher" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusherID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticlePusherFriendName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ShareArticleCitedTypeID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ShareArticleCitedUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="ShareArticleCitedDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FrameworkName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ShareArticleCitedArticleID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_UserInfo" Member="VW_SA_UserInfo">
+    <Type Name="VW_SA_UserInfo">
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoTEL" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserInfoAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="UserInfoFrameworkID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FrameworkName" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="EasyCode" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="UserInfoArticleTypeAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_Letter" Member="VW_Letter">
+    <Type Name="VW_Letter">
+      <Column Name="LetterID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
+      <Column Name="LetterTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LetterSender" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterEmail" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="LetterTEL" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterPostalCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LetterAddress" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="LetterAddressee" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LetterTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterTimeSend" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LetterWriteBackContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="LetterIsWriteBack" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LetterIsPublic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LetterTimeWriteBack" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="DictionaryDescription" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="UserInfoFriendName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="UserName" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="UserId" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_Letter" Member="TB_Letter">
+    <Type Name="TB_Letter">
+      <Column Name="LetterID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LetterTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LetterSender" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterEmail" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="LetterTEL" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterPostalCode" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LetterAddress" Type="System.String" DbType="VarChar(250)" CanBeNull="true" />
+      <Column Name="LetterAddressee" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="LetterTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="LetterTimeSend" Type="System.DateTime" DbType="SmallDateTime NOT NULL" CanBeNull="false" />
+      <Column Name="LetterWriteBackContent" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="LetterIsWriteBack" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LetterIsPublic" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="LetterTimeWriteBack" Type="System.DateTime" DbType="SmallDateTime" CanBeNull="true" />
+      <Column Name="LetterWriteBackUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_OnlyPage" Member="TB_OnlyPage">
+    <Type Name="TB_OnlyPage">
+      <Column Name="OnlyPageID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="OnlyPageTitle" Type="System.String" DbType="VarChar(250) NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageContent" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageLabel" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="OnlyPageClickCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageState" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageOperatingRecord" Type="System.String" DbType="VarChar(2550) NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageAuthor" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageLastOperatDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="OnlyPageLastOperator" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.TB_ArticleType" Member="TB_ArticleType">
+    <Type Name="TB_ArticleType">
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeModel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeIsUp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+</Database>

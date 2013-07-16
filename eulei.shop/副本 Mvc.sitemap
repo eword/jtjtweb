@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<mvcSiteMap xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-3.0"
+            xsi:schemaLocation="http://mvcsitemap.codeplex.com/schemas/MvcSiteMap-File-3.0 MvcSiteMapSchema.xsd"
+            enableLocalization="true">
+  <mvcSiteMapNode key="root" title="首页" controller="Home" action="Index" >
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForHomePageProvider,eulei.shop" />
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForBottomCopyRightProvider,eulei.shop" />
+    
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForArticlePageProvider,eulei.shop" />
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForArticleTypeProvider,eulei.shop" />
+    
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForProductPageProvider,eulei.shop" />
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForProductTypeProvider,eulei.shop" />
+
+    <mvcSiteMapNode   title=""  dynamicNodeProvider="eulei.shop.Code.MyDynamicNodeForArticleTraitProvider,eulei.shop" />
+
+  </mvcSiteMapNode>
+  
+</mvcSiteMap>

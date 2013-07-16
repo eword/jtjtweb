@@ -1,0 +1,14 @@
+﻿.searchBox
+{
+    text-align: left;
+}
+.searchBox DIV
+{
+    float: left;
+    vertical-align: middle;
+}
+
+.searchBox DIV input
+{
+    width: 150px;
+}

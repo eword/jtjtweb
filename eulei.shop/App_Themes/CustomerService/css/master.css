@@ -1,0 +1,170 @@
+﻿
+.style {
+    background-image: url('../images/style.png');
+}
+
+.page-head-top {
+    height: 152px;
+}
+
+.page-head-top-logodiv {
+    overflow: hidden;
+}
+
+.page-head-top-logo {
+    float: left;
+}
+
+.page-middle {
+    margin-top: 10px;
+}
+
+
+
+/*===========
+菜单
+============*/
+.page-head-top-menuBox {
+    height: 42px;
+    background-position: 0px 0px;
+    background-image: url('../images/style.png');
+    background-repeat: repeat-x;
+    vertical-align: bottom;
+    width: 1000px;
+}
+
+#menu {
+    float: left;
+    padding-left: 15px;
+}
+
+    #menu li.node {
+        float: left;
+        display: inline;
+        list-style: none;
+        position: relative;
+    }
+
+        #menu li.node a.node {
+            font-size: 18px;
+            font-family: '黑体', 'Microsoft Yahei';
+            line-height: 30px;
+            padding: 0px 12px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            display: block;
+            margin: 5px 0 0 0;
+            height: 22px;
+        }
+
+
+            #menu li.node a.node:active, #menu li.node a.node.click, #menu li.node a.node:hover {
+                background-position: 0px -200px;
+                background-image: url('../images/style.png');
+                color: #006600;
+                padding-bottom: 15px;
+            }
+
+            #menu li.node a.node:active {
+                color: Red;
+            }
+
+.nodeBox {
+    display: none;
+}
+
+.nodeBox-title {
+    height: 17px;
+    position: relative;
+    z-index: 2;
+    background-image: url('../images/navv.png');
+    background-repeat: no-repeat;
+}
+
+.nodeBox-box {
+    border: 2px outset #FBFBFB;
+    background-color: #FFFFFF;
+    z-index: 1;
+    position: absolute;
+    top: 12px;
+    left: 0px;
+    padding: 10px 0px;
+}
+
+    .nodeBox-box li {
+        border-width: 0px;
+        list-style-type: none;
+        background: none;
+        list-style-image: none;
+        width: 105px;
+    }
+
+#menu li.node1 {
+    float: left;
+    display: inline;
+    padding-left: 3px;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: #F0F0F0;
+}
+
+#menu .nodeBox-box a:active, #menu .nodeBox-box a:hover {
+    color: Red;
+    font-weight: bolder;
+}
+
+#menu li.node1 a {
+    border-width: 0px;
+    font-family: '黑体', 'Microsoft Yahei';
+    line-height: 32px;
+    text-decoration: none;
+    color: Black;
+    font-size: 12px;
+    display: block;
+}
+
+    #menu li.node1 a.node1 {
+        font-size: 15px;
+        font-weight: bold;
+    }
+
+#menu li.node2 a.node2 {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+
+
+
+
+
+.copyright {
+    background-image: url('../images/bgall.png');
+    background-repeat: repeat;
+    height: 60px;
+}
+    .copyright * {    
+      overflow:hidden;
+    }
+.copyright-first {
+    padding-left: 95px;
+}
+
+.copyright ul {
+    float: left;
+    margin: 0;
+    padding: 0;
+}
+
+    .copyright ul li {
+        float: left;
+        line-height: 32px;
+    }
+
+
+
+
+
+
+

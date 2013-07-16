@@ -1,0 +1,146 @@
+﻿
+.gongwen_ph1 {
+    font-size: 34px;
+    font-weight: bold;
+    padding: 10px 0px;
+    text-align: center;
+    color: #FF0000;
+    border-bottom: 4px solid #ff0000;
+    font-family: "宋体";
+}
+
+.gongwen_ph2 {
+    font-size: 18px;
+    color: #000;
+    text-align: right;
+    padding-top: 10px;
+    font-family: "仿宋_GB2312","宋体";
+}
+
+.gongwen_ph3 {
+    font-size: 26px;
+    color: #000;
+    font-family: "宋体";
+    padding: 10px 0px;
+    text-align: center;
+}
+
+.gongwen_ph4, ol, .gongwen_ph5 {
+    font-size: 20px;
+    line-height: 1.6em;
+    color: #000;
+    font-family: "仿宋_GB2312";
+}
+
+.gongwen_gm {
+    text-indent: 2em;
+}
+
+.gongwen_ph5 {
+    text-align: right;
+}
+
+ol {
+    margin: 0px;
+    font-size: 18px;
+}
+
+ol {
+    padding-left: 4em;
+}
+
+/*<p class="gongwen_ph1">交通职业教育教学指导委员会文件</p>
+    <p class="gongwen_ph2">交通教指委函[2008]4号</p>
+    <p class="gongwen_ph3">关于推荐申报2008年度国家精品课程的函</p>
+    <p class="gongwen_ph4">教育部高等教育司：</p>
+    <p class="gongwen_ph4 gongwen_gm">根据《关于做好2008年度高等学校本科教学质量与教学改革工程项目申报工作的通知》（教高司函〔2008〕82号）文件要求，本教学指导委员会组织全国交通职业院校及有关高校申报，经8名专家对30所高校35门申报课程的会议评审，全体专家无记名投票，按得票数遴先前六名，推荐《桥涵施工技术》（湖南交通职业技术学院）等6门课程申报2008年度国家精品课程（具体名单见附件1）。</p>
+    <p class="gongwen_ph4 gongwen_gm">附件：</p>
+    <ol>
+      <li>交通职业教育教学指导委员会推荐2008年度国家精品课程汇总表</li>
+    <li>推荐国家精品课程为校级/省级精品课程证明材料</li>
+    <li>教指委推荐国家精品课程会议评审专家投票结果及专家名单</li>
+    </ol>
+    <p class="gongwen_ph5">交通职业教育教学专业指导委员会<br />二○○八年六月二十三日</p>
+    <p class="gongwen_ph5">抄送：湖南省教育厅、浙江省教育厅、江苏省教育厅、湖北省教育厅、上海市教委</p>*/
+
+.fixck {
+    font-family: Arial, Verdana, sans-serif !important;
+    font-size: 12px !important;
+    color: #222 !important;
+    line-height: normal !important;
+}
+
+    .fixck p {
+        margin: 12px 0 !important;
+    }
+
+    .fixck a {
+        text-decoration: underline !important;
+        color: #00E !important;
+    }
+
+    .fixck ul, .fixck ol {
+        padding-left: 40px !important;
+        padding-right: 40px !important;
+    }
+
+    .fixck ul {
+        list-style: disc outside none !important;
+    }
+
+    .fixck ol {
+        list-style: decimal outside none !important;
+    }
+
+    .fixck li {
+        display: list-item !important;
+    }
+
+    .fixck h1 {
+        font-weight: bold !important;
+        font-size: 32px !important;
+        margin: 21px 0 !important;
+    }
+
+    .fixck h2 {
+        font-weight: bold !important;
+        font-size: 24px !important;
+        margin: 19px 0 !important;
+    }
+
+    .fixck h3 {
+        font-weight: bold !important;
+        font-size: 19px !important;
+        margin: 18px 0 !important;
+    }
+
+    .fixck h4 {
+        font-weight: bold !important;
+        font-size: 16px !important;
+        margin: 21px 0 !important;
+    }
+
+    .fixck h5 {
+        font-weight: bold !important;
+        font-size: 13px !important;
+        margin: 22px 0 !important;
+    }
+
+    .fixck h6 {
+        font-weight: bold !important;
+        font-size: 11px !important;
+        margin: 24px 0 !important;
+    }
+
+    .fixck strong {
+        font-weight: bolder;
+    }
+
+    .fixck table {       
+        border-spacing: 2px;
+        border-collapse: collapse;
+    }
+
+    .fixck td, .fixck th {
+        vertical-align: inherit;
+    }

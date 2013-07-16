@@ -1,0 +1,121 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+<%@ Import Namespace="eulei.shop.Code" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />--<%:ConfigurationManager.AppSettings["webTitle"].ToString()%>
+    </title>
+    <asp:ContentPlaceHolder ID="headOtherInfo" runat="server" />
+</head>
+<body class="bcolor">
+     <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery-1.7.2.min.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/ckfinder/ckfinder.js") %>"></script>
+    <center>
+        <div class="page bcolor">
+            <%--顶部--%>
+            <div class="page-top">
+                <div class="page-top-logo">
+                </div>
+                <div class="page-top-info">
+                    <% Html.RenderPartial("LogOnUserControl"); %>
+                </div>
+            </div>
+             <%--中间--%>
+            <div class="page-middle">
+                <table class="page-middle-table nob bcolor" border="0" cellpadding="0" cellspacing="0">
+                    <tr class="nob bcolor">
+                    <%--中间左部--%>
+                        <td class="page-middle-table-left nob bcolor">
+                            <div class="page-middle-table-left-menu">
+                                <div class="page-middle-table-left-menu-intro">
+                                    <h6 class="page-middle-table-left-menu-intro-bg page-middle-table-left-menu-intro-type">
+                                        <a href="javascript:void(0);">常用操作</a>
+                                    </h6>
+                                    <div class="page-middle-table-left-menu-intro-bg page-middle-table-left-menu-intro-tline">
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <%:Html.ActionLink("文章管理", "ArticleIndex", "Manage", null, new { @class = "page-middle-table-left-menu-intro-bg" })%></li>
+                                        <li>
+                                            <%:Html.ActionLink("链接管理", "LinkIndex", "Manage", null, new { @class = "page-middle-table-left-menu-intro-bg" })%></li>
+                                        <li><a class="page-middle-table-left-menu-intro-bg" id="UploadManage">上传管理</a></li>
+                                    </ul>
+                                </div>
+                                <div class="page-middle-table-left-menu-intro">
+                                    <h6 class="page-middle-table-left-menu-intro-bg page-middle-table-left-menu-intro-type">
+                                        <a href="javascript:void(0);">账号管理</a>
+                                    </h6>
+                                    <div id="abc">
+                                    </div>
+                                    <ul>
+                                        <li>
+                                            <%:Html.ActionLink("密码修改", "ChangePassword", "Account", null, new { @class = "page-middle-table-left-menu-intro-bg" })%></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="page-middle-table-left-menufooter" />
+                        </td>
+                      <%--中间右部--%>
+                        <td class="page-middle-table-right bcolor">
+                            <table width="100%" class="page-middle-table-right-table nob" border="0" cellspacing="0"
+                                cellpadding="0">
+                                <tr class="nob">
+                                    <td class="l_t_bg bbg nob" valign="top">
+                                    </td>
+                                    <td class="title bbg nob" valign="top">
+                                        <div class="bg">
+                                            <span>
+                                                <asp:ContentPlaceHolder ID="TabTitleContent" runat="server">
+                                                </asp:ContentPlaceHolder>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="r_t_bg bbg nob" valign="top">
+                                    </td>
+                                </tr>
+                                <tr class="nob">
+                                    <td class="l_m_bg nob" valign="middle">
+                                    </td>
+                                    <td class="view nob" valign="top">
+                                        <div id="View">
+                                            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                            </asp:ContentPlaceHolder>
+                                        </div>
+                                    </td>
+                                    <td class="r_m_bg nob">
+                                    </td>
+                                </tr>
+                                <tr class="nob">
+                                    <td class="l_b_bg bbg nob" valign="bottom">
+                                    </td>
+                                    <td class="bottom bbg nob">
+                                    </td>
+                                    <td class="r_b_bg bbg nob" valign="bottom">
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <%--底部--%>
+            <div class="page-bottom bcolor">
+            </div>
+        </div>
+    </center>
+    <script type="text/javascript">
+        $(function () {
+            $("#UploadManage").bind("click", function (event) {
+                BrowseServerManage();
+            });
+            function BrowseServerManage() {
+                var finder = new CKFinder();
+                finder.basePath = '/ckfinder';  //导入CKFinder的路径                
+                finder.popup();
+            }
+
+        });      
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+﻿.searchBox DIV
+{
+    float: left;
+    vertical-align: middle;
+}
+
+.searchBox DIV input
+{
+    width: 350px;
+}
+.OnlyPageBox
+{
+}
+H3.OnlyPageTitle
+{
+     font-size:18px;
+     font-weight:600;
+     text-align:center;
+}
+
+.titledownline
+{
+    border: 1px dashed #D9D9D9;
+    margin:15px 15px 10px 0px;
+}
+.OnlyPageContent
+{
+    text-align:left;
+}

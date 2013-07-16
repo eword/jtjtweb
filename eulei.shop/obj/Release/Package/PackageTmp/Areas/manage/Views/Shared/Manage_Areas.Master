@@ -1,0 +1,189 @@
+﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
+
+<%@ Import Namespace="eulei.shop.Code" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <link rel="icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" type="image/x-icon" />
+    <title>
+        <asp:ContentPlaceHolder ID="TitleContent" runat="server" />
+        --<%:ConfigurationManager.AppSettings["webTitle"].ToString()%>
+    </title>  
+    <asp:ContentPlaceHolder ID="headOtherInfo" runat="server" />
+</head>
+<body class="bcolor">
+    <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery-1.7.2.min.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/ckfinder/ckfinder.js") %>"></script>
+    <center>
+        <div class="page bcolor">
+            <%--顶部--%>
+            <div class="page-top">
+                <div class="page-top-logo">
+                </div>
+                <div class="page-top-info">
+                    <% Html.RenderPartial("LogOnUserControl"); %>
+                </div>
+            </div>
+            <%--中间--%>
+            <div class="page-middle">
+                <table class="page-middle-table nob bcolor" border="0" cellpadding="0" cellspacing="0">
+                    <tr class="nob bcolor">
+                        <%--中间左部--%>
+                        <td class="table-left nob bcolor">
+                            <div class="menu">
+                                <div class="intro">
+                                    <h6 class="intro-bg intro-type">
+                                        <a href="javascript:void(0);">常规操作</a>
+                                    </h6>
+                                    <div class="intro-bg intro-tline">
+                                    </div>
+                                    <ul>
+                                         <li>
+                                            <%:Html.ActionLink("后台首页", "Index", "Home", new { @area="manage" }, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.ArticleBrowse))
+                                          { %>
+
+                                        <li>
+                                            <%:Html.ActionLink("文章管理", "Index", "Article", new { @area="manage",@id=(int)ArticleSearchType.NeedHandle }, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.ArticleShareManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("文章共享管理", "ShareArticleIndex", "Article", new { @area="manage",@id=(int)ShareArticleState.Waiting }, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                                 <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.LetterManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("留言管理", "LetterIndex", "CustomerService", new { @area="manage"}, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <%-- 
+                                            <li>
+                                            <%:Html.ActionLink("商品管理", "Index", "Product", new { @area = "manage" }, new { @class = "intro-bg" })%>
+                                            </li>
+                                        --%>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.SiteOnlyPageBrowse))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("站点单页管理", "Index", "OnlyPage", new { @area = "manage" }, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.FlashADManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("Flash广告管理", "Index", "FlashAD", new { @area = "manage" }, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.WordADManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("文字广告管理", "Index", "WordAD", new { @area = "manage" }, new { @class = "intro-bg" })%></li>
+                                        <%} %>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.FriendLinkManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("友情链接管理", "Index", "Link", new { @area = "manage" }, new { @class = "intro-bg" })%></li>
+                                        <%} %>
+                                        <%--                                          
+                                            <li>
+                                            <%:Html.ActionLink("商品类型管理", "ProductType", "Class", new { @area = "manage" }, new { @class = "intro-bg" })%>
+                                            </li>
+                                        --%>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.UploadFileManage))
+                                          { %>
+                                        <li><a class="intro-bg" id="UploadManage">上传管理</a></li>
+                                        <script type="text/javascript">
+                                            $(function () {
+                                                $("#UploadManage").bind("click", function (event) {
+                                                    BrowseServerManage();
+                                                });
+                                                function BrowseServerManage() {
+                                                    var finder = new CKFinder();
+                                                    finder.basePath = '/ckfinder';  //导入CKFinder的路径                
+                                                    finder.popup();
+                                                }
+                                            });
+                                        </script>
+                                        <%} %>
+                                    </ul>
+                                </div>
+                                <div class="intro">
+                                    <h6 class="intro-bg intro-type">
+                                        <a href="javascript:void(0);">系统设置</a>
+                                    </h6>
+                                    <div class="intro-bg intro-tline">
+                                    </div>
+                                    <ul>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.WorkFlowManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("文章流程管理", "Index", "WorkFlow", new { @area="manage"}, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <li>
+                                            <%:Html.ActionLink("密码修改", "ChangePassword", "Account", new { @area=""}, new { @class = "intro-bg" })%>
+
+                                        </li>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.SystemUserManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("账号设置", "UserInfo", "Account", new { @area="manage"}, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                        <%if (SystemMemberShip.GetSystemAuthority(Session["SystemAuthority"].ToString(), SystemMemberShip.SystemRoleManage))
+                                          { %>
+                                        <li>
+                                            <%:Html.ActionLink("角色设置", "RoleInfo", "Account", new { @area="manage"}, new { @class = "intro-bg" })%>
+                                        </li>
+                                        <%} %>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="menufooter" />
+                        </td>
+                        <%--中间右部--%>
+                        <td class="table-right bcolor">
+                            <table width="100%" class="table-right-table nob" border="0" cellspacing="0" cellpadding="0">
+                                <tr class="nob">
+                                    <td class="l_t_bg bbg nob" valign="top"></td>
+                                    <td class="title bbg nob" valign="top">
+                                        <div class="bg">
+                                            <span>
+                                                <asp:ContentPlaceHolder ID="TabTitleContent" runat="server">
+                                                </asp:ContentPlaceHolder>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="r_t_bg bbg nob" valign="top"></td>
+                                </tr>
+                                <tr class="nob">
+                                    <td class="l_m_bg nob" valign="middle"></td>
+                                    <td class="view nob" valign="top">
+                                        <div id="View">
+                                            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                                            </asp:ContentPlaceHolder>
+                                        </div>
+                                    </td>
+                                    <td class="r_m_bg nob"></td>
+                                </tr>
+                                <tr class="nob">
+                                    <td class="l_b_bg bbg nob" valign="bottom"></td>
+                                    <td class="bottom bbg nob"></td>
+                                    <td class="r_b_bg bbg nob" valign="bottom"></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <%--底部--%>
+            <div class="page-bottom bcolor">
+            </div>
+        </div>
+    </center>
+</body>
+</html>
