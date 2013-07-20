@@ -89,9 +89,9 @@ namespace eulei.shop.Areas.manage.Controllers
                             ViewData.Model = _dct.VW_SA_ArticleHandled
                                 .Where(m => !m.ArticleState.Equals((int)ArticleState.Delete)
                                      &&
-                                 
+
                                   m.FlowUserUserName.Equals(User.Identity.Name)
-                                 
+
                                     && m.ArticleTitle.Contains(_title))
                                 .OrderByDescending(m => m.ArticleID);
                         }
@@ -348,8 +348,37 @@ namespace eulei.shop.Areas.manage.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                    var _query = _dct.TV_Article.Single(m => m.ArticleID.Equals(id));
-                    var _currentVW = _dct.VW_SA_ArticleNeedHandle.Where(m => m.ArticleID.Equals(id) && m.FlowUserOperaterName.Equals(User.Identity.Name) && m.FlowStatusID.Equals(m.ArticleStatusID));
+                    var _query = _dct.VW_SA_ArticleNeedHandle.Single(m => m.ArticleID.Equals(id));
+                    var _currentVW = _dct.VW_SA_ArticleNeedHandle.Where(m => m.ArticleID.Equals(id) && m.FlowUserUserName.Equals(User.Identity.Name));
+                    var _nextUsers = _dct.VW_SA_FlowInfo.Where(
+                        m => m.FlowTemplateArticleTypeID.Equals(_query.ArticleTypeID)
+                            &
+                            m.FlowTemplateStatusID.Equals(_query.FlowUserNextStatusID)
+                            );
+                    if (_nextUsers != null)
+                    {
+                        int _i = 0;
+                        foreach (var item in _nextUsers)
+                        {
+                            var _user = new CurrentLoginUser().GetUserInfo(item.FlowUserTemplateUserName);
+                            if (_i == 0)
+                            {
+                                ViewBag.NextUserList = _user.FriendlyName + "(" + _user.UserName + ")";
+                                ViewBag.NextUserIDList = item.FlowUserTemplateUserID.ToString();
+                            }
+                            else
+                            {
+                                ViewBag.NextUserList += "," + _user.FriendlyName + "(" + _user.UserName + ")";
+                                ViewBag.NextUserIDList += "," + item.FlowUserTemplateUserID.ToString();
+                            }
+                            _i++;
+                        }
+                    }
+                    else
+                    {
+                        ViewBag.NextUserList = string.Empty;
+                        ViewBag.NextUserIDList = string.Empty;
+                    }
                     if (_query.ArticleAuthor.Equals(User.Identity.Name) || _currentVW != null)
                     {
                         if (_query.ArticleStatusID.Equals(1))
@@ -402,54 +431,102 @@ namespace eulei.shop.Areas.manage.Controllers
         [ValidateInput(false)]
         public ActionResult SendToNextAuditing(int id, FormCollection collection)
         {
-            //try
-            //{
+            try
+            {
                 this.GetAuthority(SystemMemberShip.ArticleBrowse);
                 string url = collection["_returnUrl"].ToString();
+                var _userList = collection["nextUserIDList"] == null ? null : collection["nextUserIDList"].ToString().Split(',');
                 if (User.Identity.IsAuthenticated)
                 {
+                    string _content = collection["ReturnInfo"] != null ? collection["ReturnInfo"].ToString() : "";
                     Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                    var _current = _dct.TB_Article.Single(m => m.ArticleID.Equals(id));
-                    var _nexts = _dct.VW_SA_FlowInfo.Where(m => m.ArticleTypeID.Equals(_current.ArticleTypeID) && m.FlowStatusID > _current.ArticleStatusID).OrderBy(m => m.FlowStatusID);
-                    var _currentVW = _dct.TV_Article.Where(m => m.ArticleID.Equals(id));
-                    if (_nexts != null)
+                    var _currentArticle = _dct.VW_SA_ArticleNeedHandle.Single(m => m.ArticleID.Equals(id));
+                    if (_currentArticle != null)
                     {
-                        var _next = _nexts.First();
-                        //string _strtemp = "";
-                        //foreach (var item in _nexts)
-                        //{ 
-                        //_strtemp+=item.FlowStatusID+"||";
-                        //}
-                        //return Content(_strtemp);
-                        if (_current.ArticleAuthor.Equals(User.Identity.Name) || _currentVW != null)
+                        var _currentFlowUser = _dct.SA_FlowUser.Single(m => m.FlowUserArticleID.Equals(id) & m.FlowUserUserName.Equals(User.Identity.Name) & m.FlowUserState.Equals(true));
+                        var _currentFlows = _dct.SA_FlowUser.Where(m => m.FlowUserArticleID.Equals(id) & m.FlowUserState.Equals(true));
+                        if (_currentFlowUser != null)
                         {
-                            _current.ArticleStatusID = _next.FlowStatusID;
-                            if (_current.ArticleIsApplyReturn)
+                            //更新用户处理状态
+                            _currentFlowUser.FlowUserOperationContent = _content;
+                            _currentFlowUser.FlowUserState = false;
+                            //判断是否需要协商办理或者是否最后一个办理者
+                            if (_currentFlows.Count<SA_FlowUser>() == 1
+                                ||
+                                _currentArticle.FlowUserIsSynergy == false
+                                )
                             {
-                                _current.ArticleIsApplyReturn = false;
-                            }
-                            string _content = collection["ReturnInfo"] != null ? collection["ReturnInfo"].ToString() : "";
-                            var _FlowStatusDesp = string.IsNullOrEmpty(_currentVW.First().ArticleCurrentFlowName) || _currentVW.First().ArticleStatusID.Equals(1) ? "送审" : _currentVW.First().ArticleCurrentFlowName;
-                            var _currentUser = new CurrentLoginUser().GetUserInfo(User.Identity.Name);
-                            ArticleOperationLogHelper.WriteSendLog(_current.ArticleID, _FlowStatusDesp, _content, _currentUser.UserName, _currentUser.FriendlyName);
-                            _dct.SubmitChanges();
+                                var _currentTB_Article = _dct.TB_Article.Single(m => m.ArticleID.Equals(id));
+                                //更新文章状态ID
+                                _currentTB_Article.ArticleStatusID = _currentFlowUser.FlowUserNextStatusID;
+                                //清楚退回申请
+                                if (_currentTB_Article.ArticleIsApplyReturn)
+                                {
+                                    _currentTB_Article.ArticleIsApplyReturn = false;
+                                }
 
+                            }
                         }
+
+
+                        //获取下一步骤信息
+                        var _nextFlowTemplate = _dct.SA_FlowTemplate.Single(
+                       m => m.FlowTemplateArticleTypeID.Equals(_currentArticle.ArticleTypeID)
+                       &
+                       m.FlowTemplateStatusID.Equals(_currentArticle.FlowUserNextStatusID));
+                        //获取下一步骤办理人信息，并插入到代办数据表
+                        if (_userList != null)
+                        {
+                            foreach (var item in _userList)
+                            {
+                                Guid _temp;
+                                //排除组织机构
+                                if (!Guid.TryParse(item, out _temp))
+                                {
+                                    continue;
+                                }
+                                var _currentUser = _dct.VW_SA_UserInfo.Single(m => m.UserId.Equals(item));
+                                if (_currentUser == null)
+                                {
+                                    throw new Exception("操作员信息未设置！");
+                                }
+                                var _nextUser = new SA_FlowUser();
+                                _nextUser.FlowUserAlowEdit = _nextFlowTemplate.FlowTemplateAlowEdit;
+                                _nextUser.FlowUserArticleID = id;
+                                _nextUser.FlowUserID = new Guid();
+                                _nextUser.FlowUserIsSynergy = _nextFlowTemplate.FlowTemplateIsSynergy;
+                                _nextUser.FlowUserNextStatusDesp = _nextFlowTemplate.FlowTemplateNextStatusDesp;
+                                _nextUser.FlowUserNextStatusID = _nextFlowTemplate.FlowTemplateNextStatusID;
+                                _nextUser.FlowUserOperationContent = string.Empty;
+                                _nextUser.FlowUserSendMoveMsg = _nextFlowTemplate.FlowTemplateSendMoveMsg;
+                                _nextUser.FlowUserState = true;
+                                _nextUser.FlowUserStatusDesp = _nextFlowTemplate.FlowTemplateStatusDesp;
+                                _nextUser.FlowUserStatusID = _nextFlowTemplate.FlowTemplateStatusID;
+                                _nextUser.FlowUserUserID = _temp;
+                                _nextUser.FlowUserUserName = _currentUser.UserName;
+                                _dct.SA_FlowUser.InsertOnSubmit(_nextUser);
+                            }
+                        }
+
                     }
+                    var _FlowStatusDesp = _currentArticle.ArticleStatusID.Equals(1) ? "送审" : _currentArticle.FlowUserStatusDesp;
+                    var _log_currentUser = new CurrentLoginUser().GetUserInfo(User.Identity.Name);
+                    ArticleOperationLogHelper.WriteSendLog(_currentArticle.ArticleID, _FlowStatusDesp, _content, _log_currentUser.UserName, _log_currentUser.FriendlyName);
+                    _dct.SubmitChanges();
                 }
 
                 return Redirect(url);
-            //}
-            //catch (AuthorityException ex)
-            //{
-            //    LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing【post】”");
-            //    return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
-            //}
-            //catch (Exception ex)
-            //{
-            //    LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing【post】”");
-            //    return RedirectToAction("Index", "Error", new { @area = "" });
-            //}
+            }
+            catch (AuthorityException ex)
+            {
+                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing【post】”");
+                return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing【post】”");
+                return RedirectToAction("Index", "Error", new { @area = "" });
+            }
         }
 
         public ActionResult ReturnToAuthor(int id, FormCollection collection)
@@ -549,12 +626,12 @@ namespace eulei.shop.Areas.manage.Controllers
                 {
                     Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
                     var _current = _dct.TB_Article.Single(m => m.ArticleID.Equals(id));
-                    var _flowInfo = _dct.VW_SA_FlowInfo.Where(m => m.FlowState.Equals(true) && m.ArticleTypeID.Equals(_current.ArticleTypeID) && m.FlowStatusID > 1).OrderBy(m => m.FlowStatusID);
+                    var _flowInfo = _dct.VW_SA_FlowInfo.Where(m => m.FlowTemplateArticleTypeID.Equals(_current.ArticleTypeID) && m.FlowTemplatePreviousStatusID.Equals(1) && m.FlowTemplateStatusID.Equals(_current.ArticleStatusID));
                     if (_current.ArticleAuthor.Equals(User.Identity.Name))
                     {
                         if (_flowInfo != null)
                         {
-                            if (_current.ArticleStatusID == _flowInfo.First().FlowStatusID && _current.ArticleState.Equals((int)ArticleState.Editing))
+                            if (_flowInfo.Count() > 0 && _current.ArticleState.Equals((int)ArticleState.Editing))
                             {
                                 _current.ArticleStatusID = 1;
                                 string _content = collection["ReturnInfo"] != null ? collection["ReturnInfo"].ToString() : "";
@@ -914,9 +991,9 @@ namespace eulei.shop.Areas.manage.Controllers
                         if (_typeID == 0)
                         {
                             ViewData.Model = _dct.VW_SA_ShareArticle
-                                .Where(m => 
+                                .Where(m =>
                                     (
-                                    m.ShareArticleState.Equals((int)ShareArticleState.Waiting)||
+                                    m.ShareArticleState.Equals((int)ShareArticleState.Waiting) ||
                                     (m.ShareArticleIsApplyReturn.Equals(true) && !m.ShareArticleState.Equals((int)ShareArticleState.Delete))
                                     )
                                     && m.ShareArticleTitle.Contains(_title))
@@ -925,9 +1002,9 @@ namespace eulei.shop.Areas.manage.Controllers
                         else
                         {
                             ViewData.Model = _dct.VW_SA_ShareArticle
-                                .Where(m => 
+                                .Where(m =>
                                     (
-                                    m.ShareArticleState.Equals((int)ShareArticleState.Waiting)||
+                                    m.ShareArticleState.Equals((int)ShareArticleState.Waiting) ||
                                     (m.ShareArticleIsApplyReturn.Equals(true) && !m.ShareArticleState.Equals((int)ShareArticleState.Delete))
                                     )
                                     && m.ShareArticleTitle.Contains(_title)

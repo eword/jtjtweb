@@ -48,6 +48,10 @@
             <tr>
                 <td>
                     <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
+                      <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
+                      <%:Html.Hidden("NextUserIDList",(string)ViewBag.NextUserIDList)%>
+                    下一步办理人：    <%:Html.Hidden("NextUserList",(string)ViewBag.NextUserList)%><input type="submit" id="changeUser" class="btnsubmit  rmargin15" value="修改" />
+                    <br />
                     <input type="submit" id="tb_past" class="btnsubmit  rmargin15" value="<%:ViewBag.Title %>" />
                     =><%:Html.ActionLink("操作记录","GetArticleOperationgRecord","Article",new{@id=Model.ArticleID,@area="manage", @_returnUrl = Request.Url.PathAndQuery },new{@target="_blank",@class="tred",@title="点击查看操作记录"}) %><=
                     <%if (!Model.ArticleStatusID.Equals(1))

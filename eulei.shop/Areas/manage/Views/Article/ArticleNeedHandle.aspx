@@ -175,38 +175,28 @@
                     <%: item.ArticleClickCount %>
                 </td>
                 <td class="tl">
-                    <% if (item.FlowStatusID.HasValue)
-                                   {%>
-                    <%if (item.ArticleStatusID.Equals(1) && item.ArticleAuthor.Equals(User.Identity.Name))
-                                  { %>
-                    <%: Html.ActionLink("编辑", "Edit", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "editlink line-height24" })%>
-                    <%: Html.ActionLink("删除", "Delete", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "deletelink line-height24" })%>
-                    <%: Html.ActionLink("送审", "SendToNextAuditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "SendToAuditing detailslink line-height24" })%>
-                    <%} %>
-                    <%else %>
-                    <%{ %>
-                    <%if (item.ArticleStatusID.Equals(99)) %>
-                    <%{ %>
-                    <%: Html.ActionLink("发布", "Auditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "detailslink line-height24" })%>
-                    <%}
-                                  else
-                                  { %>
-                    <%: Html.ActionLink("审核", "SendToNextAuditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "detailslink line-height24" })%>
-                    <%} %>
-                    <%if (item.ArticleIsApplyReturn) %>
-                    <%{ %>
-                    <%: Html.ActionLink("同意撤回", "Withdraw", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "Withdraw detailslink line-height24" })%>
-                    <%} %>
-                    <%} %>
-                    <%}
-                                   else
-                                   { %>
-                    <%if (item.ArticleAuthor.Equals(User.Identity.Name))
-                                  { %>
-                    <%: Html.ActionLink("编辑", "Edit", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "editlink line-height24" })%>
-                    <%: Html.ActionLink("删除", "Delete", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "deletelink line-height24" })%>
-                    <%} %>
-                    <% }%>                               
+            
+                            <%if (item.ArticleStatusID.Equals(1) && item.ArticleAuthor.Equals(User.Identity.Name))
+                                          { %>
+                            <%: Html.ActionLink("编辑", "Edit", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "editlink line-height24" })%>
+                            <%: Html.ActionLink("删除", "Delete", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "deletelink line-height24" })%>
+                            <%: Html.ActionLink("送审", "SendToNextAuditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "SendToAuditing detailslink line-height24" })%>
+                            <%} %>
+                            <%else %>
+                            <%{ %>
+                                    <%if (item.ArticleStatusID.Equals(99)) %>
+                                    <%{ %>
+                                    <%: Html.ActionLink("发布", "Auditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "detailslink line-height24" })%>
+                                    <%}
+                                                  else
+                                                  { %>
+                                    <%: Html.ActionLink("审核", "SendToNextAuditing", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "detailslink line-height24" })%>
+                                    <%} %>
+                                    <%if (item.ArticleIsApplyReturn) %>
+                                    <%{ %>
+                                    <%: Html.ActionLink("同意撤回", "Withdraw", new { @id = item.ArticleID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "Withdraw detailslink line-height24" })%>
+                                    <%} %>
+                            <%} %>                                                
                 </td>
             </tr>
             <%_i++;

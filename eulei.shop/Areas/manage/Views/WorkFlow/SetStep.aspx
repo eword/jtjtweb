@@ -141,7 +141,7 @@
                             type: "get",
                             url: "/manage/WorkFlow/SetUsers",
                             contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                            data: "id=" + $("#FlowID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                            data: "id=" + $("#FlowTemplateID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
                             success: function (msg) {
                                 $("#dialog-form-SetUsers").dialog("close");
                                 alert("OK:" + msg);
@@ -159,7 +159,7 @@
         });
 
         function getUserList(id) {
-            $("#FlowID").val(id);
+            $("#FlowTemplateID").val(id);
             $("#userList").ligerTree({
                 nodeWidth: 180,
                 url: '<%: Url.Content("~/manage/WorkFlow/GetJsonForUserList?id=") %>' + id + '&time=' + Math.random(),
@@ -175,7 +175,7 @@
     </script>
     <div id="dialog-form-SetUsers" title="设置人员">
         <div id="SetUsersAjaxBox" class="widtPercent100">
-            <%:Html.Hidden("FlowID") %>
+            <%:Html.Hidden("FlowTemplateID") %>
             <ul id="userList" class="fl"></ul>
         </div>
     </div>

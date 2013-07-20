@@ -129,15 +129,15 @@ namespace eulei.shop.Areas.manage.Controllers
                 ViewData["_returnUrl"] = url;
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
 
-                var _flows = _dct.SA_Flow.Where(m => m.FlowSourceID.Equals(id));
+                var _flows = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(id));
                 foreach (var item in _flows)
                 {
-                    var _users = _dct.SA_FlowUser.Where(m => m.FlowUserFlowID.Equals(item.FlowID));
+                    var _users = _dct.SA_FlowUserTemplate.Where(m => m.FlowTemplateID.Equals(item.FlowTemplateID));
                     foreach (var item1 in _users)
                     {
-                        _dct.SA_FlowUser.DeleteOnSubmit(item1);
+                        _dct.SA_FlowUserTemplate.DeleteOnSubmit(item1);
                     }
-                    _dct.SA_Flow.DeleteOnSubmit(item);
+                    _dct.SA_FlowTemplate.DeleteOnSubmit(item);
                 }
                 _dct.SubmitChanges();
                 return Redirect(url);
@@ -224,7 +224,7 @@ namespace eulei.shop.Areas.manage.Controllers
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
                 var _frameworks = _dct.SA_Framework;
                 var _users = _dct.VW_SA_UserInfo;
-                var _exist = _dct.VW_SA_FlowInfo.Where(m => m.FlowID.Equals(id));
+                var _exist = _dct.VW_SA_FlowInfo.Where(m => m.FlowTemplateID.Equals(id));
                 List<LigeruiTreeItem> _list = new List<LigeruiTreeItem>();
                 if (_frameworks != null)
                 {
@@ -252,7 +252,7 @@ namespace eulei.shop.Areas.manage.Controllers
                         _listItem.textcontent = item.UserInfoFriendName + "(" + item.UserName + ")";
                         if (_exist != null)
                         {
-                            _listItem.ischecked = _exist.Where(m => m.FlowUserOperaterName.Equals(item.UserName)).Count() > 0 ? true : false;
+                            _listItem.ischecked = _exist.Where(m => m.FlowUserTemplateUserName.Equals(item.UserName)).Count() > 0 ? true : false;
                         }
                         _listItem.isexpand = true;
                         _list.Add(_listItem);
@@ -285,7 +285,7 @@ namespace eulei.shop.Areas.manage.Controllers
                 ViewData["_returnUrl"] = url;
                 ViewBag.id = id;
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                ViewData.Model = _dct.VW_SA_FlowHelper.Where(m => m.ArticleTypeID.Equals(id)).OrderBy(m => m.FlowStatusID);
+                ViewData.Model = _dct.VW_SA_FlowStepInfo.Where(m => m.FlowTemplateArticleTypeID.Equals(id)).OrderBy(m => m.FlowTemplateStatusID);
                 var _title = _dct.VW_SA_WorkFlow.Single(m => m.ArticleTypeID.Equals(id));
                 ViewBag.Title = (string.IsNullOrEmpty(_title.ParentArticleTypeName) ? "站点跟目录" : _title.ParentArticleTypeName) + "-->" + _title.ArticleTypeName;
                 return View();
@@ -313,9 +313,9 @@ namespace eulei.shop.Areas.manage.Controllers
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
                 var _userList = string.IsNullOrEmpty(userList) ? null : userList.Split(',');
                 var _users = from _r in _dct.VW_SA_UserInfo select _r.UserId;
-                var _existUser = (from _r in _dct.SA_FlowUser
-                                  where _r.FlowUserFlowID.Equals(id)
-                                  select _r.FlowUserOperaterID.ToString()).ToArray();
+                var _existUser = (from _r in _dct.VW_SA_FlowInfo
+                                  where _r.FlowTemplateID.Equals(id)
+                                  select _r.FlowUserTemplateUserID.ToString()).ToArray();
                 string[] _newUser;
                 string[] _oldUser;
 
@@ -333,27 +333,28 @@ namespace eulei.shop.Areas.manage.Controllers
                 foreach (var item in _newUser)
                 {
                     Guid _temp;
+                    //排除组织机构
                     if (!Guid.TryParse(item, out _temp))
                     {
                         continue;
                     }
-                    var _new = new SA_FlowUser();
+                    var _new = new SA_FlowUserTemplate();
                     var _currentUser = _dct.VW_SA_UserInfo.Single(m => m.UserId.Equals(item));
                     if (_currentUser == null)
                     {
-                        throw new Exception("操作员信息为设置！");
+                        throw new Exception("操作员信息未设置！");
                     }
-                    _new.FlowUserID = Guid.NewGuid();
-                    _new.FlowUserFlowID = id;
-                    _new.FlowUserOperaterID = _currentUser.UserId.Value;
-                    _new.FlowUserOperaterName = _currentUser.UserName;
-                    _dct.SA_FlowUser.InsertOnSubmit(_new);
+                    _new.FlowUserTemplateID = Guid.NewGuid();
+                    _new.FlowTemplateID = id;
+                    _new.FlowUserTemplateUserID = _currentUser.UserId.Value;
+                    _new.FlowUserTemplateUserName = _currentUser.UserName;
+                    _dct.SA_FlowUserTemplate.InsertOnSubmit(_new);
 
                 }
                 foreach (var item in _oldUser)
                 {
-                    var _currentUser = _dct.SA_FlowUser.Single(m => m.FlowUserFlowID.Equals(id) && m.FlowUserOperaterID.Equals(Guid.Parse(item)));
-                    _dct.SA_FlowUser.DeleteOnSubmit(_currentUser);
+                    var _currentUser = _dct.SA_FlowUserTemplate.Single(m => m.FlowTemplateID.Equals(id) && m.FlowUserTemplateUserID.Equals(Guid.Parse(item)));
+                    _dct.SA_FlowUserTemplate.DeleteOnSubmit(_currentUser);
 
                 }
                 _dct.SubmitChanges();
@@ -380,16 +381,16 @@ namespace eulei.shop.Areas.manage.Controllers
                 string url = Request.QueryString["_returnUrl"].ToString();
                 ViewData["_returnUrl"] = url;
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                var _flows = _dct.SA_Flow.Where(m => m.FlowSourceID.Equals(id) && m.FlowStatusID > 1 && m.FlowStatusID < 99).OrderBy(m => m.FlowStatusID);
-                SA_Flow _return = new SA_Flow();
-                _return.FlowSourceID = id;
+                var _flows = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(id) && m.FlowTemplateStatusID > 1 && m.FlowTemplateStatusID < 99).OrderBy(m => m.FlowTemplateStatusID);
+                SA_FlowTemplate _return = new SA_FlowTemplate();
+                _return.FlowTemplateArticleTypeID = id;
                 if (_flows.Count() != 0)
                 {
-                    _return.FlowStatusID = _flows.ToList().Last().FlowStatusID + 1;
+                    _return.FlowTemplateStatusID = _flows.ToList().Last().FlowTemplateStatusID + 1;
                 }
                 else
                 {
-                    _return.FlowStatusID = 2;
+                    _return.FlowTemplateStatusID = 2;
                 }
                 ViewData.Model = _return;
                 if (Request.IsAjaxRequest())
@@ -419,15 +420,15 @@ namespace eulei.shop.Areas.manage.Controllers
                 this.GetAuthority(SystemMemberShip.WorkFlowManage);
                 string url = collection["_returnUrl"].ToString();
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                SA_Flow _result = new SA_Flow();
-                _result.FlowAlowEdit = collection["FlowAlowEdit"].ToString().Equals("false") ? false : true;
-                _result.FlowIsSynergy = collection["FlowIsSynergy"].ToString().Equals("false") ? false : true;
-                _result.FlowSendMoveMsg = collection["FlowSendMoveMsg"].ToString().Equals("false") ? false : true;
-                _result.FlowSourceID = int.Parse(collection["FlowSourceID"].ToString());
-                _result.FlowState = collection["FlowState"].ToString().Equals("false") ? false : true;
-                _result.FlowStatusDesp = collection["FlowStatusDesp"].ToString();
-                _result.FlowStatusID = int.Parse(collection["FlowStatusID"].ToString());
-                _dct.SA_Flow.InsertOnSubmit(_result);
+                SA_FlowTemplate _result = new SA_FlowTemplate();
+                _result.FlowTemplateAlowEdit = collection["FlowTemplateAlowEdit"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateIsSynergy = collection["FlowTemplateIsSynergy"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
+                _result.FlowTemplateState = collection["FlowTemplateState"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateStatusDesp = collection["FlowTemplateStatusDesp"].ToString();
+                _result.FlowTemplateStatusID = int.Parse(collection["FlowTemplateStatusID"].ToString());
+                _dct.SA_FlowTemplate.InsertOnSubmit(_result);
                 _dct.SubmitChanges();
                 return Redirect(url);
             }
@@ -452,7 +453,7 @@ namespace eulei.shop.Areas.manage.Controllers
                 string url = Request.QueryString["_returnUrl"].ToString();
                 ViewData["_returnUrl"] = url;
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                ViewData.Model = _dct.SA_Flow.Single(m => m.FlowID.Equals(id));
+                ViewData.Model = _dct.SA_FlowTemplate.Single(m => m.FlowTemplateID.Equals(id));
                 if (Request.IsAjaxRequest())
                     return PartialView();
                 else
@@ -480,15 +481,14 @@ namespace eulei.shop.Areas.manage.Controllers
                 this.GetAuthority(SystemMemberShip.WorkFlowManage);
                 string url = collection["_returnUrl"].ToString();
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                var _result = _dct.SA_Flow.Single(m => m.FlowID.Equals(id));
-                _result.FlowAlowEdit = collection["FlowAlowEdit"].ToString().Equals("false") ? false : true;
-
-                _result.FlowIsSynergy = collection["FlowIsSynergy"].ToString().Equals("false") ? false : true;
-                _result.FlowSendMoveMsg = collection["FlowSendMoveMsg"].ToString().Equals("false") ? false : true;
-                _result.FlowSourceID = int.Parse(collection["FlowSourceID"].ToString());
-                _result.FlowState = collection["FlowState"].ToString().Equals("false") ? false : true;
-                _result.FlowStatusDesp = collection["FlowStatusDesp"].ToString();
-                _result.FlowStatusID = int.Parse(collection["FlowStatusID"].ToString());
+                var _result = _dct.SA_FlowTemplate.Single(m => m.FlowTemplateID.Equals(id));
+                _result.FlowTemplateAlowEdit = collection["FlowTemplateAlowEdit"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateIsSynergy = collection["FlowTemplateIsSynergy"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
+                _result.FlowTemplateState = collection["FlowTemplateState"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateStatusDesp = collection["FlowTemplateStatusDesp"].ToString();
+                _result.FlowTemplateStatusID = int.Parse(collection["FlowTemplateStatusID"].ToString());
                 _dct.SubmitChanges();
                 return Redirect(url);
             }
@@ -513,13 +513,14 @@ namespace eulei.shop.Areas.manage.Controllers
                 string url = Request.QueryString["_returnUrl"].ToString();
                 ViewData["_returnUrl"] = url;
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                var _flow = _dct.SA_Flow.Single(m => m.FlowID.Equals(id));
-                var _users = _dct.SA_FlowUser.Where(m => m.FlowUserFlowID.Equals(id));
+                var _flow = _dct.SA_FlowTemplate.Single(m => m.FlowTemplateID.Equals(id));
+                var _users = _dct.SA_FlowUserTemplate.Where(m => m.FlowTemplateID.Equals(id));
+                
                 foreach (var item in _users)
                 {
-                    _dct.SA_FlowUser.DeleteOnSubmit(item);
+                    _dct.SA_FlowUserTemplate.DeleteOnSubmit(item);
                 }
-                _dct.SA_Flow.DeleteOnSubmit(_flow);
+                _dct.SA_FlowTemplate.DeleteOnSubmit(_flow);
                 _dct.SubmitChanges();
                 return Redirect(url);
             }

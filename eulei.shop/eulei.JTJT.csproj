@@ -47,7 +47,7 @@
   <ItemGroup>
     <Reference Include="CKFinder, Version=2.2.0.1326, Culture=neutral, PublicKeyToken=579e7adc719a1423, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>ckfinder\bin\Release\CKFinder.dll</HintPath>
+      <HintPath>Libs\CKFinder.dll</HintPath>
     </Reference>
     <Reference Include="envdte100, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -340,9 +340,6 @@
     <Content Include="Areas\manage\Views\WorkFlow\EditStep.ascx" />
     <Content Include="Areas\manage\Views\WorkFlow\Index.aspx" />
     <Content Include="Areas\manage\Views\WorkFlow\SetStep.aspx" />
-    <Content Include="bin\CKFinder.dll" />
-    <Content Include="bin\eulei.shop.dll" />
-    <Content Include="bin\eulei.shop.pdb" />
     <Content Include="ckeditor\plugins\lineheight\lang\en.js" />
     <Content Include="ckeditor\plugins\lineheight\lang\zh-cn.js" />
     <Content Include="ckeditor\plugins\lineheight\plugin.js" />
@@ -1862,6 +1859,7 @@
     <Folder Include="Areas\Article\Models\" />
     <Folder Include="Areas\CustomerService\Models\" />
     <Folder Include="Areas\manage\Models\" />
+    <Folder Include="bin\" />
     <Folder Include="Log\" />
   </ItemGroup>
   <ItemGroup>
