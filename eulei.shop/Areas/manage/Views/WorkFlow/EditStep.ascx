@@ -1,36 +1,36 @@
-﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<eulei.shop.Models.SA_Flow>" %>
+﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl<eulei.shop.Models.SA_FlowTemplate>" %>
 <% using (Html.BeginForm("EditStep", "WorkFlow", new { @area = "manage", @_returnUrl = Request.Url.PathAndQuery }, FormMethod.Post, new { @id = "EditStepPost" }))
    { %>
 <table class="border-none">
         <tr class="border-none">
             <td class="border-none">
                 <%:Html.Hidden("_returnUrl",ViewData["_returnUrl"]) %>
-                <%: Html.HiddenFor(model => model.FlowID)%>
-                <%: Html.HiddenFor(model => model.FlowSourceID)%>
+                <%: Html.HiddenFor(model => model.FlowTemplateID)%>
+                <%: Html.HiddenFor(model => model.FlowTemplateArticleTypeID)%>
                 <div class="editor-label">
                     步骤序号：
                 </div>
                 <div class="editor-field">
-                    <%: Html.EditorFor(model => model.FlowStatusID)%>
+                    <%: Html.EditorFor(model => model.FlowTemplateStatusID)%>
                     <strong class="tred">前后请使用递增顺序！如果不清楚如何设置请保持默认。</strong>
                 </div>
                 <div class="editor-label">
                     步骤描述：
                 </div>
                 <div class="editor-field">
-                    <%: Html.EditorFor(model => model.FlowStatusDesp)%>
+                    <%: Html.EditorFor(model => model.FlowTemplateStatusDesp)%>
                 </div>
                 <div class="editor-field">
-                    <%: Html.CheckBoxFor(model => model.FlowState, new { @cheked="true"})%>启用
+                    <%: Html.CheckBoxFor(model => model.FlowTemplateState, new { @cheked="true"})%>启用
                 </div>
                 <div class="editor-field">
-                    <%: Html.CheckBoxFor(model => model.FlowSendMoveMsg)%>默认短信
+                    <%: Html.CheckBoxFor(model => model.FlowTemplateSendMoveMsg)%>默认短信
                 </div>
                 <div class="editor-field">
-                    <%: Html.CheckBoxFor(model => model.FlowAlowEdit)%>允许编辑
+                    <%: Html.CheckBoxFor(model => model.FlowTemplateAlowEdit)%>允许编辑
                 </div>
                 <div class="editor-field">
-                    <%: Html.CheckBoxFor(model => model.FlowIsSynergy)%>启用汇审
+                    <%: Html.CheckBoxFor(model => model.FlowTemplateIsSynergy)%>启用汇审
                 </div>
 
             </td>

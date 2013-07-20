@@ -84,30 +84,28 @@ namespace eulei.shop.Areas.manage.Controllers
                 ViewBag.returnUrl = url;
 
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                SA_Flow _result1 = new SA_Flow();
-                _result1.FlowAlowEdit = true;
-                _result1.FlowIsSynergy = false;
-                _result1.FlowSendMoveMsg = collection["FlowSendMoveMsg"].ToString().Equals("false") ? false : true;
-                _result1.FlowSourceID = int.Parse(collection["FlowSourceID"].ToString());
-                _result1.FlowState = true;
-                _result1.FlowStatusDesp = "采编";
-                _result1.FlowStatusID = 1;
-                _result1.FlowSynergy = "";
+                SA_FlowTemplate _result1 = new SA_FlowTemplate();
+                _result1.FlowTemplateAlowEdit = true;
+                _result1.FlowTemplateIsSynergy = false;
+                _result1.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
+                _result1.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
+                _result1.FlowTemplateState = true;
+                _result1.FlowTemplateStatusDesp = "采编";
+                _result1.FlowTemplateStatusID = 1;
                 ///////////////////////////////////            
-                SA_Flow _result99 = new SA_Flow();
-                _result99.FlowAlowEdit = true;
-                _result99.FlowIsSynergy = false;
-                _result99.FlowSendMoveMsg = collection["FlowSendMoveMsg"].ToString().Equals("false") ? false : true; ;
-                _result99.FlowSourceID = int.Parse(collection["FlowSourceID"].ToString());
-                _result99.FlowState = true;
-                _result99.FlowStatusDesp = "发布确认";
-                _result99.FlowStatusID = 99;
-                _result99.FlowSynergy = "";
+                SA_FlowTemplate _result99 = new SA_FlowTemplate();
+                _result99.FlowTemplateAlowEdit = true;
+                _result99.FlowTemplateIsSynergy = false;
+                _result99.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true; ;
+                _result99.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
+                _result99.FlowTemplateState = true;
+                _result99.FlowTemplateStatusDesp = "发布确认";
+                _result99.FlowTemplateStatusID = 99;
                 ///////////////////////////////////
-                _dct.SA_Flow.InsertOnSubmit(_result1);
-                _dct.SA_Flow.InsertOnSubmit(_result99);
+                _dct.SA_FlowTemplate.InsertOnSubmit(_result1);
+                _dct.SA_FlowTemplate.InsertOnSubmit(_result99);
                 _dct.SubmitChanges();
-                return RedirectToAction("SetStep", "WorkFlow", new { @id = int.Parse(collection["FlowSourceID"].ToString()), @_returnUrl = url });
+                return RedirectToAction("SetStep", "WorkFlow", new { @id = int.Parse(collection["FlowTemplateArticleTypeID"].ToString()), @_returnUrl = url });
 
             }
             catch (AuthorityException ex)

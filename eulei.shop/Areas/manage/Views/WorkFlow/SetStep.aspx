@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Areas/manage/Views/Shared/Manage_Areas.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<eulei.shop.Models.VW_SA_FlowHelper>>" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Areas/manage/Views/Shared/Manage_Areas.Master" Inherits="System.Web.Mvc.ViewPage<IEnumerable<eulei.shop.Models.VW_SA_FlowStepInfo>>" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="TitleContent" runat="server">
     步骤设置
@@ -24,6 +24,10 @@
             </td>
             <td class="tc ">步骤名
             </td>
+              <td class="tc ">上一步
+            </td>
+              <td class="tc ">下一步
+            </td>
             <td class="tc  w80">参与人数
             </td>
             <td class="tc  w80">默认短信
@@ -44,46 +48,52 @@
         %>
         <tr class="<%=(_i % 2 == 0?"lbgalt":"lbg") %>">
             <td class="tc">
-                <%: item.FlowID %>
+                <%: item.FlowTemplateID %>
             </td>
             <td class="tc">
-                <%: item.FlowStatusID %>
+                <%: item.FlowTemplateStatusID %>
             </td>
             <td class="tc">
-                <%: item.FlowStatusDesp %>
+                <%: item.FlowTemplateStatusDesp %>
+            </td>
+                       <td class="tc">
+                <%: item.FlowTemplateNextStatusID%>
             </td>
             <td class="tc">
-                <%if (item.FlowStatusID.Equals(1))
+                <%: item.FlowTemplateNextStatusDesp %>
+            </td>
+            <td class="tc">
+                <%if (item.FlowTemplateStatusID.Equals(1))
                   { %>
                 ——
                 <%}
                   else
                   { %>
-                <%: item.FlowUserCount.HasValue?item.FlowUserCount.Value:0 %>
+                <%: item.FlowTemplateUserCount.HasValue?item.FlowTemplateUserCount.Value:0 %>
                 <%} %>
             </td>
             <td class="tc">
-                <%: item.FlowSendMoveMsg?"是":"否" %>
+                <%: item.FlowTemplateSendMoveMsg?"是":"否" %>
             </td>
             <td class="tc">
-                <%: item.FlowIsSynergy?"是":"否" %>
+                <%: item.FlowTemplateIsSynergy?"是":"否" %>
             </td>
                                     <td class="tc">
-                <%: item.FlowAlowEdit?"是":"否" %>
+                <%: item.FlowTemplateAlowEdit?"是":"否" %>
             </td>
             <td class="tc">
-                <%= item.FlowState?"启用":"失效" %>
+                <%= item.FlowTemplateState?"启用":"失效" %>
             </td>
 
             <td class="tl">
-                <%if (!item.FlowStatusID.Equals(1))
+                <%if (!item.FlowTemplateStatusID.Equals(1))
                   { %>
-                <a href="javascript:getUserList(<%:item.FlowID %>)" class="editlink line-height24">操作员设置</a>
+                <a href="javascript:getUserList(<%:item.FlowTemplateID %>)" class="editlink line-height24">操作员设置</a>
                 <%} %>
-                <%if ((!item.FlowStatusID.Equals(1)) && (!item.FlowStatusID.Equals(99)))
+                <%if ((!item.FlowTemplateStatusID.Equals(1)) && (!item.FlowTemplateStatusID.Equals(99)))
                   { %>
-                <%: Ajax.ActionLink("编辑", "EditStep", new { @id = item.FlowID, @_returnUrl = Request.Url.PathAndQuery },new AjaxOptions{ UpdateTargetId="EditAjaxBox" }, new { @class = "editlink line-height24" })%>
-                <%: Html.ActionLink("删除", "DeleteStep", new { @id = item.FlowID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "deletelink line-height24" })%>
+                <%: Ajax.ActionLink("编辑", "EditStep", new { @id = item.FlowTemplateID, @_returnUrl = Request.Url.PathAndQuery },new AjaxOptions{ UpdateTargetId="EditAjaxBox" }, new { @class = "editlink line-height24" })%>
+                <%: Html.ActionLink("删除", "DeleteStep", new { @id = item.FlowTemplateID, @_returnUrl = Request.Url.PathAndQuery }, new { @class = "deletelink line-height24" })%>
                 <%} %>
             </td>
         </tr>

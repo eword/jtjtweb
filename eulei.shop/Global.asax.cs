@@ -1,20 +1,15 @@
 ﻿using eulei.shop.Models;
 using System;
-using System;
-using System.Collections.Generic;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
-using System.Linq;
 using System.Web;
-using System.Web;
-using System.Web.Mvc;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.Security;
-using System.Web.Security;
+
 namespace eulei.shop
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 

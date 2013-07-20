@@ -338,7 +338,6 @@
     <Content Include="Areas\manage\Views\CustomerService\LetterIndex.aspx" />
     <Content Include="Areas\manage\Views\WorkFlow\CreateStep.ascx" />
     <Content Include="Areas\manage\Views\WorkFlow\EditStep.ascx" />
-    <Content Include="Areas\manage\Views\WorkFlow\EditStep1.ascx" />
     <Content Include="Areas\manage\Views\WorkFlow\Index.aspx" />
     <Content Include="Areas\manage\Views\WorkFlow\SetStep.aspx" />
     <Content Include="bin\CKFinder.dll" />

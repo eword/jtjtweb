@@ -58,7 +58,7 @@ namespace eulei.shop.Areas.manage.Controllers
                                 .Where(m => m.ArticleState.Equals((int)ArticleState.Editing)
                                     &&
                                     (
-                                    (m.ArticleStatusID.Equals(m.FlowStatusID) && m.FlowUserOperaterName.Equals(User.Identity.Name))
+                                    m.FlowUserUserName.Equals(User.Identity.Name)
                                     ||
                                     (m.ArticleStatusID.Equals(1) && m.ArticleAuthor.Equals(User.Identity.Name))
                                     )
@@ -72,7 +72,7 @@ namespace eulei.shop.Areas.manage.Controllers
                                 .Where(m => !m.ArticleState.Equals((int)ArticleState.Editing)
                                 &&
                                 (
-                                (m.ArticleStatusID.Equals(m.FlowStatusID) && m.FlowUserOperaterName.Equals(User.Identity.Name))
+                                    m.FlowUserUserName.Equals(User.Identity.Name)
                                 ||
                                 (m.ArticleStatusID.Equals(1) && m.ArticleAuthor.Equals(User.Identity.Name))
                                 )
@@ -89,9 +89,9 @@ namespace eulei.shop.Areas.manage.Controllers
                             ViewData.Model = _dct.VW_SA_ArticleHandled
                                 .Where(m => !m.ArticleState.Equals((int)ArticleState.Delete)
                                      &&
-                                     (
-                                   (!m.ArticleStatusID.Equals(1) && (m.OperationLogOperaterUserName.Equals(User.Identity.Name)))
-                                    )
+                                 
+                                  m.FlowUserUserName.Equals(User.Identity.Name)
+                                 
                                     && m.ArticleTitle.Contains(_title))
                                 .OrderByDescending(m => m.ArticleID);
                         }
@@ -100,9 +100,7 @@ namespace eulei.shop.Areas.manage.Controllers
                             ViewData.Model = _dct.VW_SA_ArticleHandled
                                 .Where(m => !m.ArticleState.Equals((int)ArticleState.Delete)
                                      &&
-                                     (
-                                   (!m.ArticleStatusID.Equals(1) && (m.OperationLogOperaterUserName.Equals(User.Identity.Name)))
-                                    )
+                               m.FlowUserUserName.Equals(User.Identity.Name)
                                     && m.ArticleTitle.Contains(_title)
                                     && m.ArticleTypeID.Equals(_typeID))
                                 .OrderByDescending(m => m.ArticleID);

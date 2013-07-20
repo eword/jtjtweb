@@ -22,9 +22,10 @@ namespace eulei.shop.Areas.manage.Controllers
                                 .Where(m => m.ArticleState.Equals((int)ArticleState.Editing)
                                     &&
                                     (
-                                    m.ArticleStatusID.Equals(m.FlowStatusID) && m.FlowUserOperaterName.Equals(User.Identity.Name))
+                                    m.FlowUserUserName.Equals(User.Identity.Name)
                                     ||
                                     (m.ArticleStatusID.Equals(1) && m.ArticleAuthor.Equals(User.Identity.Name))
+                                    )
                                     )
                                 .Count();
 
@@ -36,7 +37,7 @@ namespace eulei.shop.Areas.manage.Controllers
             ViewBag.Handled = _dct.VW_SA_ArticleHandled
                                  .Where(m => !m.ArticleState.Equals((int)ArticleState.Delete)
                                       &&
-                                    (!m.ArticleStatusID.Equals(1) && m.OperationLogOperaterUserName.Equals(User.Identity.Name))
+                                    (!m.ArticleStatusID.Equals(1) && m.FlowUserUserName.Equals(User.Identity.Name))
                                    )
                                  .Count();
 
