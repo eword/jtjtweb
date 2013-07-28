@@ -102,15 +102,18 @@
            
             $("#ArticleTypeIDCombobox").ligerComboBox({
                 width: 200,
-                height: 20,
+                height: 20,             
                 selectBoxWidth: 200,
                 selectBoxHeight: 200,
                  initValue:<%=Model.ArticleTypeID %>,
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'ArticleTypeID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'ArticleTypeID', treeLeafOnly: true,hideOnLoseFocus :true,readonly:<%=Model.ArticleStatusID.Equals(1)? "false" : "true" %>,
                 tree: { url: '<%: Url.Content("~/Common/GetJsonForArticleTypeID") %>',
                     checkbox: false,
                     textFieldName: "textcontent",
                     idFieldName: "id",
+                    btnClickToToggleOnly:false,                
+                    single:true,
+                    needCancel:false,
                     parentIDFieldName: "fid"
                 }
             });

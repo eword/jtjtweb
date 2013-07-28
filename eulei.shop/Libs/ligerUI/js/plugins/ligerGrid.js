@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 
@@ -28,6 +28,7 @@
         columnWidth: null,                      //默认列宽度
         resizable: true,                        //table是否可伸缩
         url: false,                             //ajax url
+        data: null,                            //初始化数据
         usePager: true,                         //是否分页
         page: 1,                                //默认当前页 
         pageSize: 10,                           //每页默认的结果数
@@ -43,24 +44,9 @@
         checkbox: false,                         //是否显示复选框
         allowHideColumn: true,                 //是否显示'切换列层'按钮
         enabledEdit: false,                      //是否允许编辑
-        isScroll: true,                         //是否滚动
-        onDragCol: null,                       //拖动列事件
-        onToggleCol: null,                     //切换列事件
-        onChangeSort: null,                    //改变排序事件
-        onSuccess: null,                       //成功获取服务器数据的事件
-        onDblClickRow: null,                     //双击行事件
-        onSelectRow: null,                    //选择行事件
-        onUnSelectRow: null,                   //取消选择行事件
-        onBeforeCheckRow: null,                 //选择前事件，可以通过return false阻止操作(复选框)
-        onCheckRow: null,                    //选择事件(复选框) 
-        onBeforeCheckAllRow: null,              //选择前事件，可以通过return false阻止操作(复选框 全选/全不选)
-        onCheckAllRow: null,                    //选择事件(复选框 全选/全不选)
-        onBeforeShowData: null,                  //显示数据前事件，可以通过reutrn false阻止操作
-        onAfterShowData: null,                 //显示完数据事件
-        onError: null,                         //错误事件
-        onSubmit: null,                         //提交前事件
+        isScroll: true,                         //是否滚动 
         dateFormat: 'yyyy-MM-dd',              //默认时间显示格式
-        InWindow: true,                        //是否以窗口的高度为准 height设置为百分比时可用
+        inWindow: true,                        //是否以窗口的高度为准 height设置为百分比时可用
         statusName: '__status',                    //状态名
         method: 'post',                         //提交方式
         async: true,
@@ -72,12 +58,7 @@
         pageParmName: 'page',               //页索引参数名，(提交给服务器)
         pagesizeParmName: 'pagesize',        //页记录数参数名，(提交给服务器)
         sortnameParmName: 'sortname',        //页排序列名(提交给服务器)
-        sortorderParmName: 'sortorder',      //页排序方向(提交给服务器)
-        onReload: null,                    //刷新事件，可以通过return false来阻止操作
-        onToFirst: null,                     //第一页，可以通过return false来阻止操作
-        onToPrev: null,                      //上一页，可以通过return false来阻止操作
-        onToNext: null,                      //下一页，可以通过return false来阻止操作
-        onToLast: null,                      //最后一页，可以通过return false来阻止操作
+        sortorderParmName: 'sortorder',      //页排序方向(提交给服务器) 
         allowUnSelectRow: false,           //是否允许反选行 
         alternatingRow: true,           //奇偶行效果
         mouseoverRowCssClass: 'l-grid-row-over',
@@ -89,14 +70,7 @@
         totalRender: null,                       //统计行(全部数据)
         delayLoad: false,                        //初始化时是否不加载
         where: null,                           //数据过滤查询函数,(参数一 data item，参数二 data item index)
-        selectRowButtonOnly: false,            //复选框模式时，是否只允许点击复选框才能选择行
-        onAfterAddRow: null,                     //增加行后事件
-        onBeforeEdit: null,                      //编辑前事件
-        onBeforeSubmitEdit: null,               //验证编辑器结果是否通过
-        onAfterEdit: null,                       //结束编辑后事件
-        onLoading: null,                        //加载时函数
-        onLoaded: null,                          //加载完函数
-        onContextmenu: null,                   //右击事件
+        selectRowButtonOnly: false,            //复选框模式时，是否只允许点击复选框才能选择行 
         whenRClickToSelect: false,                //右击行时是否选中
         contentType: null,                     //Ajax contentType参数
         checkboxColWidth: 27,                  //复选框列宽度
@@ -107,9 +81,11 @@
         minColumnWidth: 80,
         tree: null,                            //treeGrid模式
         isChecked: null,                       //复选框 初始化函数
+        isSelected: null,                       //选择 初始化函数
         frozen: true,                          //是否固定列
         frozenDetail: false,                    //明细按钮是否在固定列中
         frozenCheckbox: true,                  //复选框按钮是否在固定列中
+        detail: null,
         detailHeight: 260,
         rownumbers: false,                         //是否显示行序号
         frozenRownumbers: true,                  //行序号是否在固定列中
@@ -122,7 +98,40 @@
         rowHeight: 22,                           //行默认的高度
         headerRowHeight: 23,                    //表头行的高度
         toolbar: null,                           //工具条,参数同 ligerToolbar的
-        headerImg: null                        //表格头部图标
+        headerImg: null,                        //表格头部图标
+        onDragCol: null,                       //拖动列事件
+        onToggleCol: null,                     //切换列事件
+        onChangeSort: null,                    //改变排序事件
+        onSuccess: null,                       //成功获取服务器数据的事件
+        onDblClickRow: null,                     //双击行事件
+        onSelectRow: null,                    //选择行事件
+        onUnSelectRow: null,                   //取消选择行事件
+        onBeforeCheckRow: null,                 //选择前事件，可以通过return false阻止操作(复选框)
+        onCheckRow: null,                    //选择事件(复选框) 
+        onBeforeCheckAllRow: null,              //选择前事件，可以通过return false阻止操作(复选框 全选/全不选)
+        onCheckAllRow: null,                    //选择事件(复选框 全选/全不选)onextend
+        onBeforeShowData: null,                  //显示数据前事件，可以通过reutrn false阻止操作
+        onAfterShowData: null,                 //显示完数据事件
+        onError: null,                         //错误事件
+        onSubmit: null,                         //提交前事件
+        onReload: null,                    //刷新事件，可以通过return false来阻止操作
+        onToFirst: null,                     //第一页，可以通过return false来阻止操作
+        onToPrev: null,                      //上一页，可以通过return false来阻止操作
+        onToNext: null,                      //下一页，可以通过return false来阻止操作
+        onToLast: null,                      //最后一页，可以通过return false来阻止操作
+        onAfterAddRow: null,                     //增加行后事件
+        onBeforeEdit: null,                      //编辑前事件
+        onBeforeSubmitEdit: null,               //验证编辑器结果是否通过
+        onAfterEdit: null,                       //结束编辑后事件
+        onLoading: null,                        //加载时函数
+        onLoaded: null,                          //加载完函数
+        onContextmenu: null,                   //右击事件
+        onBeforeCancelEdit: null,                 //取消编辑前事件
+        onAfterSubmitEdit: null,                   //提交后事件
+        onRowDragDrop: null,                       //行拖拽后事件
+        onGroupExtend: null,                        //分组展开事件
+        onGroupCollapse: null,                     //分组收缩事件
+        onLoadData : null                       //加载数据前事件
     };
     $.ligerDefaults.GridString = {
         errorMessage: '发生错误',
@@ -136,6 +145,32 @@
         saveMessage: '保存',
         applyMessage: '应用',
         draggingMessage: '{count}行'
+    };
+
+    $.ligerDefaults.Grid_columns = {
+        id: null,
+        name: null,
+        totalSummary: null,
+        display: null,
+        headerRender: null,
+        isAllowHide: true,
+        isSort: false,
+        type: null,
+        columns: null,
+        width: 120,
+        minWidth: 80,
+        format: null,
+        align: 'left',
+        hide: false,
+        editor: null,
+        render: null,
+        textField: null  //真正显示的字段名,如果设置了，在编辑状态时,会调用创建编辑器的setText和getText方法
+    };
+    $.ligerDefaults.Grid_editor = {
+        type: null,
+        ext: null,
+        onChange: null,
+        onChanged: null
     };
     //接口方法扩展
     $.ligerMethos.Grid = $.ligerMethos.Grid || {};
@@ -164,6 +199,7 @@
     };
     $.ligerDefaults.Grid.sorters['string'] = function (val1, val2)
     {
+        if (!val1) return false;
         return val1.localeCompare(val2);
     };
 
@@ -216,185 +252,140 @@
             return value.toString();
         }
     }
-
-
-    $.ligerDefaults.Grid.editors['date'] =
+    //获取 默认的编辑器构造函数
+    function getEditorBuilder(e)
     {
-        create: function (container, editParm)
-        {
-            var column = editParm.column;
-            var input = $("<input type='text'/>");
-            container.append(input);
-            var options = {};
-            var ext = column.editor.p || column.editor.ext;
-            if (ext)
+        var type = e.type, control = e.control;
+        if (!type || !control) return null;
+        control = control.substr(0, 1).toUpperCase() + control.substr(1);
+        return $.extend({
+            create: function (container, editParm)
             {
-                var tmp = typeof (ext) == 'function' ?
-                 ext(editParm.record, editParm.rowindex, editParm.value, column) : ext;
-                $.extend(options, tmp);
+                var column = editParm.column;
+                var input = $("<input type='text'/>").appendTo(container);
+                var p = $.extend({}, column.editor.options);
+                if (column.editor.valueColumnName) p.valueField = column.editor.valueColumnName;
+                if (column.editor.displayColumnName) p.textField = column.editor.displayColumnName;
+                var defaults = liger.defaults[control];
+                for (var proName in defaults)
+                {
+                    if (proName in column.editor)
+                    {
+                        p[proName] = column.editor[proName];
+                    }
+                }
+                //可扩展参数,支持动态加载
+                var ext = column.editor.p || column.editor.ext;
+                ext = typeof (ext) == 'function' ? ext(editParm) : ext;
+                $.extend(p, ext);
+                input['liger' + control](p);
+                return input;
+            },
+            getValue: function (input, editParm)
+            {
+                var obj = liger.get(input);
+                if (obj) return obj.getValue(); 
+            },
+            setValue: function (input, value, editParm)
+            {
+                var obj = liger.get(input);
+                if (obj) obj.setValue(value); 
+            },
+            resize: function (input, width, height, editParm)
+            {
+                var obj = liger.get(input);
+                if (obj) obj.resize(width, height); 
+            },
+            destroy: function (input, editParm)
+            {
+                var obj = liger.get(input);
+                if (obj) obj.destroy();
             }
-            input.ligerDateEditor(options);
-            return input;
+        }, e); 
+    }
+    //几个默认的编辑器构造函数
+    var defaultEditorBuilders = {
+        "text": {
+            control: 'TextBox'
         },
-        getValue: function (input, editParm)
-        { 
-            return input.liger('option', 'value');
+        "date": {
+            control: 'DateEditor',
+            setValue: function (input, value, editParm)
+            {
+                // /Date(1328423451489)/
+                if (typeof value == "string" && /^\/Date/.test(value))
+                {
+                    value = value.replace(/^\//, "new ").replace(/\/$/, "");
+                    eval("value = " + value);
+                }
+                liger.get(input).setValue(value);
+            }
         },
-        setValue: function (input, value, editParm)
-        { 
-            input.liger('option', 'value', value);
+        "combobox": {
+            control: 'ComboBox',
+            getText: function (input, editParm)
+            { 
+                return liger.get(input).getText();
+            },
+            setText: function (input, value, editParm)
+            { 
+                liger.get(input).setText(value);
+            }
         },
-        resize: function (input, width, height, editParm)
-        {
-            input.liger('option', 'width', width);
-            input.liger('option', 'height', height);
+        "int": {
+            control: 'Spinner',
+            getValue: function (input, editParm)
+            {
+                return parseInt(input.val(), 10);
+            }
         },
-        destroy: function (input, editParm)
-        {
-            input.liger('destroy');
+        "spinner": {
+            control: 'Spinner',
+            getValue: function (input, editParm)
+            {
+                return parseFloat(input.val());
+            }
+        },
+        "checkbox": {
+            control: 'CheckBox',
+            getValue: function (input, editParm)
+            {
+                return input[0].checked ? 1 : 0;
+            },
+            setValue: function (input, value, editParm)
+            {
+                input.val(value ? true : false);
+            }
+        },
+        "popup": {
+            control: 'PopupEdit',
+            getText: function (input, editParm)
+            {
+                return liger.get(input).getText();
+            },
+            setText: function (input, value, editParm)
+            { 
+                liger.get(input).setText(value);
+            }
         }
     };
+    defaultEditorBuilders["string"] = defaultEditorBuilders["text"];
+    defaultEditorBuilders["select"] = defaultEditorBuilders["combobox"];
+    defaultEditorBuilders["float"] = defaultEditorBuilders["spinner"];
+    defaultEditorBuilders["chk"] = defaultEditorBuilders["checkbox"];
 
-    $.ligerDefaults.Grid.editors['select'] =
-     $.ligerDefaults.Grid.editors['combobox'] =
-     {
-         create: function (container, editParm)
-         {
-             var column = editParm.column;
-             var input = $("<input type='text'/>");
-             container.append(input);
-             var options = {
-                 data: column.editor.data,
-                 slide: false,
-                 valueField: column.editor.valueField || column.editor.valueColumnName,
-                 textField: column.editor.textField || column.editor.displayColumnName
-             };
-             var ext = column.editor.p || column.editor.ext;
-             if (ext)
-             {
-                 var tmp = typeof (ext) == 'function' ?
-                 ext(editParm.record, editParm.rowindex, editParm.value, column) : ext;
-                 $.extend(options, tmp);
-             }
-             input.ligerComboBox(options);
-             return input;
-         },
-         getValue: function (input, editParm)
-         {
-             return input.liger('option', 'value');
-         },
-         setValue: function (input, value, editParm)
-         {
-             input.liger('option', 'value', value);
-         },
-         resize: function (input, width, height, editParm)
-         {
-             input.liger('option', 'width', width);
-             input.liger('option', 'height', height);
-         },
-         destroy: function (input, editParm)
-         {
-             input.liger('destroy');
-         }
-     };
-
-    $.ligerDefaults.Grid.editors['int'] =
-     $.ligerDefaults.Grid.editors['float'] =
-     $.ligerDefaults.Grid.editors['spinner'] =
-     {
-         create: function (container, editParm)
-         {
-             var column = editParm.column;
-             var input = $("<input type='text'/>");
-             container.append(input);
-             input.css({ border: '#6E90BE' })
-             var options = {
-                 type: column.editor.type == 'float' ? 'float' : 'int'
-             };
-             if (column.editor.minValue != undefined) options.minValue = column.editor.minValue;
-             if (column.editor.maxValue != undefined) options.maxValue = column.editor.maxValue;
-             input.ligerSpinner(options);
-             return input;
-         },
-         getValue: function (input, editParm)
-         {
-             var column = editParm.column;
-             var isInt = column.editor.type == "int";
-             if (isInt)
-                 return parseInt(input.val(), 10);
-             else
-                 return parseFloat(input.val());
-         },
-         setValue: function (input, value, editParm)
-         {
-             input.val(value);
-         },
-         resize: function (input, width, height, editParm)
-         {
-             input.liger('option', 'width', width);
-             input.liger('option', 'height', height);
-         },
-         destroy: function (input, editParm)
-         {
-             input.liger('destroy');
-         }
-     };
-
-
-    $.ligerDefaults.Grid.editors['string'] =
-     $.ligerDefaults.Grid.editors['text'] = {
-         create: function (container, editParm)
-         {
-             var input = $("<input type='text' class='l-text-editing'/>");
-             container.append(input);
-             input.ligerTextBox();
-             return input;
-         },
-         getValue: function (input, editParm)
-         {
-             return input.val();
-         },
-         setValue: function (input, value, editParm)
-         {
-             input.val(value);
-         },
-         resize: function (input, width, height, editParm)
-         {
-             input.liger('option', 'width', width);
-             input.liger('option', 'height', height);
-         },
-         destroy: function (input, editParm)
-         {
-             input.liger('destroy');
-         }
-     };
-
-    $.ligerDefaults.Grid.editors['chk'] = $.ligerDefaults.Grid.editors['checkbox'] = {
-        create: function (container, editParm)
+    //页面初始化以后才加载
+    $(function ()
+    {
+        for (var type in defaultEditorBuilders)
         {
-            var input = $("<input type='checkbox' />");
-            container.append(input);
-            input.ligerCheckBox();
-            return input;
-        },
-        getValue: function (input, editParm)
-        {
-            return input[0].checked ? 1 : 0;
-        },
-        setValue: function (input, value, editParm)
-        {
-            input.val(value ? true : false);
-        },
-        resize: function (input, width, height, editParm)
-        {
-            input.liger('option', 'width', width);
-            input.liger('option', 'height', height);
-        },
-        destroy: function (input, editParm)
-        {
-            input.liger('destroy');
+            var p = defaultEditorBuilders[type];
+            if (!p || !p.control || type in $.ligerDefaults.Grid.editors) continue;
+            $.ligerDefaults.Grid.editors[type] = getEditorBuilder($.extend({
+                type: type
+            }, p));
         }
-    };
+    });
 
     $.ligerui.controls.Grid = function (element, options)
     {
@@ -626,6 +617,15 @@
         {
             this.gridloading.html(value);
         },
+        _setToolbar: function (value)
+        {
+            var g = this, p = this.options;
+            if (value && $.fn.ligerToolBar)
+            {
+                g.topbar.show();
+                g.toolbarManager = g.topbar.ligerToolBar(value);
+            }
+        },
         _setHeight: function (h)
         {
             var g = this, p = this.options;
@@ -688,6 +688,35 @@
                 this.options.dataType = "local";
             }
         },
+        removeParm : function(name)
+        {
+            var g = this;
+            var parms = g.get('parms');
+            if (!parms) parms = {};
+            if (parms instanceof Array)
+            {
+                removeArrItem(parms, function (p) { return p.name == name; }); 
+            } else
+            {
+                delete parms[name];
+            }
+            g.set('parms', parms);
+        },
+        setParm: function (name, value)
+        {
+            var g = this;
+            var parms = g.get('parms');
+            if (!parms) parms = {};
+            if (parms instanceof Array)
+            {
+                removeArrItem(parms, function (p) { return p.name == name; });
+                parms.push({ name: name, value: value });
+            } else
+            {
+                parms[name] = value;
+            }
+            g.set('parms', parms); 
+        },
         _setData: function (value)
         {
             this.loadData(this.options.data);
@@ -696,7 +725,8 @@
         loadData: function (loadDataParm)
         {
             var g = this, p = this.options;
-            g.loading = true;
+            g.loading = true; 
+            g.trigger('loadData');
             var clause = null;
             var loadServer = true;
             if (typeof (loadDataParm) == "function")
@@ -810,7 +840,13 @@
                     {
                         g.currentData = g.data = {};
                         g.currentData[p.root] = g.data[p.root] = [];
-                        g.currentData[p.record] = g.data[p.record] = 0;
+                        if (data && data[p.record])
+                        {
+                            g.currentData[p.record] = g.data[p.record] = data[p.record];
+                        } else
+                        {
+                            g.currentData[p.record] = g.data[p.record] = 0;
+                        }
                         g._showData();
                         return;
                     }
@@ -861,9 +897,10 @@
         },
         _createEditor: function (editor, container, editParm, width, height)
         {
-            var editorInput = editor.create(container, editParm);
-            if (editor.setValue) editor.setValue(editorInput, editParm.value, editParm);
-            if (editor.resize) editor.resize(editorInput, width, height, editParm);
+            var editorInput = editor.create.call(this, container, editParm); 
+            if (editor.setValue) editor.setValue.call(this, editorInput, editParm.value, editParm);
+            if (editor.setText && editParm.column.textField) editor.setText.call(this, editorInput, editParm.text, editParm);
+            if (editor.resize) editor.resize.call(this, editorInput, width, height, editParm);
             return editorInput;
         },
         /*
@@ -893,7 +930,13 @@
                 var column = g.columns[i];
                 if (!column.name || !column.editor || !column.editor.type || !p.editors[column.editor.type]) continue;
                 var editor = p.editors[column.editor.type];
-                var editParm = { record: rowdata, value: rowdata[column.name], column: column, rowindex: rowdata['__index'], grid: g };
+                var editParm = {
+                    record: rowdata,
+                    value: g._getValueByName(rowdata, column.name),
+                    column: column,
+                    rowindex: rowdata['__index'],
+                    grid: g
+                };
                 var container = containerBulider(rowdata, column);
                 var width = container.width(), height = container.height();
                 var editorInput = g._createEditor(editor, container, editParm, width, height);
@@ -916,7 +959,7 @@
             {
                 var rowdata = g.getRow(rowParm);
                 if (!g.editors[rowdata['__id']]) return;
-                if (g.trigger('cancelEdit', { record: rowdata, rowindex: rowdata['__index'] }) == false) return;
+                if (g.trigger('beforeCancelEdit', { record: rowdata, rowindex: rowdata['__index'] }) == false) return;
                 for (var columnid in g.editors[rowdata['__id']])
                 {
                     var o = g.editors[rowdata['__id']][columnid];
@@ -947,13 +990,19 @@
             {
                 var rowdata = g.getRow(rowParm);
                 var newdata = {};
-                if (!g.editors[rowdata['__id']]) return;
+                if (!g.editors[rowdata['__id']]) return; 
                 for (var columnid in g.editors[rowdata['__id']])
                 {
                     var o = g.editors[rowdata['__id']][columnid];
                     var column = o.editParm.column;
                     if (column.name)
+                    {
                         newdata[column.name] = o.editor.getValue(o.input, o.editParm);
+                    }
+                    if (column.textField && o.editor.getText)
+                    {
+                        newdata[column.textField] = o.editor.getText(o.input, o.editParm);
+                    }
                 }
                 if (g.trigger('beforeSubmitEdit', { record: rowdata, rowindex: rowdata['__index'], newdata: newdata }) == false)
                     return false;
@@ -963,10 +1012,10 @@
         },
         endEdit: function (rowParm)
         {
-            var g = this, p = this.options;
+            var g = this, p = this.options; 
             if (g.editor.editing)
             {
-                var o = g.editor; 
+                var o = g.editor;
                 g.trigger('sysEndEdit', [g.editor.editParm]);
                 g.trigger('endEdit', [g.editor.editParm]);
                 if (o.editor.destroy) o.editor.destroy(o.input, o.editParm);
@@ -1153,7 +1202,7 @@
             }
             if (value != null && column.name)
             {
-                rowdata[column.name] = value;
+                g._setValueByName(rowdata, column.name, value);
                 if (rowdata[p.statusName] != 'add')
                     rowdata[p.statusName] = 'update';
                 g.isDataChanged = true;
@@ -1350,7 +1399,7 @@
             $.extend(rowdata, newRowData || {});
             if (rowdata[p.statusName] != 'add')
                 rowdata[p.statusName] = 'update';
-            g.reRender.ligerDefer(g, 10, [{ rowdata: rowdata}]);
+            g.reRender.ligerDefer(g, 10, [{ rowdata: rowdata }]);
             return rowdata;
         },
         setCellEditing: function (rowdata, column, editing)
@@ -1410,6 +1459,7 @@
         {
             var g = this, p = this.options;
             var data = [];
+            if (removeStatus == undefined) removeStatus = true;
             for (var rowid in g.records)
             {
                 var o = $.extend(true, {}, g.records[rowid]);
@@ -1447,6 +1497,22 @@
         getAdded: function ()
         {
             return this.getData('add', true);
+        },
+        getChanges: function ()
+        {
+            var g = this, p = this.options;
+            var data = [];
+            if (this.deletedRows)
+            {
+                $(this.deletedRows).each(function ()
+                {
+                    var o = $.extend(true, {}, this);
+                    data.push(g.formatRecord(o, true));
+                });
+            }
+            $.merge(data, g.getUpdated());
+            $.merge(data, g.getAdded());
+            return data;
         },
         getColumn: function (columnParm)
         {
@@ -1523,6 +1589,8 @@
                 var columnType = g.getColumnType(columnName);
                 if (!g.sortedData)
                     g.sortedData = g.filteredData;
+                if (!g.sortedData || !g.sortedData[p.root])
+                    return;
                 if (p.sortName == columnName)
                 {
                     g.sortedData[p.root].reverse();
@@ -1791,7 +1859,7 @@
                 g._setColumnVisible(column, false);
                 $(cells).show();
             }
-            //隐藏列
+                //隐藏列
             else if (!visible && !column._hide)
             {
                 if (column.frozen)
@@ -2106,6 +2174,8 @@
         _addData: function (rowdata, parentdata, neardata, isBefore)
         {
             var g = this, p = this.options;
+            if (!g.currentData) g.currentData = {};
+            if (!g.currentData[p.root]) g.currentData[p.root] = [];
             var listdata = g.currentData[p.root];
             if (neardata)
             {
@@ -2313,7 +2383,7 @@
         },
         _createColumnId: function (column)
         {
-            if (column.id != null) return column.id.toString();
+            if (column.id != null && column.id != "") return column.id.toString();
             return "c" + (100 + this._columnCount);
         },
         _isColumnId: function (str)
@@ -2497,6 +2567,8 @@
                 jcell.width(column['_width']);
                 jcell.attr("columnindex", column['__leafindex']);
             }
+            var cellHeight = jcell.height();
+            if(cellHeight > 10) $(">div:first", jcell).height(cellHeight);
             if (column._hide) jcell.hide();
             if (column.name) jcell.attr({ columnname: column.name });
             var headerText = "";
@@ -2507,9 +2579,10 @@
             else
                 headerText = "&nbsp;";
             $(".l-grid-hd-cell-text:first", jcell).html(headerText);
-            if (!column.issystem && column['__leaf'] && column.resizable !== false && $.fn.ligerResizable)
+            if (!column.issystem && column['__leaf'] && column.resizable !== false && $.fn.ligerResizable && p.allowAdjustColWidth)
             {
-                g.colResizable[column['__id']] = jcell.ligerResizable({ handles: 'e',
+                g.colResizable[column['__id']] = jcell.ligerResizable({
+                    handles: 'e',
                     onStartResize: function (e, ev)
                     {
                         this.proxy.hide();
@@ -2526,7 +2599,7 @@
                         g.colresizing = false;
                         $('body').add(jcell).css('cursor', 'default');
                         g.draggingline.hide();
-                        g.setColumnWidth(column, column._width + e.diffX);
+                        g.setColumnWidth(column, parseInt(column._width) + e.diffX);
                         return false;
                     }
                 });
@@ -2786,6 +2859,7 @@
         _showData: function ()
         {
             var g = this, p = this.options;
+            g.changedCells = {};
             var data = g.currentData[p.root];
             if (p.usePager)
             {
@@ -2840,8 +2914,37 @@
                     });
                 }
             }
-            g.gridbody.trigger('scroll.grid');
+            g._fixHeight();
+            g.gridbody.trigger('scroll.grid'); 
             g.trigger('afterShowData', [g.currentData]);
+        },
+        _fixHeight : function()
+        {
+            var g = this, p = this.options;
+            if (p.fixedCellHeight || !p.frozen) return;
+            var column1,column2;
+            for (var i in g.columns)
+            {
+                var column = g.columns[i];
+                if(column1 && column2) break;
+                if (column.frozen && !column1)
+                { 
+                    column1 = column; 
+                    continue;
+                }
+                if (!column.frozen && !column2)
+                {
+                    column2 = column; 
+                    continue;
+                } 
+            }
+            if (!column1 || !column2) return;
+            for (var rowid in g.records)
+            {
+                var cell1 = g.getCellObj(rowid, column1), cell2 = g.getCellObj(rowid, column2);
+                var height = Math.max($(cell1).height(), ($(cell2).height()));
+                $(cell1).add(cell2).height(height);
+            }
         },
         _getRowDomId: function (rowdata, frozen)
         {
@@ -2855,10 +2958,10 @@
         {
             if (!data) return "";
             var g = this, p = this.options;
-            var gridhtmlarr = [];
-            for (var rowparm in data)
+            var gridhtmlarr = []; 
+            for (var i = 0, l = data.length; i < l; i++)
             {
-                var item = data[rowparm];
+                var item = data[i];
                 var rowid = item['__id'];
                 if (!item) continue;
                 gridhtmlarr.push('<tr');
@@ -2871,6 +2974,11 @@
                 }
                 else if (g.isSelected(item))
                 {
+                    gridhtmlarr.push(' l-selected');
+                }
+                else if (p.isSelected && p.isSelected(item))
+                {
+                    g.select(item);
                     gridhtmlarr.push(' l-selected');
                 }
                 if (item['__index'] % 2 == 1 && p.alternatingRow)
@@ -2903,6 +3011,8 @@
                         gridhtmlarr.push(' class="l-grid-row-cell l-grid-row-cell-rownumbers" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"');
                         if (p.fixedCellHeight)
                             gridhtmlarr.push(' style = "height:' + p.rowHeight + 'px;" ');
+                        else
+                            gridhtmlarr.push(' style = "min-height:' + p.rowHeight + 'px;" ');
                         gridhtmlarr.push('>' + (parseInt(item['__index']) + 1) + '</div></td>');
                         return;
                     }
@@ -2912,15 +3022,19 @@
                         gridhtmlarr.push(' class="l-grid-row-cell l-grid-row-cell-checkbox" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"');
                         if (p.fixedCellHeight)
                             gridhtmlarr.push(' style = "height:' + p.rowHeight + 'px;" ');
+                        else
+                            gridhtmlarr.push(' style = "min-height:' + p.rowHeight + 'px;" ');
                         gridhtmlarr.push('><span class="l-grid-row-cell-btn-checkbox"></span></div></td>');
                         return;
                     }
-                    //如果是明细列(系统列)
+                        //如果是明细列(系统列)
                     else if (this.isdetail)
                     {
                         gridhtmlarr.push(' class="l-grid-row-cell l-grid-row-cell-detail" style="width:' + this.width + 'px"><div class="l-grid-row-cell-inner"');
                         if (p.fixedCellHeight)
                             gridhtmlarr.push(' style = "height:' + p.rowHeight + 'px;" ');
+                        else
+                            gridhtmlarr.push(' style = "min-height:' + p.rowHeight + 'px;" ');
                         gridhtmlarr.push('><span class="l-grid-row-cell-detailbtn"></span></div></td>');
                         return;
                     }
@@ -2954,20 +3068,45 @@
             htmlarr.push('<div class="l-grid-row-cell-inner"');
             //htmlarr.push('<div');
             htmlarr.push(' style = "width:' + parseInt(column._width - 8) + 'px;');
-            if (p.fixedCellHeight) htmlarr.push('height:' + p.rowHeight + 'px;min-height:' + p.rowHeight + 'px; ');
+            if (p.fixedCellHeight) htmlarr.push('height:' + p.rowHeight + 'px;');
+            htmlarr.push('min-height:' + p.rowHeight + 'px; ');
             if (column.align) htmlarr.push('text-align:' + column.align + ';');
             var content = g._getCellContent(rowdata, column);
             htmlarr.push('">' + content + '</div>');
             return htmlarr.join('');
         },
+        _setValueByName: function (rowdata, columnname, value)
+        {
+            if (!rowdata || !columnname) return null;
+            try
+            {
+                new Function("rowdata,value", "rowdata." + columnname + "=value;")(rowdata, value);
+            }
+            catch (e)
+            {
+            }
+        },
+        _getValueByName: function (rowdata, columnname)
+        {
+            if (!rowdata || !columnname) return null;
+            try
+            {
+                return new Function("rowdata", "return rowdata." + columnname + ";")(rowdata);
+            }
+            catch (e)
+            {
+                return null;
+            }
+        },
         _getCellContent: function (rowdata, column)
         {
+            var g = this, p = this.options;
             if (!rowdata || !column) return "";
             if (column.isrownumber) return parseInt(rowdata['__index']) + 1;
             var rowid = rowdata['__id'];
             var rowindex = rowdata['__index'];
-            var value = column.name ? rowdata[column.name] : null;
-            var g = this, p = this.options;
+            var value = g._getValueByName(rowdata, column.name);
+            var text = g._getValueByName(rowdata, column.textField);
             var content = "";
             if (column.render)
             {
@@ -2976,6 +3115,10 @@
             else if (p.formatters[column.type])
             {
                 content = p.formatters[column.type].call(g, value, column);
+            }
+            else if (text != null)
+            {
+                content = text.toString();
             }
             else if (value != null)
             {
@@ -3012,32 +3155,37 @@
         _applyEditor: function (obj)
         {
             var g = this, p = this.options;
-            var rowcell = obj;
-            var ids = rowcell.id.split('|');
-            var columnid = ids[ids.length - 1];
-            var column = g._columns[columnid];
-            var row = $(rowcell).parent();
-            var rowdata = g.getRow(row[0]);
-            var rowid = rowdata['__id'];
-            var rowindex = rowdata['__index'];
+            var rowcell = obj, ids = rowcell.id.split('|');
+            var columnid = ids[ids.length - 1], column = g._columns[columnid];
+            var row = $(rowcell).parent(), rowdata = g.getRow(row[0]), rowid = rowdata['__id'], rowindex = rowdata['__index'];
             if (!column || !column.editor) return;
-            var columnname = column.name;
-            var columnindex = column.columnindex;
+            var columnname = column.name, columnindex = column.columnindex;
             if (column.editor.type && p.editors[column.editor.type])
             {
-                var currentdata = rowdata[columnname];
+                var currentdata = g._getValueByName(rowdata, columnname);
                 var editParm = { record: rowdata, value: currentdata, column: column, rowindex: rowindex };
+                if (column.textField) editParm.text = g._getValueByName(rowdata, column.textField);
                 if (g.trigger('beforeEdit', [editParm]) == false) return false;
+                g.lastEditRow = rowdata;
                 var editor = p.editors[column.editor.type];
                 var jcell = $(rowcell), offset = $(rowcell).offset();
                 jcell.html("");
                 g.setCellEditing(rowdata, column, true);
                 var width = $(rowcell).width(), height = $(rowcell).height();
-                var container = $("<div class='l-grid-editor'></div>").appendTo('body');
+                var container = $("<div class='l-grid-editor'></div>").appendTo(g.grid);
+                var left = 0, top = 0;
+                var pc = jcell.position();
+                var pb = g.gridbody.position();
+                var pv = g.gridview2.position();
+                var topbarHeight = p.toolbar ? g.topbar.height() : 0;
+                left = pc.left + pb.left + pv.left;
+                top = pc.top + pb.top + pv.top + topbarHeight;
+
                 if ($.browser.mozilla)
-                    container.css({ left: offset.left, top: offset.top }).show();
+                    container.css({ left: left, top: top }).show();
                 else
-                    container.css({ left: offset.left + 1, top: offset.top + 1 }).show();
+                    container.css({ left: left, top: top + 1 }).show();
+                if (column.textField) editParm.text = g._getValueByName(rowdata, column.textField);
                 var editorInput = g._createEditor(editor, container, editParm, width, height);
                 g.editor = { editing: true, editor: editor, input: editorInput, editParm: editParm, container: container };
                 g.unbind('sysEndEdit');
@@ -3047,12 +3195,16 @@
                     if (newValue != currentdata)
                     {
                         $(rowcell).addClass("l-grid-row-cell-edited");
-                        g.changedCells[rowid + "_" + column['__id']] = true;
-                        if (column.editor.onChange) column.editor.onChange(rowcell, newValue);
+                        g.changedCells[rowid + "_" + column['__id']] = true; 
                         editParm.value = newValue;
+                        if (column.textField && editor.getText)
+                        {
+                            editParm.text = editor.getText(editorInput, editParm);
+                        }
+                        if (editor.onChange) editor.onChange(editParm);
                         if (g._checkEditAndUpdateCell(editParm))
                         {
-                            if (column.editor.onChanged) column.editor.onChanged(rowcell, newValue);
+                            if (editor.onChanged) editor.onChanged(editParm);
                         }
                     }
                 });
@@ -3061,9 +3213,11 @@
         _checkEditAndUpdateCell: function (editParm)
         {
             var g = this, p = this.options;
-            if (g.trigger('beforeSubmitEdit', [editParm]) == false) return false; 
-            g.updateCell(editParm.column, editParm.value, editParm.record);
-            if (editParm.column.render || g.enabledTotal()) g.reRender({ column: editParm.column });
+            if (g.trigger('beforeSubmitEdit', [editParm]) == false) return false;
+            var column = editParm.column;
+            if (editParm.text && column.textField) g._setValueByName(editParm.record, column.textField, editParm.text);
+            g.updateCell(column, editParm.value, editParm.record);
+            if (column.render || g.enabledTotal()) g.reRender({ column: column });
             g.reRender({ rowdata: editParm.record });
             return true;
         },
@@ -3174,7 +3328,7 @@
                     totalsummaryArr.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-checkbox" style="width:' + this.width + 'px"><div>&nbsp;</div></td>');
                     return;
                 }
-                //如果是明细列(系统列)
+                    //如果是明细列(系统列)
                 else if (this.isdetail)
                 {
                     totalsummaryArr.push('<td class="l-grid-totalsummary-cell l-grid-totalsummary-cell-detail" style="width:' + this.width + 'px"><div>&nbsp;</div></td>');
@@ -3266,6 +3420,11 @@
         {
             return this.records[this._getRowIdByDomId(domid)];
         },
+        //在外部点击的时候，判断是否在编辑状态，比如弹出的层点击的，如果自定义了编辑器，而且生成的层没有包括在grid内部，建议重载
+        _isEditing: function (jobjs)
+        {
+            return jobjs.hasClass("l-box-dateeditor") || jobjs.hasClass("l-box-select");
+        },
         _getSrcElementByEvent: function (e)
         {
             var g = this;
@@ -3287,7 +3446,11 @@
                 return null;
             };
             if (fn("l-grid-editor")) return { editing: true, editor: fn("l-grid-editor") };
-            if (jobjs.index(this.element) == -1) return { out: true };
+            if (jobjs.index(this.element) == -1)
+            {
+                if (g._isEditing(jobjs)) return { editing: true };
+                else return { out: true };
+            }
             var indetail = false;
             if (jobjs.hasClass("l-grid-detailpanel") && g.detailrows)
             {
@@ -3406,7 +3569,7 @@
             //工具条 - 切换每页记录数事件
             $('select', g.toolbar).change(function ()
             {
-                if (g.isDataChanged && !confirm(p.isContinueByDataChanged))
+                if (g.isDataChanged && p.dataAction != "local" && !confirm(p.isContinueByDataChanged))
                     return false;
                 p.newPage = 1;
                 p.pageSize = this.value;
@@ -3428,7 +3591,8 @@
             if ($.fn.ligerDrag && p.colDraggable)
             {
                 g.colDroptip = $("<div class='l-drag-coldroptip' style='display:none'><div class='l-drop-move-up'></div><div class='l-drop-move-down'></div></div>").appendTo('body');
-                g.gridheader.add(g.f.gridheader).ligerDrag({ revert: true, animate: false,
+                g.gridheader.add(g.f.gridheader).ligerDrag({
+                    revert: true, animate: false,
                     proxyX: 0, proxyY: 0,
                     proxy: function (draggable, e)
                     {
@@ -3554,7 +3718,8 @@
             if ($.fn.ligerDrag && p.rowDraggable)
             {
                 g.rowDroptip = $("<div class='l-drag-rowdroptip' style='display:none'></div>").appendTo('body');
-                g.gridbody.add(g.f.gridbody).ligerDrag({ revert: true, animate: false,
+                g.gridbody.add(g.f.gridbody).ligerDrag({
+                    revert: true, animate: false,
                     proxyX: 0, proxyY: 0,
                     proxy: function (draggable, e)
                     {
@@ -3858,7 +4023,7 @@
                 var hcell = $(src.hcelltext).parent().parent();
                 if (!p.enabledSort || !src.column) return;
                 if (src.column.isSort == false) return;
-                if (p.url && g.isDataChanged && !confirm(p.isContinueByDataChanged)) return;
+                if (p.url && p.dataAction != "local" && g.isDataChanged && !confirm(p.isContinueByDataChanged)) return;
                 var sort = $(".l-grid-hd-cell-sort:first", hcell);
                 var columnName = src.column.name;
                 if (!columnName) return;
@@ -3885,7 +4050,7 @@
                 }
                 $(".l-grid-hd-cell-sort", g.gridheader).add($(".l-grid-hd-cell-sort", g.f.gridheader)).not($(".l-grid-hd-cell-sort:first", hcell)).remove();
             }
-            //明细
+                //明细
             else if (src.detailbtn && p.detail)
             {
                 var item = src.data;
@@ -3986,9 +4151,10 @@
                     }
                     currentRow = currentRow.next(".l-grid-row,.l-grid-totalsummary-group,.l-grid-detailpanel");
                 }
+                g.trigger(opening ? 'groupExtend' : 'groupCollapse');
                 g.trigger('SysGridHeightChanged');
             }
-            //树 - 伸展/收缩节点
+                //树 - 伸展/收缩节点
             else if (src.treelink)
             {
                 g.toggle(src.data);
@@ -4137,7 +4303,7 @@
                 if (typeof (p.height) == "string" && p.height.indexOf('%') > 0)
                 {
                     var gridparent = g.grid.parent();
-                    if (p.InWindow)
+                    if (p.inWindow)
                     {
                         parentHeight = windowHeight;
                         parentHeight -= parseInt($('body').css('paddingTop'));
@@ -4148,7 +4314,7 @@
                         parentHeight = gridparent.height();
                     }
                     h = parentHeight * parseFloat(p.height) * 0.01;
-                    if (p.InWindow || gridparent[0].tagName.toLowerCase() == "body")
+                    if (p.inWindow || gridparent[0].tagName.toLowerCase() == "body")
                         h -= (g.grid.offset().top - parseInt($('body').css('paddingTop')));
                 }
                 else
@@ -4168,6 +4334,7 @@
                     width: gridViewWidth - gridView1Width
                 });
             }
+
             g.trigger('SysGridHeightChanged');
         }
     });
@@ -4181,5 +4348,18 @@
     $.ligerui.controls.Grid.prototype.getCheckedRows = $.ligerui.controls.Grid.prototype.getSelectedRows;
     $.ligerui.controls.Grid.prototype.getCheckedRowObjs = $.ligerui.controls.Grid.prototype.getSelectedRowObjs;
     $.ligerui.controls.Grid.prototype.setOptions = $.ligerui.controls.Grid.prototype.set;
+    $.ligerui.controls.Grid.prototype.reload = $.ligerui.controls.Grid.prototype.loadData;
+    $.ligerui.controls.Grid.prototype.refreshSize = $.ligerui.controls.Grid.prototype._onResize;
 
+
+    function removeArrItem(arr, filterFn)
+    {
+        for (var i = arr.length - 1; i >= 0; i--)
+        {
+            if (filterFn(arr[i]))
+            {
+                arr.splice(i, 1);
+            }
+        }
+    }
 })(jQuery);

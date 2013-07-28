@@ -70,7 +70,7 @@
                 height: 20,
                 selectBoxWidth: 200,
                 selectBoxHeight: 200,
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'AdvertisementType', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'AdvertisementType', treeLeafOnly: false, hideOnLoseFocus: true,
                 tree: {
                     url: '<%: Url.Content("~/Common/GetJsonForAdvertisementTypeID") %>',
                     checkbox: false,

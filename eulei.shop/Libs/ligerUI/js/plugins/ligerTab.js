@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -484,6 +484,11 @@
 
             g.trigger('afterOverrideTabItem', [targettabid]);
         },
+        //设置页签项标题
+        setHeader: function(tabid,header)
+        { 
+            $("li[tabid=" + tabid + "] a", this.tab.links.ul).text(header);
+        },
         //选中tab项
         selectTabItem: function (tabid)
         {
@@ -632,7 +637,17 @@
                 $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content).prev().show();
                 $("li[tabid=" + tabid + "]", g.tab.links.ul).prev().addClass("l-selected").siblings().removeClass("l-selected");
             }
-            $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content).remove();
+            var contentItem = $(".l-tab-content-item[tabid=" + tabid + "]", g.tab.content); 
+            var jframe = $('iframe', contentItem); 
+            if (jframe.length)
+            {
+                var frame = jframe[0];
+                frame.src = "about:blank";
+                frame.contentWindow.document.write('');
+                $.browser.msie && CollectGarbage();
+                jframe.remove();
+            } 
+            contentItem.remove();
             $("li[tabid=" + tabid + "]", g.tab.links.ul).remove();
             g.setTabButton();
             g.trigger('afterRemoveTabItem', [tabid]);

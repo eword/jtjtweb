@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -34,15 +34,18 @@
 
     // 核心对象
     window.liger = $.ligerui = {
-        version: 'V1.1.9',
+        version: 'V1.2.0',
         managerCount: 0,
         //组件管理器池
         managers: {},
         managerIdPrev: 'ligerui',
+        //管理器id已经存在时自动创建新的
+        autoNewId : true,
         //错误提示
         error: {
             managerIsExist: '管理器id已经存在'
         },
+        pluginPrev: 'liger',
         getId: function (prev)
         {
             prev = prev || this.managerIdPrev;
@@ -60,35 +63,47 @@
                 return;
             }
             if (!manager.id) manager.id = this.getId(manager.__idPrev());
-            if (this.managers[manager.id])
+            if (this.managers[manager.id]) manager.id = this.getId(manager.__idPrev());
+            if (this.managers[manager.id]) {
                 throw new Error(this.error.managerIsExist);
+            }
             this.managers[manager.id] = manager;
         },
         remove: function (arg)
         {
             if (typeof arg == "string" || typeof arg == "number")
-            {
-                delete $.ligerui.managers[arg];
+            { 
+                delete liger.managers[arg];
             }
-            else if (typeof arg == "object" && arg instanceof $.ligerui.core.Component)
+            else if (typeof arg == "object")
             {
-                delete $.ligerui.managers[arg.id];
+                if (arg instanceof liger.core.Component)
+                {
+                    delete liger.managers[arg.id];
+                }
+                else
+                {
+                    if (!$(arg).attr(this.idAttrName)) return false;
+                    delete liger.managers[$(arg).attr(this.idAttrName)];
+                }
             }
         },
         //获取ligerui对象
         //1,传入ligerui ID
-        //2,传入Dom Object Array(jQuery)
+        //2,传入Dom Object
         get: function (arg, idAttrName)
         {
             idAttrName = idAttrName || "ligeruiid";
             if (typeof arg == "string" || typeof arg == "number")
             {
-                return $.ligerui.managers[arg];
+                return liger.managers[arg];
             }
-            else if (typeof arg == "object" && arg.length)
+            else if (typeof arg == "object")
             {
-                if (!arg[0][idAttrName] && !$(arg[0]).attr(idAttrName)) return null;
-                return $.ligerui.managers[arg[0][idAttrName] || $(arg[0]).attr(idAttrName)];
+                var domObj = arg.length ? arg[0] : arg;
+                var id = domObj[idAttrName] || $(domObj).attr(idAttrName);
+                if (!id) return null;
+                return liger.managers[id];
             }
             return null;
         },
@@ -144,28 +159,28 @@
             plugin = plugin.replace(/^liger/, '');
             if (this == null || this == window || ext.isStatic)
             {
-                if (!$.ligerui.plugins[plugin])
+                if (!liger.plugins[plugin])
                 {
-                    $.ligerui.plugins[plugin] = {
-                        fn: $['liger' + plugin],
+                    liger.plugins[plugin] = {
+                        fn: $[liger.pluginPrev + plugin],
                         isStatic: true
                     };
                 }
                 return new $.ligerui[ext.controlNamespace][plugin]($.extend({}, $[ext.defaultsNamespace][plugin] || {}, $[ext.defaultsNamespace][plugin + 'String'] || {}, args.length > 0 ? args[0] : {}));
             }
-            if (!$.ligerui.plugins[plugin])
+            if (!liger.plugins[plugin])
             {
-                $.ligerui.plugins[plugin] = {
-                    fn: $.fn['liger' + plugin],
+                liger.plugins[plugin] = {
+                    fn: $.fn[liger.pluginPrev + plugin],
                     isStatic: false
                 };
             }
-            if (/Manager$/.test(plugin)) return $.ligerui.get(this, ext.idAttrName);
+            if (/Manager$/.test(plugin)) return liger.get(this, ext.idAttrName);
             this.each(function ()
             {
                 if (this[ext.idAttrName] || $(this).attr(ext.idAttrName))
                 {
-                    var manager = $.ligerui.get(this[ext.idAttrName] || $(this).attr(ext.idAttrName));
+                    var manager = liger.get(this[ext.idAttrName] || $(this).attr(ext.idAttrName));
                     if (manager && args.length > 0) manager.set(args[0]);
                     //已经执行过 
                     return;
@@ -173,8 +188,7 @@
                 if (args.length >= 1 && typeof args[0] == 'string') return;
                 //只要第一个参数不是string类型,都执行组件的实例化工作
                 var options = args.length > 0 ? args[0] : null;
-                var p = $.extend({}, $[ext.defaultsNamespace][plugin] || {}
-                , $[ext.defaultsNamespace][plugin + 'String'] || {}, options || {});
+                var p = $.extend({}, $[ext.defaultsNamespace][plugin], $[ext.defaultsNamespace][plugin + 'String'], options);
                 if (ext.propertyToElemnt) p[ext.propertyToElemnt] = this;
                 if (ext.hasElement)
                 {
@@ -186,11 +200,11 @@
                 }
             });
             if (this.length == 0) return null;
-            if (args.length == 0) return $.ligerui.get(this, ext.idAttrName);
-            if (typeof args[0] == 'object') return $.ligerui.get(this, ext.idAttrName);
+            if (args.length == 0) return liger.get(this, ext.idAttrName);
+            if (typeof args[0] == 'object') return liger.get(this, ext.idAttrName);
             if (typeof args[0] == 'string')
             {
-                var manager = $.ligerui.get(this, ext.idAttrName);
+                var manager = liger.get(this, ext.idAttrName);
                 if (manager == null) return;
                 if (args[0] == "option")
                 {
@@ -235,8 +249,8 @@
     $.ligerMethos = {};
 
     //关联起来
-    $.ligerui.defaults = $.ligerDefaults;
-    $.ligerui.methods = $.ligerMethos;
+    liger.defaults = $.ligerDefaults;
+    liger.methods = $.ligerMethos;
 
     //获取ligerui对象
     //@parm [plugin]  插件名,可为空
@@ -244,11 +258,11 @@
     {
         if (plugin)
         {
-            return $.ligerui.run.call(this, plugin, arguments);
+            return liger.run.call(this, plugin, arguments);
         }
         else
         {
-            return $.ligerui.get(this);
+            return liger.get(this);
         }
     };
 
@@ -256,7 +270,7 @@
     //组件基类
     //1,完成定义参数处理方法和参数属性初始化的工作
     //2,完成定义事件处理方法和事件属性初始化的工作
-    $.ligerui.core.Component = function (options)
+    liger.core.Component = function (options)
     {
         //事件容器
         this.events = this.events || {};
@@ -265,10 +279,10 @@
         //子组件集合索引
         this.children = {};
     };
-    $.extend($.ligerui.core.Component.prototype, {
+    $.extend(liger.core.Component.prototype, {
         __getType: function ()
         {
-            return '$.ligerui.core.Component';
+            return 'liger.core.Component';
         },
         __idPrev: function ()
         {
@@ -319,15 +333,15 @@
                     this.bind(name.substr(2), value);
                 return;
             }
-            this.trigger('propertychange', arg, value);
             if (!this.options) this.options = {};
+            if (this.trigger('propertychange', [arg, value]) == false) return;
             this.options[name] = value;
             var pn = '_set' + name.substr(0, 1).toUpperCase() + name.substr(1);
             if (this[pn])
             {
                 this[pn].call(this, value);
             }
-            this.trigger('propertychanged', arg, value);
+            this.trigger('propertychanged', [arg, value]);
         },
 
         //获取属性
@@ -353,6 +367,7 @@
         //data (可选) Array(可选)传递给事件处理函数的附加参数
         trigger: function (arg, data)
         {
+            if (!arg) return;
             var name = arg.toLowerCase();
             var event = this.events[name];
             if (!event) return;
@@ -417,7 +432,7 @@
         },
         destroy: function ()
         {
-            $.ligerui.remove(this);
+            liger.remove(this);
         }
     });
 
@@ -427,9 +442,9 @@
     //2,渲染的工作,细节交给子类实现
     //@parm [element] 组件对应的dom element对象
     //@parm [options] 组件的参数
-    $.ligerui.core.UIComponent = function (element, options)
+    liger.core.UIComponent = function (element, options)
     {
-        $.ligerui.core.UIComponent.base.constructor.call(this, options);
+        liger.core.UIComponent.base.constructor.call(this, options);
         var extendMethods = this._extendMethods();
         if (extendMethods) $.extend(this, extendMethods);
         this.element = element;
@@ -440,10 +455,10 @@
         this.trigger('rendered');
         this._rendered();
     };
-    $.ligerui.core.UIComponent.ligerExtend($.ligerui.core.Component, {
+    liger.core.UIComponent.ligerExtend(liger.core.Component, {
         __getType: function ()
         {
-            return '$.ligerui.core.UIComponent';
+            return 'liger.core.UIComponent';
         },
         //扩展方法
         _extendMethods: function ()
@@ -455,14 +470,14 @@
             this.type = this.__getType();
             if (!this.element)
             {
-                this.id = this.options.id || $.ligerui.getId(this.__idPrev());
+                this.id = this.options.id || liger.getId(this.__idPrev());
             }
             else
             {
-                this.id = this.options.id || this.element.id || $.ligerui.getId(this.__idPrev());
+                this.id = this.options.id || this.element.id || liger.getId(this.__idPrev());
             }
             //存入管理器池
-            $.ligerui.add(this);
+            liger.add(this);
 
             if (!this.element) return;
 
@@ -513,23 +528,26 @@
         },
         destroy: function ()
         {
-            if (this.element) $(this.element).remove();
+            if (this.element)
+            {
+                $(this.element).remove();
+            }
             this.options = null;
-            $.ligerui.remove(this);
+            liger.remove(this);
         }
     });
 
 
     //表单控件基类
-    $.ligerui.controls.Input = function (element, options)
+    liger.controls.Input = function (element, options)
     {
-        $.ligerui.controls.Input.base.constructor.call(this, element, options);
+        liger.controls.Input.base.constructor.call(this, element, options);
     };
 
-    $.ligerui.controls.Input.ligerExtend($.ligerui.core.UIComponent, {
+    liger.controls.Input.ligerExtend(liger.core.UIComponent, {
         __getType: function ()
         {
-            return '$.ligerui.controls.Input';
+            return 'liger.controls.Input';
         },
         attr: function ()
         {
@@ -543,6 +561,22 @@
         {
             return this.get('value');
         },
+        //设置只读
+        _setReadonly: function (readonly)
+        {
+            var wrapper = this.wrapper || this.text;
+            if (!wrapper || !wrapper.hasClass("l-text")) return;
+            var inputText = this.inputText;
+            if (readonly)
+            {
+                if (inputText) inputText.attr("readonly", "readonly");
+                wrapper.addClass("l-text-readonly");
+            } else
+            {
+                if (inputText) inputText.removeAttr("readonly");
+                wrapper.removeClass("l-text-readonly");
+            } 
+        },
         setEnabled: function ()
         {
             return this.set('disabled', false);
@@ -554,11 +588,14 @@
         updateStyle: function ()
         {
 
+        },
+        resize: function (width, height) {
+            this.set({ width: width, height: height });
         }
     });
 
     //全局窗口对象
-    $.ligerui.win = {
+    liger.win = {
         //顶端显示
         top: false,
 
@@ -567,9 +604,9 @@
         {
             function setHeight()
             {
-                if (!$.ligerui.win.windowMask) return;
+                if (!liger.win.windowMask) return;
                 var h = $(window).height() + $(window).scrollTop();
-                $.ligerui.win.windowMask.height(h);
+                liger.win.windowMask.height(h);
             }
             if (!this.windowMask)
             {
@@ -591,7 +628,7 @@
                 var winid = jwins.eq(i).attr("ligeruiid");
                 if (win && win.id == winid) continue;
                 //获取ligerui对象
-                var winmanager = $.ligerui.get(winid);
+                var winmanager = liger.get(winid);
                 if (!winmanager) continue;
                 //是否模态窗口
                 var modal = winmanager.get('modal');
@@ -711,7 +748,7 @@
         //前端显示
         setFront: function (win)
         {
-            var wins = $.ligerui.find($.ligerui.core.Win);
+            var wins = liger.find(liger.core.Win);
             for (var i in wins)
             {
                 var w = wins[i];
@@ -730,25 +767,25 @@
 
 
     //窗口基类 window、dialog
-    $.ligerui.core.Win = function (element, options)
+    liger.core.Win = function (element, options)
     {
-        $.ligerui.core.Win.base.constructor.call(this, element, options);
+        liger.core.Win.base.constructor.call(this, element, options);
     };
 
-    $.ligerui.core.Win.ligerExtend($.ligerui.core.UIComponent, {
+    liger.core.Win.ligerExtend(liger.core.UIComponent, {
         __getType: function ()
         {
-            return '$.ligerui.controls.Win';
+            return 'liger.controls.Win';
         },
         mask: function ()
         {
             if (this.options.modal)
-                $.ligerui.win.mask(this);
+                liger.win.mask(this);
         },
         unmask: function ()
         {
             if (this.options.modal)
-                $.ligerui.win.unmask(this);
+                liger.win.unmask(this);
         },
         min: function ()
         {
@@ -762,16 +799,16 @@
     });
 
 
-    $.ligerui.draggable = {
+    liger.draggable = {
         dragging: false
     };
 
-    $.ligerui.resizable = {
+    liger.resizable = {
         reszing: false
     };
 
 
-    $.ligerui.toJSON = typeof JSON === 'object' && JSON.stringify ? JSON.stringify : function (o)
+    liger.toJSON = typeof JSON === 'object' && JSON.stringify ? JSON.stringify : function (o)
     {
         var f = function (n)
         {
@@ -799,7 +836,7 @@
         {
             if (typeof o.toJSON === 'function')
             {
-                return $.ligerui.toJSON(o.toJSON());
+                return liger.toJSON(o.toJSON());
             }
             if (o.constructor === Date)
             {
@@ -816,7 +853,7 @@
             {
                 for (var i = 0, l = o.length; i < l; i++)
                 {
-                    pairs.push($.ligerui.toJSON(o[i]) || 'null');
+                    pairs.push(liger.toJSON(o[i]) || 'null');
                 }
                 return '[' + pairs.join(',') + ']';
             }
@@ -839,11 +876,12 @@
                 {
                     continue;
                 }
-                val = $.ligerui.toJSON(o[k]);
+                val = liger.toJSON(o[k]);
                 pairs.push(name + ':' + val);
             }
             return '{' + pairs.join(',') + '}';
         }
     };
 
+   
 })(jQuery);

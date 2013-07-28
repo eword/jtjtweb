@@ -24,8 +24,6 @@
             </td>
             <td class="tc ">步骤名
             </td>
-              <td class="tc ">上一步
-            </td>
               <td class="tc ">下一步
             </td>
             <td class="tc  w80">参与人数
@@ -36,7 +34,7 @@
             </td>
             <td class="tc  w80">允许编辑
             </td>
-            <td class="tc w80">状态
+            <td class="tc w80">允许编辑步骤
             </td>
             <td class="tc  w240">基本操作
             </td>
@@ -57,10 +55,8 @@
                 <%: item.FlowTemplateStatusDesp %>
             </td>
                        <td class="tc">
-                <%: item.FlowTemplateNextStatusID%>
-            </td>
-            <td class="tc">
-                <%: item.FlowTemplateNextStatusDesp %>
+                <%: item.FlowTemplateNextStatusID%>     
+                (<%: item.FlowTemplateNextStatusDesp %>)
             </td>
             <td class="tc">
                 <%if (item.FlowTemplateStatusID.Equals(1))
@@ -82,7 +78,7 @@
                 <%: item.FlowTemplateAlowEdit?"是":"否" %>
             </td>
             <td class="tc">
-                <%= item.FlowTemplateState?"启用":"失效" %>
+                <%= item.FlowTemplateAlowEditStep?"是":"否" %>
             </td>
 
             <td class="tl">
@@ -184,8 +180,8 @@
         $(function () {
             $("#dialog-form-Create").dialog({
                 autoOpen: false,
-                height: 300,
-                width: 450,
+                height: 450,
+                width: 300,
                 modal: true,
                 close: function () {
                     $("#CreateAjaxBox").html("");
@@ -212,8 +208,8 @@
         $(function () {
             $("#dialog-form-Edit").dialog({
                 autoOpen: false,
-                height: 300,
-                width: 450,
+                height: 450,
+                width: 300,
                 modal: true,
                 close: function () {
                     $("#EditAjaxBox").html("");

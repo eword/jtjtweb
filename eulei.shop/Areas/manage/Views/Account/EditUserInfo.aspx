@@ -87,12 +87,15 @@
                 selectBoxWidth: 200,
                 selectBoxHeight: 200,
                 initValue:<%=Model.UserInfoFrameworkID %>,
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'UserInfoFrameworkID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'UserInfoFrameworkID', treeLeafOnly: true, hideOnLoseFocus: true,
                 tree: {
                     url: '<%: Url.Content("~/Common/GetJsonForFrameworkID") %>',
                     checkbox: false,
                     textFieldName: "textcontent",
                     idFieldName: "id",
+                    btnClickToToggleOnly: false,
+                    single: true,
+                    needCancel: false,
                     parentIDFieldName: "fid"
                 }
             });

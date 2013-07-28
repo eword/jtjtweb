@@ -1,16 +1,35 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
 {
+
     $.fn.ligerForm = function ()
     {
         return $.ligerui.run.call(this, "ligerForm", arguments);
+    };
+
+    $.ligerui.getConditions = function (form)
+    {
+        if (!form) return null;
+        var conditions = [];
+        $(":input", form).filter(".condition,.field").each(function ()
+        {
+            var value = $(this).val() || $(this).attr("value");
+            if (!this.name || !value) return;
+            conditions.push({
+                op: $(this).attr("op") || "like",
+                field: this.name,
+                value: value,
+                type: $(this).attr("vt") || "string"
+            });
+        });
+        return conditions;
     };
 
     $.ligerDefaults = $.ligerDefaults || {};
@@ -33,7 +52,28 @@
         //生成表单元素ID的前缀
         prefixID: "",
         //json解析函数
-        toJSON: $.ligerui.toJSON
+        toJSON: $.ligerui.toJSON,
+        labelCss: null,
+        fieldCss: null,
+        spaceCss: null,
+        onAfterSetFields: null,
+        buttons: null,              //按钮组
+        readonly:false              //是否只读
+    };
+
+    $.ligerDefaults.Form_fields = {
+        name: null,             //字段name
+        type: null,             //表单类型
+        editor: null,           //编辑器扩展类型
+        label: null,            //Label
+        newline: true,          //换行显示
+        op: null,               //操作符 附加到input
+        vt: null,               //值类型 附加到input
+        attr: null             //属性列表 附加到input
+    };
+
+    $.ligerDefaults.Form_editor = {
+        textFieldName: null    //文本框name 
     };
 
     //@description 默认表单编辑器构造器扩展(如果创建的表单效果不满意 建议重载)
@@ -42,47 +82,121 @@
     {
         //这里this就是form的ligerui对象
         var g = this, p = this.options;
-        var inputOptions = {};
-        if (p.inputWidth) inputOptions.width = p.inputWidth;
+        var options = {}, field = null;
+        var fieldIndex = jinput.attr("fieldindex"), ltype = jinput.attr("ltype");
+        if (fieldIndex != null)
+        {
+            field = g.getField(fieldIndex); 
+            if (field && g.editors && g.editors[field.type])
+            { 
+                g.editors[field.type].call(g, jinput, field);
+                return;
+            }
+        }
+        field = field || {};
+        if (p.readonly) options.readonly = true;
+        options = $.extend({
+            width: (field.width || p.inputWidth) - 2
+        }, field.options, field.editor, options);
+        if (ltype == "autocomplete")
+            options.autocomplete = true;
         if (jinput.is("select"))
         {
-            jinput.ligerComboBox(inputOptions);
+            jinput.ligerComboBox(options);
         }
-        else if (jinput.is(":text") || jinput.is(":password"))
+        else if (jinput.is(":password"))
         {
-            var ltype = jinput.attr("ltype");
+            jinput.ligerTextBox(options);
+        }
+        else if (jinput.is(":text"))
+        { 
             switch (ltype)
             {
                 case "select":
                 case "combobox":
-                    jinput.ligerComboBox(inputOptions);
+                case "autocomplete": 
+                    jinput.ligerComboBox(options);
                     break;
                 case "spinner":
-                    jinput.ligerSpinner(inputOptions);
+                    jinput.ligerSpinner(options);
                     break;
                 case "date":
-                    jinput.ligerDateEditor(inputOptions);
+                    jinput.ligerDateEditor(options);
                     break;
+                case "popup":
+                    jinput.ligerPopupEdit(options);
+                    break;
+                case "currency":
+                    options.currency = true;
                 case "float":
                 case "number":
-                    inputOptions.number = true;
-                    jinput.ligerTextBox(inputOptions);
+                    options.number = true;
+                    jinput.ligerTextBox(options);
                     break;
                 case "int":
                 case "digits":
-                    inputOptions.digits = true;
+                    options.digits = true;
                 default:
-                    jinput.ligerTextBox(inputOptions);
+                    jinput.ligerTextBox(options);
                     break;
             }
         }
+        else if (jinput.is(":hidden"))
+        { 
+            //只读状态，显示文本框的形式
+            if (options.readonly)
+            { 
+                if (field.textField)
+                { 
+                    var textInput = $("<input type='text' name='" + field.textField + "' />").insertAfter(jinput);
+                    if (p.appendID)
+                        textInput.attr("id", field.textField);
+                    textInput.ligerTextBox(options);
+                }
+            }
+            else
+            {
+                if ($.inArray(ltype, ["select", "combobox", "autocomplete", "popup", "radiolist", "checkboxlist", "listbox"]) != -1)
+                {
+                    if (!jinput.attr("id")) jinput.attr("id", liger.getId('hidden'));
+                    options.valueFieldID = jinput.attr("id");
+                }
+                switch (ltype)
+                {
+                    case "select":
+                    case "combobox":
+                    case "autocomplete":
+                    case "popup":
+                        var textField = field.textField || field.comboboxName || liger.getId();
+                        var textInput = $("[name='" + textField + "']", g.element);
+                        if (!textInput.length)
+                            textInput = $("<input type='text' name='" + textField + "' />").insertAfter(jinput);
+                        if (p.appendID)
+                            textInput.attr("id", textField);
+                        if(ltype == "popup")
+                            textInput.ligerPopupEdit(options);
+                        else
+                            textInput.ligerComboBox(options);
+                        break;
+                    case "checkboxlist":
+                        $("<div></div>").insertAfter(jinput).ligerCheckBoxList(options);
+                        break;
+                    case "radiolist":
+                        $("<div></div>").insertAfter(jinput).ligerRadioList(options);
+                        break;
+                    case "listbox":
+                        $("<div></div>").insertAfter(jinput).ligerListBox(options);
+                        break;
+                }
+            } 
+        }
         else if (jinput.is(":radio"))
         {
-            jinput.ligerRadio(inputOptions);
+            jinput.ligerRadio(options);
         }
         else if (jinput.is(":checkbox"))
         {
-            jinput.ligerCheckBox(inputOptions);
+            jinput.ligerCheckBox(options);
         }
         else if (jinput.is("textarea"))
         {
@@ -109,69 +223,150 @@
         {
             $.ligerui.controls.Form.base._init.call(this);
         },
-        _render: function ()
+        getField: function (index)
+        {
+            var g = this, p = this.options;
+            if (!p.fields) return null;
+            return p.fields[index];
+        },
+        toConditions: function ()
+        {
+            return $.ligerui.getConditions(this.element);
+        },
+        //预处理字段 , 排序和分组
+        _preSetFields: function (fields)
+        {
+            var g = this, p = this.options, lastVisitedGroup = null, lastVisitedGroupIcon = null;
+            //分组： 先填充没有设置分组的字段，然后按照分组排序
+            $(p.fields).each(function (i, field)
+            {
+                if (field.type == "hidden") return;
+                if (field.newline == null) field.newline = true;
+                if (lastVisitedGroup && !field.group)
+                {
+                    field.group = lastVisitedGroup;
+                    field.groupicon = lastVisitedGroupIcon;
+                }
+                if (field.group)
+                {
+                    //trim
+                    field.group = field.group.toString().replace(/^\s\s*/, '' ).replace(/\s\s*$/, '' );
+                    lastVisitedGroup = field.group;
+                    lastVisitedGroupIcon = field.groupicon;
+                }
+            }); 
+           
+        },
+        _setFields: function (fields)
         {
             var g = this, p = this.options;
             var jform = $(this.element);
+            $(".l-form-container", jform).remove();
             //自动创建表单
-            if (p.fields && p.fields.length)
+            if (fields && fields.length)
             {
+                g._preSetFields(fields);
                 if (!jform.hasClass("l-form"))
                     jform.addClass("l-form");
-                var out = [];
-                var appendULStartTag = false;
-                $(p.fields).each(function (index, field)
+                var out = ['<div class="l-form-container">'];
+                var appendULStartTag = false, lastVisitedGroup = null;
+                var groups = [];
+                $(fields).each(function (index, field)
                 {
-                    var name = field.name || field.id;
-                    if (!name) return;
-                    if (field.type == "hidden")
+                    if ($.inArray(field.group, groups) == -1)
+                        groups.push(field.group);
+                }); 
+                $(groups).each(function (groupIndex, group)
+                {
+                    $(fields).each(function (i, field)
                     {
-                        out.push('<input type="hidden" id="' + name + '" name="' + name + '" />');
-                        return;
-                    }
-                    var newLine = field.renderToNewLine || field.newline;
-                    if (newLine == null) newLine = true;
-                    if (field.merge) newLine = false;
-                    if (field.group) newLine = true;
-                    if (newLine)
-                    {
-                        if (appendULStartTag)
+                        if (field.group != group) return;
+                        var index = $.inArray(field, fields);
+                        var name = field.name || field.id, newline = field.newline;
+                        if (!name) return;
+                        if (field.type == "hidden")
                         {
-                            out.push('</ul>');
-                            appendULStartTag = false;
+                            out.push('<input type="hidden" id="' + name + '" name="' + name + '" />');
+                            return;
                         }
-                        if (field.group)
+                        var toAppendGroupRow = field.group && field.group != lastVisitedGroup;
+                        if (index == 0 || toAppendGroupRow) newline = true;
+                        if (newline)
                         {
-                            out.push('<div class="l-group');
-                            if (field.groupicon)
-                                out.push(' l-group-hasicon');
-                            out.push('">');
-                            if (field.groupicon)
-                                out.push('<img src="' + field.groupicon + '" />');
-                            out.push('<span>' + field.group + '</span></div>');
+                            if (appendULStartTag)
+                            {
+                                out.push('</ul>');
+                                appendULStartTag = false;
+                            }
+                            if (toAppendGroupRow)
+                            {
+                                out.push('<div class="l-group');
+                                if (field.groupicon)
+                                    out.push(' l-group-hasicon');
+                                out.push('">');
+                                if (field.groupicon)
+                                    out.push('<img src="' + field.groupicon + '" />');
+                                out.push('<span>' + field.group + '</span></div>');
+                                lastVisitedGroup = field.group;
+                            }
+                            out.push('<ul>');
+                            appendULStartTag = true;
                         }
-                        out.push('<ul>');
-                        appendULStartTag = true;
-                    }
-                    //append label
-                    out.push(g._buliderLabelContainer(field));
-                    //append input 
-                    out.push(g._buliderControlContainer(field));
-                    //append space
-                    out.push(g._buliderSpaceContainer(field));
-                });
+                        out.push('<li class="l-fieldcontainer');
+                        if (newline)
+                        {
+                            out.push(' l-fieldcontainer-first');
+                        }
+                        out.push('"');
+                        out.push(' fieldindex=' + index);
+                        out.push('><ul>');
+                        //append label
+                        out.push(g._buliderLabelContainer(field, index));
+                        //append input 
+                        out.push(g._buliderControlContainer(field, index));
+                        //append space
+                        out.push(g._buliderSpaceContainer(field, index));
+                        out.push('</ul></li>');
+
+                    });
+                }); 
                 if (appendULStartTag)
                 {
                     out.push('</ul>');
                     appendULStartTag = false;
                 }
+                out.push('</div>');
                 jform.append(out.join(''));
+
+                $(".l-group .togglebtn", jform).remove(); 
+                $(".l-group", jform).width(jform.width() * 0.95).append("<div class='togglebtn'></div>");
             }
+            //生成ligerui表单样式
+            $(".l-form-container", jform).find("input,select,textarea").each(function ()
+            {
+                p.editorBulider.call(g, $(this));
+            });
+            g.trigger('afterSetFields');
+        },
+        _render: function ()
+        {
+            var g = this, p = this.options;
+            var jform = $(this.element);
             //生成ligerui表单样式
             $("input,select,textarea", jform).each(function ()
             {
                 p.editorBulider.call(g, $(this));
             });
+            g.set(p);
+            if (p.buttons)
+            {
+                var jbuttons = $('<ul class="l-form-buttons"></ul>').appendTo(jform);
+                $(p.buttons).each(function ()
+                {
+                    var jbutton = $('<li><div></div></li>').appendTo(jbuttons);
+                    $("div:first", jbutton).ligerButton(this);
+                });
+            }
         },
         //标签部分
         _buliderLabelContainer: function (field)
@@ -182,7 +377,12 @@
             var labelAlign = field.labelAlign || p.labelAlign;
             if (label) label += p.rightToken;
             var out = [];
-            out.push('<li style="');
+            out.push('<li');
+            if (p.labelCss)
+            {
+                out.push(' class="' + p.labelCss + '"');
+            }
+            out.push(' style="');
             if (labelWidth)
             {
                 out.push('width:' + labelWidth + 'px;');
@@ -191,6 +391,7 @@
             {
                 out.push('text-align:' + labelAlign + ';');
             }
+
             out.push('">');
             if (label)
             {
@@ -200,13 +401,18 @@
             return out.join('');
         },
         //控件部分
-        _buliderControlContainer: function (field)
+        _buliderControlContainer: function (field, fieldIndex)
         {
             var g = this, p = this.options;
             var width = field.width || p.inputWidth;
             var align = field.align || field.textAlign || field.textalign || p.align;
             var out = [];
-            out.push('<li style="');
+            out.push('<li');
+            if (p.fieldCss)
+            {
+                out.push(' class="' + p.fieldCss + '"');
+            }
+            out.push(' style="');
             if (width)
             {
                 out.push('width:' + width + 'px;');
@@ -216,7 +422,7 @@
                 out.push('text-align:' + align + ';');
             }
             out.push('">');
-            out.push(g._buliderControl(field));
+            out.push(g._buliderControl(field, fieldIndex));
             out.push('</li>');
             return out.join('');
         },
@@ -226,53 +432,79 @@
             var g = this, p = this.options;
             var spaceWidth = field.space || field.spaceWidth || p.space;
             var out = [];
-            out.push('<li style="');
+            out.push('<li');
+            if (p.spaceCss)
+            {
+                out.push(' class="' + p.spaceCss + '"');
+            }
+            out.push(' style="');
             if (spaceWidth)
             {
                 out.push('width:' + spaceWidth + 'px;');
             }
-            out.push('">');
+            out.push('">'); 
+            if (field.validate && field.validate.required)
+            {
+                out.push("<span class='l-star'>*</span>");
+            }
             out.push('</li>');
             return out.join('');
         },
-        _buliderControl: function (field)
+        _buliderControl: function (field, fieldIndex)
         {
             var g = this, p = this.options;
-            var width = field.width || p.inputWidth;
-            var name = field.name || field.id;
-            var out = [];
-            if (field.comboboxName && field.type == "select")
-            {
-                out.push('<input type="hidden" id="' + p.prefixID + name + '" name="' + name + '" />');
+            var width = field.width || p.inputWidth,
+            name = field.name || field.id,
+            type = (field.type || "text").toLowerCase(),
+            readonly = (field.readonly || (field.editor && field.editor.readonly)) ? true : false;
+            var out = [];   
+            if (type == "textarea" || type == "htmleditor")
+            { 
+                out.push('<textarea '); 
             }
-            if (field.textarea || field.type == "textarea")
+            else if ($.inArray(type, ["checkbox", "radio", "password", "file"]) != -1)
             {
-                out.push('<textarea ');
+                out.push('<input type="' + type + '" ');
             }
-            else if (field.type == "checkbox")
+            else if ($.inArray(type, ["select", "combobox", "autocomplete", "popup", "radiolist", "checkboxlist", "listbox"]) != -1)
             {
-                out.push('<input type="checkbox" ');
-            }
-            else if (field.type == "radio")
-            {
-                out.push('<input type="radio" ');
-            }
-            else if (field.type == "password")
-            {
-                out.push('<input type="password" ');
+                out.push('<input type="hidden" ');
             }
             else
             {
                 out.push('<input type="text" ');
             }
-            if (field.cssClass)
+            out.push('name="' + name + '" ');
+            out.push('fieldindex="' + fieldIndex + '" '); 
+            field.cssClass && out.push('class="' + field.cssClass + '" ');
+            p.appendID  && out.push(' id="' + name + '" '); 
+            out.push(g._getInputAttrHtml(field)); 
+            if (field.validate && !readonly)
             {
-                out.push('class="' + field.cssClass + '" ');
+                out.push(" validate='" + p.toJSON(field.validate) + "' ");
+                g.validate = g.validate || {};
+                g.validate.rules = g.validate.rules || {};
+                g.validate.rules[name] = field.validate;
+                if (field.validateMessage)
+                {
+                    g.validate.messages = g.validate.messages || {};
+                    g.validate.messages[name] = field.validateMessage;
+                }
             }
-            if (field.type)
+            out.push(' />');
+            return out.join('');
+        },
+        _getInputAttrHtml: function (field)
+        {
+            var out = [], type = (field.type || "text").toLowerCase();
+            if (type == "textarea")
             {
-                out.push('ltype="' + field.type + '" ');
+                field.cols && out.push('cols="' + field.cols + '" ');
+                field.rows && out.push('rows="' + field.rows + '" ');
             }
+            out.push('ltype="' + type + '" ');
+            field.op && out.push('op="' + field.op + '" ');
+            field.vt && out.push('vt="' + field.vt + '" ');
             if (field.attr)
             {
                 for (var attrp in field.attr)
@@ -280,34 +512,21 @@
                     out.push(attrp + '="' + field.attr[attrp] + '" ');
                 }
             }
-            if (field.comboboxName && field.type == "select")
-            {
-                out.push('name="' + field.comboboxName + '"');
-                if (p.appendID)
-                {
-                    out.push(' id="' + p.prefixID + field.comboboxName + '" ');
-                }
-            }
-            else
-            {
-                out.push('name="' + name + '"');
-                if (p.appendID)
-                {
-                    out.push(' id="' + name + '" ');
-                }
-            }
-            //参数
-            var fieldOptions = $.extend({
-                width: width - 2
-            }, field.options || {});
-            out.push(" ligerui='" + p.toJSON(fieldOptions) + "' ");
-            //验证参数
-            if (field.validate)
-            {
-                out.push(" validate='" + p.toJSON(field.validate) + "' ");
-            }
-            out.push(' />');
             return out.join('');
+        }
+    });
+      
+    //分组 收缩/展开
+    $(".l-form .l-group .togglebtn").live('click', function ()
+    {
+        if ($(this).hasClass("togglebtn-down")) $(this).removeClass("togglebtn-down");
+        else $(this).addClass("togglebtn-down");
+        var boxs = $(this).parent().nextAll("ul,div");
+        for (var i = 0; i < boxs.length; i++)
+        {
+            var jbox = $(boxs[i]);
+            if (jbox.hasClass("l-group")) break;
+            jbox.toggle();
         }
     });
 })(jQuery);

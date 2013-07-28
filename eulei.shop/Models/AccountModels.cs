@@ -16,7 +16,8 @@ namespace eulei.shop.Models
     {
         [Display(Name = "用户名：")]
         public string UserName { get; set; }
-
+        [Display(Name = "用户ID：")]
+        public Guid UserID { get; set; }
         [Display(Name = "Email：")]
         public string Email { get; set; }
 

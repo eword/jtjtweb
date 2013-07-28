@@ -5,8 +5,15 @@
     文章流程
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery.form.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery.validate.min.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Libs/ligerUI/js/core/base.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Libs/ligerUI/js/ligerui.min.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Libs/ligerUI/js/plugins/ligerComboBox.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Libs/ligerUI/js/plugins/ligerTree.js") %>"></script>
     <script type="text/javascript" src="<%: Url.Content("~/Content/js/confirm.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Content/themes/ui/js/jquery-ui-1.8.22.custom.min.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery.form.js") %>"></script>
+    <script type="text/javascript" src="<%: Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js") %>"></script>
     <script type="text/javascript">
         $(function () {
                         <%if (Model.ArticleIsApplyReturn)
@@ -17,8 +24,8 @@
                 cancel: '否',
                 timeout: 10000,
                 buttons: {
-                wrapper:'<button></button>',
-                separator:'  '
+                    wrapper: '<button></button>',
+                    separator: ''
                 }
             });
             <%}%>
@@ -32,9 +39,6 @@
                 }
                 $("#postForm").first().attr("action", "/manage/article/ReturnToAuthor/<%=Model.ArticleID%>").submit();
             });
-
-
-
         });
     </script>
     <br />
@@ -48,9 +52,11 @@
             <tr>
                 <td>
                     <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
-                      <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
-                      <%:Html.Hidden("NextUserIDList",(string)ViewBag.NextUserIDList)%>
-                    下一步办理人：    <%:Html.Hidden("NextUserList",(string)ViewBag.NextUserList)%><input type="submit" id="changeUser" class="btnsubmit  rmargin15" value="修改" />
+                    <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
+                    <%:Html.Hidden("NextUserIDList",(string)ViewBag.NextUserIDList)%>
+                    下一步办理人：   
+                    
+                     <%:Html.TextBox("NextUserList", (string)ViewBag.NextUserList, )%><input type="submit" id="changeUser" class="btnsubmit  rmargin15" value="…" />
                     <br />
                     <input type="submit" id="tb_past" class="btnsubmit  rmargin15" value="<%:ViewBag.Title %>" />
                     =><%:Html.ActionLink("操作记录","GetArticleOperationgRecord","Article",new{@id=Model.ArticleID,@area="manage", @_returnUrl = Request.Url.PathAndQuery },new{@target="_blank",@class="tred",@title="点击查看操作记录"}) %><=
@@ -107,6 +113,116 @@
     </div>
     <div class="pager">
         <% Html.RenderAction("CustomerPagination", "Common", new { @Area = "", @CustomerUrl = ViewBag.Url, @FirstPage = ViewBag.FirstPage, @CurrentPage = ViewBag.CurrentPage, @LastPage = ViewBag.LastPage });%>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#dialog-form-SetUsers").dialog({
+                autoOpen: false,
+                height: 600,
+                width: 500,
+                modal: true,
+                close: function () {
+                    $("#userList").ligerTree().clear();
+                },
+                buttons: {
+                    "提交": function () {
+
+                        var notes = $("#userList").ligerGetTreeManager().getChecked();
+                        var userList = "";
+                        for (var i = 0; i < notes.length; i++) {
+                            if (i == 0) {
+                                userList += notes[i].data.id;
+                            }
+                            else {
+                                userList += "," + notes[i].data.id;
+                            }
+                        }
+
+                        userList = encodeURI(userList);
+                        userList = encodeURI(userList);
+                        $.ajax({
+                            type: "get",
+                            url: "/manage/WorkFlow/SetUsers",
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            data: "id=" + $("#FlowTemplateID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                            success: function (msg) {
+                                $("#dialog-form-SetUsers").dialog("close");
+                                alert("OK:" + msg);
+                                window.location.reload();
+                            },   //操作成功后的操作！msg是后台传过来的值
+                            error: function (msg) { alert("Error:" + msg); }   //操作成功后的操作！msg是后台传过来的值
+                        });
+
+                    },
+                    "取消": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+            $("#dialog-form-SetUsers").dialog({
+                autoOpen: false,
+                height: 600,
+                width: 500,
+                modal: true,
+                close: function () {
+                    $("#userList").ligerTree().clear();
+                },
+                buttons: {
+                    "提交": function () {
+
+                        var notes = $("#userList").ligerGetTreeManager().getChecked();
+                        var userList = "";
+                        for (var i = 0; i < notes.length; i++) {
+                            if (i == 0) {
+                                userList += notes[i].data.id;
+                            }
+                            else {
+                                userList += "," + notes[i].data.id;
+                            }
+                        }
+
+                        userList = encodeURI(userList);
+                        userList = encodeURI(userList);
+                        $.ajax({
+                            type: "get",
+                            url: "/manage/WorkFlow/SetUsers",
+                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                            data: "id=" + $("#FlowTemplateID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
+                            success: function (msg) {
+                                $("#dialog-form-SetUsers").dialog("close");
+                                alert("OK:" + msg);
+                                window.location.reload();
+                            },   //操作成功后的操作！msg是后台传过来的值
+                            error: function (msg) { alert("Error:" + msg); }   //操作成功后的操作！msg是后台传过来的值
+                        });
+
+                    },
+                    "取消": function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+        function getUserList(id) {
+            $("#FlowTemplateID").val(id);
+            $("#userList").ligerTree({
+                nodeWidth: 180,
+                url: '<%: Url.Content("~/manage/WorkFlow/GetJsonForUserList?id=") %>' + id + '&time=' + Math.random(),
+                checkbox: true,
+                ischecked: true,
+                single: false,
+                textFieldName: "textcontent",
+                idFieldName: "id",
+                parentIDFieldName: "fid"
+            });
+            $("#dialog-form-SetUsers").dialog("open");
+        };
+    </script>
+    <div id="dialog-form-SetUsers" title="设置人员">
+        <div id="SetUsersAjaxBox" class="widtPercent100">
+            <%:Html.Hidden("FlowTemplateID") %>
+            <ul id="userList" class="fl"></ul>
+        </div>
     </div>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="headOtherInfo" runat="server">

@@ -22,7 +22,7 @@
                 height: 20,
                 selectBoxWidth: 250,
                 selectBoxHeight: 300, lable: '文章分类',
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'ArticleTypeID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'ArticleTypeID', treeLeafOnly: false, hideOnLoseFocus: true,
                 tree: {
                     url: '<%: Url.Content("~/Common/GetJsonForArticleTypeID") %>',
                     checkbox: false,
@@ -41,7 +41,7 @@
                     height: 20,
                     selectBoxWidth: 250,
                     selectBoxHeight: 300,
-                    textField: 'textcontent', valueField: 'id', valueFieldID: 'FlowSourceID', treeLeafOnly: false,
+                    textField: 'textcontent', valueField: 'id', valueFieldID: 'FlowTemplateArticleTypeID', treeLeafOnly: false, hideOnLoseFocus: true,
                     tree: {
                         url: '<%: Url.Content("~/WorkFlow/GetJsonForArticleTypeIDWithNoCreate") %>',
                         checkbox: false,
@@ -164,7 +164,7 @@
             </div>
             <br />
             <div>
-                <%:Html.CheckBox("FlowSendMoveMsg") %>是否默认发送短信提醒？
+                <%:Html.CheckBox("FlowTemplateSendMoveMsg") %>是否默认发送短信提醒？
             </div>
             <div class="error">
             </div>

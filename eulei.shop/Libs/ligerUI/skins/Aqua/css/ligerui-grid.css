@@ -61,12 +61,15 @@ background: url('../images/panel/header-bg.gif') repeat-x left -1px; position:re
 {
     font-size:12px;
 }
- .l-grid table{border-spacing:0 0;} 
-.l-grid-header
-{
-    border-bottom:1px solid #A3C0E8;
-   height:22px; line-height:22px;background:#E2F0FF url('../images/grid/header-bg.gif') repeat-x left bottom; overflow:hidden; width:100%;
-}
+ .l-grid table{border-spacing:0 0;}
+.l-grid-header {
+	border-bottom: 1px solid #A3C0E8;
+	height: 22px;
+	line-height: 22px;
+	background: #E2F0FF url('../images/grid/header-bg.gif') repeat-x left bottom;
+	overflow: hidden;
+	width: 100%;
+} 
 .l-grid-scroller {
 position: relative;
     top: 0px;
@@ -211,7 +214,9 @@ padding-right: 10px;
 } 
 .l-grid-hd-cell-text
 {
-    text-align:center; cursor:pointer;
+    text-align:center; 
+	cursor:pointer; 
+	overflow:hidden;
 }  
 .l-grid-hd-cell
 {   
@@ -319,6 +324,9 @@ padding-right: 10px;
 {
       background-position:0px -13px;
 }
+.l-grid-hd-cell-inner {
+	overflow: hidden;
+}
 .l-grid-hd-cell-checkbox
 {
    padding:0; margin:0;
@@ -341,7 +349,7 @@ padding-right: 10px;
 }
 .l-panel-bar
 {
-    height:32px;background:#C9DFFF url('../images/panel/bar-bg.gif') repeat-x left bottom;overflow:hidden;
+    height:32px;background:#C9DFFF url('../images/panel/bar-bg.gif') repeat-x left bottom;overflow:hidden;border:0;
     border-top:1px solid #84A0C4;
 }
 .l-panel-bbar-inner
@@ -451,7 +459,7 @@ background: url(../images/icon/icon-loading.gif) no-repeat; background-position:
 .l-grid1 .l-grid-body{overflow:hidden;}
 .l-grid1 .l-grid-detailpanel{border-right:1px solid white;}
 .l-frozen .l-grid2{position:absolute; top:0px; left:0px; width:100%; }
-.l-frozen .l-grid2 .l-grid-body{overflow-x:scroll;}
+.l-frozen .l-grid2 .l-grid-body{overflow-x:auto;}
 .l-frozen .l-grid1{position:absolute; top:0px; left:0px;display:block;}
 
 
@@ -506,6 +514,9 @@ background: url(../images/icon/icon-loading.gif) no-repeat; background-position:
 .l-toolbar-item .l-icon,.l-toolbar-item img{ position:absolute; left:2px; top:2px; display:block;}
 .l-toolbar-item img{ width:16px; height:16px; border:0px;}
 .l-toolbar-item-hasicon{ padding-left:22px;}
+.l-toolbar-item-disable{cursor:default;}
+.l-toolbar-item-disable span{color: #A1A1A1;}
+.l-toolbar-item-color{border: 1px solid #ccc;position: absolute;width: 14px;height: 14px;left: 3px;top: 3px;}
 /*
     搜索栏
 */

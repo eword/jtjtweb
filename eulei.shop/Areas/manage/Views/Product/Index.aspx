@@ -19,7 +19,7 @@
                 height: 20,
                 selectBoxWidth: 200,
                 selectBoxHeight: 200, lable: '商品分类',
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'MerchandiseTypeID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'MerchandiseTypeID', treeLeafOnly: false, hideOnLoseFocus: true,
                 tree: { url: '<%: Url.Content("~/Common/GetJsonForMerchandiseTypeID") %>',
                     checkbox: false,
                     textFieldName: "textcontent",

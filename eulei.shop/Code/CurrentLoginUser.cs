@@ -15,6 +15,8 @@ namespace eulei.shop.Code
             _user.UserName = userName;
             _user.FriendlyName =_profile.GetPropertyValue("FriendlyName").ToString();
             _user.TEL = _profile.GetPropertyValue("TEL").ToString();
+            Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
+            _user.UserID = _dct.aspnet_Users.Single(m => m.UserName.Equals(userName)).UserId;
             return _user;
         }
     }

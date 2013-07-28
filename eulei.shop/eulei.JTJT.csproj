@@ -1761,12 +1761,15 @@
     <Content Include="Libs\ligerUI\skins\Silvery\images\layout\tabs-item-over-bg.gif" />
     <Content Include="Libs\ligerUI\skins\Silvery\images\layout\tabs-item-right-bg.gif" />
     <Content Include="Libs\ligerUI\skins\Silvery\images\layout\tabs-tools.gif" />
+    <Content Include="Libs\MvcSiteMapProvider.dll" />
+    <Content Include="Libs\MvcSiteMapProvider.xml" />
     <Content Include="Libs\Q42.Wheels.Mvc.Paging.dll" />
     <Content Include="Readerme.txt" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Areas\CustomerService\Views\Web.config" />
     <Content Include="Areas\CustomerService\Views\Shared\CustomerService_Areas.Master" />
+    <Content Include="Libs\ligerUI\skins\icons\新建 Microsoft Office Excel 工作表.xlsx" />
     <None Include="Service References\ServiceShareArticle\ShareArticle.disco" />
     <None Include="Service References\ServiceShareArticle\configuration91.svcinfo" />
     <None Include="Service References\ServiceShareArticle\configuration.svcinfo" />
@@ -1882,7 +1885,6 @@
     <None Include="ckfinder\plugins\fileeditor\codemirror\LICENSE" />
     <None Include="ckfinder\userfiles\.htaccess" />
     <Fakes Include="Fakes\CKFinder.fakes" />
-    <None Include="Libs\ligerUI\skins\icons\新建 Microsoft Office Excel 工作表.xlsx" />
     <None Include="Models\Linq_Default.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Linq_Default.designer.cs</LastGenOutput>

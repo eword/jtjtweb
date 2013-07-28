@@ -148,7 +148,7 @@
                 selectBoxWidth: 200,
                 selectBoxHeight: 200,
                    initValue:<%=Model.MerchandiseType %>,
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'MerchandiseType', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'MerchandiseType', treeLeafOnly: false,hideOnLoseFocus: true,
                 tree: { url: '<%: Url.Content("~/Common/GetJsonForMerchandiseTypeID") %>?time=' + Math.random(),
                     checkbox: false,
                     textFieldName: "textcontent",

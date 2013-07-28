@@ -1,0 +1,17 @@
+2013-07-25 09:53:20:=>未将对象引用设置到对象的实例。@“manage/WorkFlow/Create【post】”
+2013-07-25 09:59:10:=>不能将值 NULL 插入列 'FlowTemplatePreviousStatusDesp'，表 'webJTJT.dbo.SA_FlowTemplate'；列不允许有空值。INSERT 失败。
+语句已终止。@“manage/WorkFlow/Create【post】”
+2013-07-25 10:05:11:=>序列包含一个以上的元素@“manage/WorkFlow/SetStep【post】”
+2013-07-25 12:09:06:=>值不能为 null。
+参数名: input@“manage/WorkFlow/SetUsers【post】”
+2013-07-25 12:17:15:=>不能将值 NULL 插入列 'FlowTemplatePreviousStatusDesp'，表 'webJTJT.dbo.SA_FlowTemplate'；列不允许有空值。INSERT 失败。
+语句已终止。@“manage/WorkFlow/CreateStep【post】”
+2013-07-25 12:27:11:=>不能将值 NULL 插入列 'FlowTemplatePreviousStatusDesp'，表 'webJTJT.dbo.SA_FlowTemplate'；列不允许有空值。INSERT 失败。
+语句已终止。@“manage/WorkFlow/CreateStep【post】”
+2013-07-25 12:27:18:=>输入字符串的格式不正确。@“manage/WorkFlow/CreateStep【post】”
+2013-07-25 15:48:51:=>序列不包含任何元素@“manage/WorkFlow/CreateStep【post】”
+2013-07-25 16:47:10:=>序列不包含任何元素@“manage/WorkFlow/CreateStep【post】”
+2013-07-25 17:55:42:=>违反了 PRIMARY KEY 约束 'PK_SA_FlowUser1'。不能在对象 'dbo.SA_FlowUser' 中插入重复键。
+语句已终止。@“manage/Article/Create【post】”
+2013-07-25 17:57:37:=>违反了 PRIMARY KEY 约束 'PK_SA_FlowUser1'。不能在对象 'dbo.SA_FlowUser' 中插入重复键。
+语句已终止。@“manage/Article/Create【post】”

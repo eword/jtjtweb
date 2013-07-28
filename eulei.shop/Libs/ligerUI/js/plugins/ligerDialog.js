@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 
@@ -55,8 +55,7 @@
         content: '',    //内容
         target: null,   //目标对象，指定它将以appendTo()的方式载入
         url: null,      //目标页url，默认以iframe的方式载入
-        load: false,     //是否以load()的方式加载目标页的内容
-        onLoaded: null,
+        load: false,     //是否以load()的方式加载目标页的内容 
         type: 'none',   //类型 warn、success、error、question
         left: null,     //位置left
         top: null,      //位置top
@@ -75,7 +74,16 @@
         showMin: false,                             //是否显示最小化按钮
         slide: $.browser.msie ? false : true,        //是否以动画的形式显示 
         fixedType: null,            //在固定的位置显示, 可以设置的值有n, e, s, w, ne, se, sw, nw
-        showType: null             //显示类型,可以设置为slide(固定显示时有效)
+        showType: null,             //显示类型,可以设置为slide(固定显示时有效)
+        onLoaded: null,
+        onExtend: null,
+        onExtended:null,
+        onCollapse:null,
+        onCollapseed: null,
+        onContentHeightChange: null,
+        onClose: null,
+        onClosed: null,
+        onStopResize : null
     };
     $.ligerDefaults.DialogString = {
         titleMessage: '提示',                     //提示文本标题
@@ -109,6 +117,7 @@
         _render: function ()
         {
             var g = this, p = this.options;
+            var tmpId = "";
             g.set(p, true);
             var dialog = $('<div class="l-dialog"><table class="l-dialog-table" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td class="l-dialog-tl"></td><td class="l-dialog-tc"><div class="l-dialog-tc-inner"><div class="l-dialog-icon"></div><div class="l-dialog-title"></div><div class="l-dialog-winbtns"><div class="l-dialog-winbtn l-dialog-close"></div></div></div></td><td class="l-dialog-tr"></td></tr><tr><td class="l-dialog-cl"></td><td class="l-dialog-cc"><div class="l-dialog-body"><div class="l-dialog-image"></div> <div class="l-dialog-content"></div><div class="l-dialog-buttons"><div class="l-dialog-buttons-inner"></div></td><td class="l-dialog-cr"></td></tr><tr><td class="l-dialog-bl"></td><td class="l-dialog-bc"></td><td class="l-dialog-br"></td></tr></tbody></table></div>');
             $('body').append(dialog);
@@ -181,6 +190,12 @@
                         g.jiframe.attr("src", p.url);
                         g.frame = window.frames[g.jiframe.attr("name")];
                     }, 0);
+                    // 为了解决ie下对含有iframe的div窗口销毁不正确，进而导致第二次打开时焦点不在当前图层的问题
+                    // 加入以下代码 
+                    tmpId = 'jquery_ligerui_' + new Date().getTime();
+                    g.tmpInput = $("<input></input>");
+                    g.tmpInput.attr("id", tmpId);
+                    g.dialog.content.prepend(g.tmpInput);
                 }
             }
             if (p.opener) g.dialog.opener = p.opener;
@@ -229,7 +244,7 @@
                 if (p.top != null) top = p.top;
                 else p.top = top = 0.5 * ($(window).height() - g.dialog.height()) + $(window).scrollTop() - 10;
                 if (left < 0) p.left = left = 0;
-                if (top < 0) p.top = top = 0;
+                if (top < 0) p.top = top = 0; 
                 g.dialog.css({ left: left, top: top });
             }
             g.show();
@@ -249,7 +264,11 @@
             g._updateBtnsWidth();
             g._saveStatus();
             g._onReisze();
-
+            if (tmpId != "")
+            {
+                $("#" + tmpId).focus();
+                $("#" + tmpId).remove();
+            }
         },
         _borderX: 12,
         _borderY: 32,
@@ -462,7 +481,9 @@
             if (value >= this._borderY)
             {
                 var height = value - this._borderY - g.dialog.buttons.outerHeight();
+                if (g.trigger('ContentHeightChange', [height]) == false) return;
                 g.dialog.content.height(height);
+                g.trigger('ContentHeightChanged', [height]);
             }
         },
         _setShowMax: function (value)
@@ -599,16 +620,37 @@
             {
                 g.dialog.animate({ bottom: -1 * p.height }, function ()
                 {
-                    g.dialog.remove();
+                    remove();
                 });
-            } else
+            }
+            else
             {
+                remove();
+            }
+            function remove()
+            {
+                var jframe = $('iframe', g.dialog);
+                if (jframe.length)
+                {
+                    var frame = jframe[0];
+                    frame.src = "about:blank";
+                    frame.contentWindow.document.write('');
+                    $.browser.msie && CollectGarbage();
+                    jframe.remove();
+                }
                 g.dialog.remove();
             }
         },
         close: function ()
-        {
+        { 
             var g = this, p = this.options;
+            if (g.trigger('Close') == false) return;
+            g.doClose();
+            if (g.trigger('Closed') == false) return;
+        },
+        doClose : function()
+        {
+            var g = this;
             l.win.removeTask(this);
             g.unmask();
             g._removeDialog();
@@ -661,7 +703,7 @@
             }
         },
         hidden: function ()
-        {
+        { 
             var g = this;
             l.win.removeTask(g);
             g.dialog.hide();
@@ -716,9 +758,16 @@
                     onStartDrag: function ()
                     {
                         l.win.setFront(g);
+			g.dialog.content.addClass('l-dialog-content-dragging');
+                    },
+                    onDrag: function (current,e)
+                    {
+                        var pageY = e.pageY || e.screenY;
+                        if (pageY < 0) return false;
                     },
                     onStopDrag: function ()
-                    {
+                    { 
+			g.dialog.content.removeClass('l-dialog-content-dragging');
                         if (p.target)
                         {
                             var triggers1 = l.find($.ligerui.controls.DateEditor);
@@ -775,11 +824,12 @@
                             g.dialog.body.css({ width: current.newWidth - g._borderX });
                         }
                         if (current.newHeight)
-                        {
+                        { 
                             g.set({ height: current.newHeight });
                         }
                         g._onReisze();
                         g._saveStatus();
+                        g.trigger('stopResize');
                         return false;
                     }, animate: false
                 });
@@ -877,8 +927,7 @@
     {
         content = content || "";
         if (typeof (title) == "function")
-        {
-
+        { 
             callback = title;
             type = null;
         }
@@ -893,7 +942,7 @@
                 callback(item, Dialog, index);
         };
         p = {
-            content: content,
+            content: content, 
             buttons: [{ text: $.ligerDefaults.DialogString.ok, onclick: btnclick}]
         };
         if (typeof (title) == "string" && title != "") p.title = title;

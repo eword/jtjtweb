@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -294,7 +294,10 @@
                     if (editorid && g.editors[editorid])
                     {
                         var field = g.getField(this.field);
-                        p.editors[field.editor.type].setValue(g.editors[editorid], this.value, field);
+                        if (field && field.editor)
+                        {
+                            p.editors[field.editor.type].setValue(g.editors[editorid], this.value, field);
+                        }
                     }
                     else
                     {
@@ -332,6 +335,7 @@
             {
                 var jopsel = $(this).parent().next().find("select:first");
                 var fieldName = $(this).val();
+                if (!fieldName) return;
                 var field = g.getField(fieldName);
                 //字段类型处理
                 var fieldType = field.type || "string";

@@ -71,3 +71,17 @@
 .l-dialog-btn-over .l-dialog-btn-l{background-position:0px -50px;}
 .l-dialog-btn-r{ height:25px; position:absolute; right:0px; top:0px; width:3px;background-position:-4px 0px;}
 .l-dialog-btn-over .l-dialog-btn-r{background-position:-4px -50px;}
+
+
+.l-selectorwin .l-dialog-content {
+	overflow:hidden; padding:0px;
+}
+.l-selectorwin .l-dialog-content .l-form {
+	margin:0; padding:2px; background:#F8F8F8;border-bottom: 1px solid #C6C6C6;
+}
+.l-selectorwin .l-dialog-buttons {
+	margin-top: 0;
+}
+.l-selectorwin .l-panel {
+	border:0;
+}

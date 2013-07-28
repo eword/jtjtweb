@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -16,7 +16,10 @@
     {
         return $.ligerui.run.call(this, "ligerGetCheckBoxManager", arguments);
     };
-    $.ligerDefaults.CheckBox = { disabled: false };
+    $.ligerDefaults.CheckBox = {
+        disabled: false,
+        readonly : false //只读
+    };
 
     $.ligerMethos.CheckBox = {};
 
@@ -46,8 +49,8 @@
             g.wrapper.prepend(g.link);
             g.link.click(function ()
             {
-                if (g.input.attr('disabled')) { return false; }
-                if (p.disabled) return false;
+                if (g.input.attr('disabled') || g.input.attr('readonly')) { return false; }
+                if (p.disabled || p.readonly) return false;
                 if (g.trigger('beforeClick', [g.element]) == false) return false; 
                 if ($(this).hasClass("l-checkbox-checked"))
                 {

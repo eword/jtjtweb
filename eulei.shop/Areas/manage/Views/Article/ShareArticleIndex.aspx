@@ -20,7 +20,7 @@
                 height: 20,
                 selectBoxWidth: 250,
                 selectBoxHeight: 300, lable: '文章转载分类：',
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'ShareArticleCitedTypeID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'ShareArticleCitedTypeID', treeLeafOnly: false,hideOnLoseFocus: true,
                 tree: {
                     url: '<%: Url.Content("~/Common/GetJsonForArticleTypeID") %>',
                     checkbox: false,
@@ -41,7 +41,7 @@
                 height: 20,
                 selectBoxWidth: 250,
                 selectBoxHeight: 300, lable: '文章状态：',
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'id', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'id', treeLeafOnly: false,hideOnLoseFocus: true,
                 tree: {
                     data: proData,
                     checkbox: false,

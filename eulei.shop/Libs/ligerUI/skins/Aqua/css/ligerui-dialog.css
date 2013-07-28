@@ -134,6 +134,7 @@
 
 .l-dialog-content{ padding-left:18px; padding-top:14px;padding-bottom:12px; overflow:auto;} 
 .l-dialog-content-noimage {padding-left:6px; padding-top:10px;padding-bottom:10px;}
+.l-dialog-content-dragging iframe { }
 .l-dialog-win .l-dialog-content{ padding-top:3px; padding-bottom:3px;}
 .l-dialog-content-nopadding{ padding:0;}
 .l-dialog-content iframe {border: none;width: 100%;height: 100%;}
@@ -168,3 +169,18 @@
 .l-messagebox-btn-over .l-messagebox-btn-l,.l-dialog-btn-over .l-dialog-btn-l{background-position:0px -75px;}
 .l-messagebox-btn-r,.l-dialog-btn-r{ height:24px; position:absolute; right:0px; top:0px; width:4px;background-position:-4px -24px;}
 .l-messagebox-btn-over .l-messagebox-btn-r,.l-dialog-btn-over .l-dialog-btn-r{background-position:-4px -75px;}
+
+
+/* 选择窗口,填充模式,隐藏滚动条 */
+.l-selectorwin .l-dialog-content {
+	overflow:hidden; padding:0px;
+}
+.l-selectorwin .l-dialog-content .l-form {
+	margin:0; padding:2px; background:#EAF2FF;border-bottom: 1px solid #AECAF0;
+}
+.l-selectorwin .l-dialog-buttons {
+	margin-top: 0;
+}
+.l-selectorwin .l-panel {
+	border:0;
+}

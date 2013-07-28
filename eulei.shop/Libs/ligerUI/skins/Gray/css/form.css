@@ -42,8 +42,18 @@ border-color: #F77;
 .l-text-editing
 {
      
+} 
+/* 只读状态*/
+.l-text-readonly {
+	background:none; border:0; margin:2px;
+	border-bottom:1px solid #b1b1b1;
 }
-
+.l-text-readonly input {
+	background:none; border:0;
+}
+.l-text-readonly .l-trigger,.l-text-readonly .l-trigger-icon {
+	display:none;
+} 
 /* 表单文本框 input:text */
 .l-text-field
 {
@@ -59,29 +69,41 @@ border-color: #F77;
 .l-trigger,.l-trigger-hover,.l-trigger-pressed
 {
     top:0px;right:0px;
-    width:16px;height:100%; 
+    width:16px;height:100%; border:0px; 
+    background:none;
+}  
+/* 下拉框/日期 取消选择 */
+.l-trigger-cancel {
+	right:19px;border-left:none;  background:none; 
 }
-.l-trigger
-{ 
-    border:0px;border-left:1px solid #B9B9B9; 
-    background:#D1D1D1 url('../images/ui/trigger.gif') repeat-x 0px 0px;
-}
-.l-trigger-hover
-{
-    border:0px;border-left:1px solid #B9B9B9; 
-    background:#CCCCCC url('../images/ui/trigger.gif') repeat-x 0px -20px;
-}
-.l-trigger-pressed
-{
-    border:0px;border-left:1px solid #B9B9B9; 
-    background:#C8C8C8 url('../images/ui/trigger.gif') repeat-x 0px -40px;
-
+.l-trigger-cancel .l-trigger-icon { 
+	background:url('../images/ui/icon-unselect.gif') no-repeat 50% 50% transparent;
 }
 /* 下拉框/日期 右侧那个可点击的区域里面的图标 */
 .l-trigger-icon
 {	width:100%;
 	height:100%;
-    background:url('../images/ui/icon-down.gif') no-repeat 50% 50%;
+    background:url('../images/ui/icon-down.gif') no-repeat 50% 50% transparent;
+}
+
+/* l-text-popup */
+.l-text-popup .l-trigger,.l-text-popup .l-trigger-hover,.l-text-popup .l-trigger-pressed
+{
+	top:0px;right:0px;
+    width:16px;height:100%;border:none;
+}
+.l-text-popup .l-trigger-cancel
+{
+	right :17px; border:0; background:transparent;height:100%;
+}
+
+.l-text-popup .l-trigger-icon 
+{
+	background: url('../images/ui/icon-select.gif') no-repeat 55% 55% transparent;
+}
+.l-text-popup .l-trigger-cancel .l-trigger-icon 
+{
+	background: url('../images/ui/icon-unselect.gif')  no-repeat 50% 53% transparent;
 }
 /* -------------
   * 调整器 *
@@ -92,7 +114,7 @@ border-color: #F77;
 .l-spinner-down .l-spinner-icon{background-image: url(../images/ui/icon-down.gif);}
 .l-spinner-up,.l-spinner-down {width: 100%;height: 50%;overflow: hidden;display: block;position: absolute;left: 0px;top: 0px;}
 .l-spinner-down{top: 50%;}
-.l-spinner-split{overflow: hidden;width: 13px;height: 1px;position: absolute;left: 1px;top: 50%;z-index: 10;background: #B5B8C8;   }
+.l-spinner-split{overflow: hidden;width: 13px;height: 1px;position: absolute;left: 1px;top: 50%;z-index: 10;background: #FFFFFF;   }
 
 /* -------------
    * 验证 *
@@ -102,11 +124,11 @@ border-color: #F77;
 /* -------------
   * 下拉框 *
 * ------------- */
-.l-box-select-grid{border-bottom:1px solid #A3C0E8;border-right:1px solid #A3C0E8;}
+.l-box-select-grid{border-bottom:1px solid #DBDBDB;border-right:1px solid #DBDBDB;}
 .l-box-select-grid thead td,.l-box-select-grid tr.l-table-headerow td{ 
 background:#F0F0F0; 
 }
-.l-box-select-grid td{padding:0;margin:0;height:22px; line-height:22px; border-left:1px solid #A3C0E8;border-top:1px solid #A3C0E8; }
+.l-box-select-grid td{padding:0;margin:0;height:22px; line-height:22px; border-left:1px solid #DBDBDB;border-top:1px solid #DBDBDB; }
  
 .l-box-select
 {
@@ -126,6 +148,35 @@ background:#F0F0F0;
 .l-box-select .l-table-nocheckbox td:hover,.l-box-select .l-table-nocheckbox td.l-over{ background-color:#E7EDF8; cursor:pointer;}
 .l-box-select .l-table-nocheckbox td.l-selected{ background-color:#DFE8F6;}
 .l-box-select .l-box-select-table td{ padding:2px; text-align:left;} 
+
+.l-box-select-lookup {
+	height:auto;
+}
+.l-box-select-lookup .l-form {
+	margin:0; padding:2px; background:#F1F1F1;border-bottom: 1px solid #D6D6D6;
+}
+.l-box-select-lookup .l-box-select-inner {
+	padding:0;overflow:hidden;
+}
+
+/* listbox */
+.l-listbox {
+	border:1px solid #D6D6D6; background:white;
+    width:130px; height:120px;font-size:12px; line-height:18px;
+}
+.l-listbox-grid{border-bottom:1px solid #D6D6D6;border-right:1px solid #D6D6D6;}
+.l-listbox-grid thead td,.l-listbox-grid tr.l-table-headerow td{ 
+background: #F0F0F0; border-top:none;
+}
+.l-listbox-grid td{padding:0;margin:0;height:22px; line-height:22px; border-left:1px solid #D6D6D6;border-top:1px solid #D6D6D6; }
+.l-listbox-inner{ margin:0; padding:0; width:100%;overflow:auto; height:100%;color:#333;}
+.l-listbox-inner .l-listbox-table{margin:0; padding:0; width:100%; }
+.l-listbox tr:hover td,.l-listbox tr.l-over td{ background-color:#E7EDF8; cursor:pointer; border-bottom:1px dotted #89A8E3;border-top:1px dotted #89A8E3;  }
+.l-listbox tr.l-selected td{ background-color:#DFE8F6;border-bottom:1px dotted #D6D6D6;border-top:1px dotted #D6D6D6;}
+.l-listbox td{ padding:2px; text-align:left;border-top:1px solid #ffffff;border-bottom:1px solid #fff;}
+.l-listbox .l-listbox-grid td{border-top:1px solid #D6D6D6;border-bottom:1px solid #D6D6D6;}
+.l-listbox .l-table-nocheckbox .l-checkboxrow { display:none;width:0px;}
+
 /* -------------
     * 复选框 *
 * ------------- */
@@ -134,6 +185,8 @@ background:#F0F0F0;
     * 单选框 *
 * ------------- */
  
+
+
 /* -----------------------
    *   日期控件 *
 * ----------------------- */

@@ -30,14 +30,14 @@ font-weight: bold;
 height: 28px;
 }
 .l-panel-header-text {
-line-height: 28px;
+line-height: 24px;
 padding-left: 15px;
 }
  .l-grid{ background-color:White;}
 .l-grid-header
 {
     border-bottom:1px solid #D6D6D6;  
-   height:30px; line-height:30px; background:#F1F1F1 url('../images/ui/gridalt.gif') top repeat-x;
+   height:24px; line-height:22px; background:#F1F1F1 url('../images/ui/gridalt.gif') top repeat-x;
 } 
 .l-grid-hd-cell-mul
 {
@@ -198,23 +198,10 @@ overflow: hidden;
 .l-grid1 .l-grid-body{overflow:hidden;}
 .l-grid1 .l-grid-detailpanel{border-right:1px solid white;}
 .l-frozen .l-grid2{position:absolute; top:0px; left:0px; width:100%; }
-.l-frozen .l-grid2 .l-grid-body{overflow-x:scroll;}
+.l-frozen .l-grid2 .l-grid-body{overflow-x:auto;}
 .l-frozen .l-grid1{position:absolute; top:0px; left:0px;display:block;}
  
-/*
-    工具条
-*/
-.l-toolbar
-{    
-    background:white  url('../images/ui/gridbar.jpg') repeat-x; height:28px;  line-height:28px;
-    border:none;
-}
-.l-toolbar-item
-{
-    float:left;margin-left:4px;
-}
-.l-toolbar-item .l-icon{ position:absolute; left:2px; top:2px;}
-.l-toolbar-item-hasicon{ padding-left:20px;}
+
 /*
     搜索栏
 */
@@ -234,7 +221,11 @@ overflow: hidden;
 .l-grid-row-cell-editing-leftcell {border-right-color:#B6B6B6;}
 .l-panel td.l-grid-row-cell-editing{ border-color:#B6B6B6; background:#EBF2FB url('../images/ui/grideditor.gif') top repeat-x;}
 .l-panel td.l-grid-row-cell-editing .l-text,.l-panel td.l-grid-row-cell-editing .l-text-wrapper{ margin-left:2px;}
-.l-grid-row-cell .l-text,.l-grid-editor .l-text{  border:1px solid #D3D3D3;} 
+.l-grid-row-cell .l-text,.l-grid-editor .l-text{  
+	border:1px solid #D3D3D3;
+	border-left:none;
+	border-right:none;
+} 
 .l-grid-row-cell .l-text-invalid, .l-grid-editor .l-text-invalid {border: 1px solid #F77;}
 .l-grid-detailpanel-edit{ padding-top:7px;padding-bottom:3px; background-color:#FAFAFF;}
 .l-grid-detailpanel .l-editbox{ float:left; margin:2px;margin-left:6px; margin-right:10px;}
@@ -267,3 +258,19 @@ float: left;
 height: 13px;
 margin: 2px; margin-top:9px;
 }
+/*
+    工具条
+*/
+.l-toolbar
+{    
+    background:white  url('../images/ui/gridbar.jpg') repeat-x; height:28px;  line-height:28px;
+    border:none;border-bottom:1px solid #D6D6D6;
+}
+.l-toolbar-item
+{
+    float:left;margin-left:4px;
+}
+.l-toolbar-item .l-icon{ position:absolute; left:2px; top:2px;}
+.l-toolbar-item-hasicon{ padding-left:20px;}
+.l-toolbar-item-disable{cursor:default;}
+.l-toolbar-item-disable span{color: #A1A1A1;}

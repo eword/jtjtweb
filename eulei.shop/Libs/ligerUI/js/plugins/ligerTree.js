@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -32,6 +32,7 @@
         statusName: '__status',
         isLeaf: null,              //是否子节点的判断函数
         single: false,               //是否单选
+		needCancel: true,			//已选的是否需要取消操作
         onBeforeExpand: function () { },
         onContextmenu: function () { },
         onExpand: function () { },
@@ -897,7 +898,7 @@
                 var clickOnTreeItemBtn = $(obj).hasClass("l-expandable-open") || $(obj).hasClass("l-expandable-close");
                 if (!$(obj).hasClass("l-checkbox") && !clickOnTreeItemBtn)
                 {
-                    if ($(">div:first", treeitem).hasClass("l-selected"))
+                    if ($(">div:first", treeitem).hasClass("l-selected") && p.needCancel)
                     {
                         if (g.trigger('beforeCancelSelect', [{ data: treenodedata, target: treeitem[0]}]) == false)
                             return false;

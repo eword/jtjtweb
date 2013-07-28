@@ -23,6 +23,7 @@ namespace eulei.shop.Areas.manage.Controllers
                 int _typeID = ArticleTypeID.HasValue ? ArticleTypeID.Value : 0;
                 if (_typeID == 0)
                 {
+
                     ViewData.Model = _dct.VW_SA_WorkFlow.OrderBy(m => m.ParentArticleTypeName).OrderBy(m => m.ArticleTypeName);
                 }
                 else
@@ -89,18 +90,26 @@ namespace eulei.shop.Areas.manage.Controllers
                 _result1.FlowTemplateIsSynergy = false;
                 _result1.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
                 _result1.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
-                _result1.FlowTemplateState = true;
+                _result1.FlowTemplateAlowEditStep = false;
                 _result1.FlowTemplateStatusDesp = "采编";
                 _result1.FlowTemplateStatusID = 1;
+                _result1.FlowTemplatePreviousStatusID = 0;
+                _result1.FlowTemplatePreviousStatusDesp = "起始";
+                _result1.FlowTemplateNextStatusID = 99;
+                _result1.FlowTemplateNextStatusDesp = "发布确认";
                 ///////////////////////////////////            
                 SA_FlowTemplate _result99 = new SA_FlowTemplate();
                 _result99.FlowTemplateAlowEdit = true;
                 _result99.FlowTemplateIsSynergy = false;
                 _result99.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true; ;
                 _result99.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
-                _result99.FlowTemplateState = true;
+                _result99.FlowTemplateAlowEditStep = false;
                 _result99.FlowTemplateStatusDesp = "发布确认";
                 _result99.FlowTemplateStatusID = 99;
+                _result99.FlowTemplatePreviousStatusID = 1;
+                _result99.FlowTemplatePreviousStatusDesp = "采编";
+                _result99.FlowTemplateNextStatusID = 100;
+                _result99.FlowTemplateNextStatusDesp = "流程结束";
                 ///////////////////////////////////
                 _dct.SA_FlowTemplate.InsertOnSubmit(_result1);
                 _dct.SA_FlowTemplate.InsertOnSubmit(_result99);
@@ -201,12 +210,12 @@ namespace eulei.shop.Areas.manage.Controllers
             catch (AuthorityException ex)
             {
                 LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/GetJsonForArticleTypeIDWithNoCreate”");
-               
+
             }
             catch (Exception ex)
             {
                 LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/GetJsonForArticleTypeIDWithNoCreate”");
-           
+
             }
             return _res;
         }
@@ -266,7 +275,7 @@ namespace eulei.shop.Areas.manage.Controllers
             catch (AuthorityException ex)
             {
                 LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/GetJsonForUserList”");
-               
+
             }
             catch (Exception ex)
             {
@@ -305,71 +314,71 @@ namespace eulei.shop.Areas.manage.Controllers
 
         public ActionResult SetUsers(int id, string userList)
         {
-            try
+            //try
+            //{
+            this.GetAuthority(SystemMemberShip.WorkFlowManage);
+            userList = HttpUtility.UrlDecode(userList, Encoding.UTF8);
+            userList = userList.ToUpper();
+            Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
+            var _userList = string.IsNullOrEmpty(userList) ? null : userList.Split(',');
+            var _users = from _r in _dct.VW_SA_UserInfo select _r.UserId;
+            var _existUser = (from _r in _dct.SA_FlowUserTemplate
+                              where _r.FlowTemplateID.Equals(id)
+                              select _r.FlowUserTemplateUserID.ToString()).ToArray();
+            string[] _newUser;
+            string[] _oldUser;
+
+            if (_userList != null)
             {
-                this.GetAuthority(SystemMemberShip.WorkFlowManage);
-                userList = HttpUtility.UrlDecode(userList, Encoding.UTF8);
-                userList = userList.ToUpper();
-                Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
-                var _userList = string.IsNullOrEmpty(userList) ? null : userList.Split(',');
-                var _users = from _r in _dct.VW_SA_UserInfo select _r.UserId;
-                var _existUser = (from _r in _dct.VW_SA_FlowInfo
-                                  where _r.FlowTemplateID.Equals(id)
-                                  select _r.FlowUserTemplateUserID.ToString()).ToArray();
-                string[] _newUser;
-                string[] _oldUser;
-
-                if (_userList != null)
-                {
-                    _newUser = _userList.Except(_existUser).ToArray();
-                    _oldUser = _existUser.Except(_userList).ToArray();
-                }
-                else
-                {
-                    _newUser = new string[0];
-                    _oldUser = _existUser.ToArray();
-                }
-
-                foreach (var item in _newUser)
-                {
-                    Guid _temp;
-                    //排除组织机构
-                    if (!Guid.TryParse(item, out _temp))
-                    {
-                        continue;
-                    }
-                    var _new = new SA_FlowUserTemplate();
-                    var _currentUser = _dct.VW_SA_UserInfo.Single(m => m.UserId.Equals(item));
-                    if (_currentUser == null)
-                    {
-                        throw new Exception("操作员信息未设置！");
-                    }
-                    _new.FlowUserTemplateID = Guid.NewGuid();
-                    _new.FlowTemplateID = id;
-                    _new.FlowUserTemplateUserID = _currentUser.UserId.Value;
-                    _new.FlowUserTemplateUserName = _currentUser.UserName;
-                    _dct.SA_FlowUserTemplate.InsertOnSubmit(_new);
-
-                }
-                foreach (var item in _oldUser)
-                {
-                    var _currentUser = _dct.SA_FlowUserTemplate.Single(m => m.FlowTemplateID.Equals(id) && m.FlowUserTemplateUserID.Equals(Guid.Parse(item)));
-                    _dct.SA_FlowUserTemplate.DeleteOnSubmit(_currentUser);
-
-                }
-                _dct.SubmitChanges();
-                return Content("设置成功！");
+                _newUser = _userList.Except(_existUser).ToArray();
+                _oldUser = _existUser.Except(_userList).ToArray();
             }
-            catch (AuthorityException ex)
+            else
             {
-                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/SetUsers【post】”");
-                return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
+                _newUser = new string[0];
+                _oldUser = _existUser.ToArray();
             }
-            catch (Exception ex)
+
+            foreach (var item in _newUser)
             {
-                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/SetUsers【post】”");
-                return RedirectToAction("Index", "Error", new { @area = "" });
+                Guid _temp;
+                //排除组织机构
+                if (!Guid.TryParse(item, out _temp))
+                {
+                    continue;
+                }
+                var _new = new SA_FlowUserTemplate();
+                var _currentUser = _dct.VW_SA_UserInfo.Single(m => m.UserId.Equals(item));
+                if (_currentUser == null)
+                {
+                    throw new Exception("操作员信息未设置！");
+                }
+                _new.FlowUserTemplateID = Guid.NewGuid();
+                _new.FlowTemplateID = id;
+                _new.FlowUserTemplateUserID = _currentUser.UserId.Value;
+                _new.FlowUserTemplateUserName = _currentUser.UserName;
+                _dct.SA_FlowUserTemplate.InsertOnSubmit(_new);
+
             }
+            foreach (var item in _oldUser)
+            {
+                var _currentUser = _dct.SA_FlowUserTemplate.Single(m => m.FlowTemplateID.Equals(id) && m.FlowUserTemplateUserID.Equals(Guid.Parse(item)));
+                _dct.SA_FlowUserTemplate.DeleteOnSubmit(_currentUser);
+
+            }
+            _dct.SubmitChanges();
+            return Content("设置成功！");
+            //}
+            //catch (AuthorityException ex)
+            //{
+            //    LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/SetUsers【post】”");
+            //    return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/SetUsers【post】”");
+            //    return RedirectToAction("Index", "Error", new { @area = "" });
+            //}
         }
 
 
@@ -392,6 +401,8 @@ namespace eulei.shop.Areas.manage.Controllers
                 {
                     _return.FlowTemplateStatusID = 2;
                 }
+                _return.FlowTemplatePreviousStatusID = _return.FlowTemplateStatusID - 1;
+                _return.FlowTemplateNextStatusID = 99;
                 ViewData.Model = _return;
                 if (Request.IsAjaxRequest())
                     return PartialView();
@@ -425,12 +436,47 @@ namespace eulei.shop.Areas.manage.Controllers
                 _result.FlowTemplateIsSynergy = collection["FlowTemplateIsSynergy"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
-                _result.FlowTemplateState = collection["FlowTemplateState"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateAlowEditStep = collection["FlowTemplateAlowEditStep"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateStatusDesp = collection["FlowTemplateStatusDesp"].ToString();
                 _result.FlowTemplateStatusID = int.Parse(collection["FlowTemplateStatusID"].ToString());
+                _result.FlowTemplateNextStatusID = int.Parse(collection["FlowTemplateNextStatusID"].ToString());
+                _result.FlowTemplatePreviousStatusID = int.Parse(collection["FlowTemplatePreviousStatusID"].ToString());
+                var _p = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplatePreviousStatusID)).Count<SA_FlowTemplate>()>0
+                        ?
+                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplatePreviousStatusID)):null;
+
+
+                var _n = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplateNextStatusID)).Count<SA_FlowTemplate>() > 0
+                        ?
+                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplateNextStatusID)) : null;
+
+
+                _result.FlowTemplateNextStatusDesp = _n!=null?_n.FlowTemplateStatusDesp:"步骤不存在";
+           
+                _result.FlowTemplatePreviousStatusDesp =_p!=null?_p.FlowTemplateStatusDesp:"步骤不存在";
+            
                 _dct.SA_FlowTemplate.InsertOnSubmit(_result);
+                if (_p != null)
+                {
+                    _p.FlowTemplateNextStatusID = _result.FlowTemplateStatusID;
+                    _p.FlowTemplateNextStatusDesp = _result.FlowTemplateStatusDesp;
+                }
+                if (_n != null)
+                {
+                    _n.FlowTemplatePreviousStatusID = _result.FlowTemplateStatusID;
+                    _n.FlowTemplatePreviousStatusDesp = _result.FlowTemplateStatusDesp;
+                }
                 _dct.SubmitChanges();
                 return Redirect(url);
+            }
+            catch (ArgumentNullException ex)
+            {
+                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/WorkFlow/CreateStep【post】”");
+                return RedirectToAction("Index", "Error", new { @area = "", @MyContent = "上一步或下一步步骤可能怒存在，请确定后输入" + ex.Message });
             }
             catch (AuthorityException ex)
             {
@@ -486,9 +532,35 @@ namespace eulei.shop.Areas.manage.Controllers
                 _result.FlowTemplateIsSynergy = collection["FlowTemplateIsSynergy"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
-                _result.FlowTemplateState = collection["FlowTemplateState"].ToString().Equals("false") ? false : true;
+                _result.FlowTemplateAlowEditStep = collection["FlowTemplateAlowEditStep"].ToString().Equals("false") ? false : true;
                 _result.FlowTemplateStatusDesp = collection["FlowTemplateStatusDesp"].ToString();
                 _result.FlowTemplateStatusID = int.Parse(collection["FlowTemplateStatusID"].ToString());
+                _result.FlowTemplateNextStatusID = int.Parse(collection["FlowTemplateNextStatusID"].ToString());
+                _result.FlowTemplatePreviousStatusID = int.Parse(collection["FlowTemplatePreviousStatusID"].ToString());
+                var _p = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplatePreviousStatusID)).Count() > 0
+                                        ?
+                                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplatePreviousStatusID)) : null;
+                var _n =
+                     _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplateNextStatusID)).Count() > 0
+                        ?
+                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_result.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_result.FlowTemplateNextStatusID)) : null;
+                _result.FlowTemplateNextStatusDesp = _n != null ? _n.FlowTemplateStatusDesp : "步骤不存在";
+        
+                _result.FlowTemplatePreviousStatusDesp = _p != null ? _p.FlowTemplateStatusDesp : "步骤不存在";
+                if (_p != null)
+                {
+                    _p.FlowTemplateNextStatusID = _result.FlowTemplateStatusID;
+                    _p.FlowTemplateNextStatusDesp = _result.FlowTemplateStatusDesp;
+                }
+                if (_n != null)
+                {
+                    _n.FlowTemplatePreviousStatusID = _result.FlowTemplateStatusID;
+                    _n.FlowTemplatePreviousStatusDesp = _result.FlowTemplateStatusDesp;
+                }
                 _dct.SubmitChanges();
                 return Redirect(url);
             }
@@ -515,12 +587,46 @@ namespace eulei.shop.Areas.manage.Controllers
                 Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();
                 var _flow = _dct.SA_FlowTemplate.Single(m => m.FlowTemplateID.Equals(id));
                 var _users = _dct.SA_FlowUserTemplate.Where(m => m.FlowTemplateID.Equals(id));
-                
+
                 foreach (var item in _users)
                 {
                     _dct.SA_FlowUserTemplate.DeleteOnSubmit(item);
                 }
                 _dct.SA_FlowTemplate.DeleteOnSubmit(_flow);
+
+
+                var _p = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_flow.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_flow.FlowTemplatePreviousStatusID)).Count() > 0
+                        ?
+                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_flow.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_flow.FlowTemplatePreviousStatusID)) : null;
+                var _n =
+                     _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_flow.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_flow.FlowTemplateNextStatusID)).Count() > 0
+                        ?
+                    _dct.SA_FlowTemplate.Single(m => m.FlowTemplateArticleTypeID.Equals(_flow.FlowTemplateArticleTypeID)
+                        & m.FlowTemplateStatusID.Equals(_flow.FlowTemplateNextStatusID)) : null;
+                if (_p != null)
+                {
+                    _p.FlowTemplateNextStatusID = _flow.FlowTemplateNextStatusID;
+                    _p.FlowTemplateNextStatusDesp = _flow.FlowTemplateNextStatusDesp;
+                }
+                if (_n != null)
+                {
+                    _n.FlowTemplatePreviousStatusID = _flow.FlowTemplatePreviousStatusID;
+                    _n.FlowTemplatePreviousStatusDesp = _flow.FlowTemplatePreviousStatusDesp;
+                }
+
+
+
+
+
+
+
+
+
+
+
                 _dct.SubmitChanges();
                 return Redirect(url);
             }

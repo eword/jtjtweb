@@ -22,7 +22,7 @@
                 height: 20,
                 selectBoxWidth: 200,
                 selectBoxHeight: 200, lable: '组织结构',
-                textField: 'textcontent', valueField: 'id', valueFieldID: 'UserInfoFrameworkID', treeLeafOnly: false,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'UserInfoFrameworkID', treeLeafOnly: false, hideOnLoseFocus: true,
                 tree: {
                     url: '<%: Url.Content("~/Common/GetJsonForFrameworkID") %>',
                     checkbox: false,

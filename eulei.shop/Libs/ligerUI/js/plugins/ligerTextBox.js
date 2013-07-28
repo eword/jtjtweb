@@ -1,9 +1,9 @@
 ﻿/**
-* jQuery ligerUI 1.1.9
+* jQuery ligerUI 1.2.0
 * 
 * http://ligerui.com
 *  
-* Author daomi 2012 [ gd_star@163.com ] 
+* Author daomi 2013 [ gd_star@163.com ] 
 * 
 */
 (function ($)
@@ -20,12 +20,18 @@
 
     $.ligerDefaults.TextBox = {
         onChangeValue: null,
+        onMouseOver: null,
+        onMouseOut: null,
+        onBlur: null,
+        onFocus: null,
         width: null,
-        disabled: false,
+        disabled: false, 
         value: null,     //初始化值 
         nullText: null,   //不能为空时的提示
         digits: false,     //是否限定为数字输入框
-        number: false    //是否限定为浮点数格式输入框
+        number: false,    //是否限定为浮点数格式输入框
+        currency: false,     //是否显示为货币形式
+        readonly: false              //是否只读
     };
 
 
@@ -53,7 +59,10 @@
             }
             if ($(this.element).attr("readonly"))
             {
-                p.disabled = true;
+                p.readonly = true;
+            } else if (p.readonly)
+            {
+                $(this.element).attr("readonly", true);
             }
         },
         _render: function ()
@@ -80,13 +89,18 @@
         checkValue: function ()
         {
             var g = this, p = this.options;
-            var v = g.inputText.val();
-            if (p.number && !/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(v) || p.digits && !/^\d+$/.test(v))
+            var v = g.inputText.val() || "";
+            if (p.currency) v = v.replace(/\$|\,/g, '');
+            var isFloat = p.number || p.currency, isDigits = p.digits;
+            if (isFloat && !/^-?(?:\d+|\d{1,3}(?:,\d{3})+)(?:\.\d+)?$/.test(v) || isDigits && !/^\d+$/.test(v))
             {
+                //不符合,恢复到原来的值
                 g.inputText.val(g.value || 0);
+                p.currency && g.inputText.val(currencyFormatter(g.value));
                 return;
-            } 
+            }
             g.value = v;
+            p.currency && g.inputText.val(currencyFormatter(g.value));
         },
         checkNotNull: function ()
         {
@@ -121,7 +135,7 @@
                 g.wrapper.addClass("l-text-focus");
             })
             .change(function ()
-            { 
+            {
                 g.trigger('changeValue', [this.value]);
             });
             g.wrapper.hover(function ()
@@ -136,17 +150,18 @@
         },
         _setDisabled: function (value)
         {
+            var g = this, p = this.options;
             if (value)
             {
                 this.inputText.attr("readonly", "readonly");
                 this.wrapper.addClass("l-text-disabled");
             }
-            else
+            else if(!p.readonly)
             {
                 this.inputText.removeAttr("readonly");
                 this.wrapper.removeClass('l-text-disabled');
             }
-        },
+        }, 
         _setWidth: function (value)
         {
             if (value > 20)
@@ -213,15 +228,25 @@
         updateStyle: function ()
         {
             var g = this, p = this.options;
-            if (g.inputText.attr('disabled') || g.inputText.attr('readonly'))
+            if (g.inputText.attr('readonly'))
+            {
+                g.wrapper.addClass("l-text-readonly");
+                p.disabled = true;
+            }
+            else
+            {
+                g.wrapper.removeClass("l-text-readonly");
+                p.disabled = false;
+            }
+            if (g.inputText.attr('disabled'))
             {
                 g.wrapper.addClass("l-text-disabled");
-                g.options.disabled = true;
+                p.disabled = true;
             }
             else
             {
                 g.wrapper.removeClass("l-text-disabled");
-                g.options.disabled = false;
+                p.disabled = false;
             }
             if (g.inputText.hasClass("l-text-field-null") && g.inputText.val() != p.nullText)
             {
@@ -230,4 +255,23 @@
             g.checkValue();
         }
     });
+
+    function currencyFormatter(num)
+    {
+        if (!num) return "0.00";
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0.00";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+            num.substring(num.length - (4 * i + 3));
+        return "" + (((sign) ? '' : '-') + '' + num + '.' + cents);
+    }
+
 })(jQuery);

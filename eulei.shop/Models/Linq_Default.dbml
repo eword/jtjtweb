@@ -140,6 +140,7 @@
       <Column Name="ArticleStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="ArticleIsShare" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="ArticleIsApplyReturn" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TB_Article_SA_FlowUser" Member="SA_FlowUser" ThisKey="ArticleID" OtherKey="FlowUserArticleID" Type="SA_FlowUser" />
     </Type>
   </Table>
   <Table Name="dbo.TB_ArticleType" Member="TB_ArticleType">
@@ -513,21 +514,6 @@
       <Column Name="UserInfoArticleTypeAuthorityArray" Type="System.Data.Linq.Binary" DbType="Binary(1000)" CanBeNull="true" UpdateCheck="Never" />
     </Type>
   </Table>
-  <Table Name="dbo.VW_SA_FlowStepInfo" Member="VW_SA_FlowStepInfo">
-    <Type Name="VW_SA_FlowStepInfo">
-      <Column Name="FlowTemplateUserCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="FlowTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
   <Table Name="dbo.SA_FlowUserTemplate" Member="SA_FlowUserTemplate">
     <Type Name="SA_FlowUserTemplate">
       <Column Name="FlowUserTemplateID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -546,10 +532,58 @@
       <Column Name="FlowTemplatePreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateAlowEditStep" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_WorkFlow" Member="VW_SA_WorkFlow">
+    <Type Name="VW_SA_WorkFlow">
+      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeModel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ArticleTypeIsUp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="ParentArticleTypeName" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_FlowInfo" Member="VW_SA_FlowInfo">
+    <Type Name="VW_SA_FlowInfo">
+      <Column Name="FlowTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateNextStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserTemplateUserID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="FlowUserTemplateUserName" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Column Name="FlowUserTemplateID" Type="System.Guid" DbType="UniqueIdentifier" CanBeNull="true" />
+      <Column Name="FlowTemplatePreviousStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplatePreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateAlowEditStep" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
+  <Table Name="dbo.VW_SA_FlowStepInfo" Member="VW_SA_FlowStepInfo">
+    <Type Name="VW_SA_FlowStepInfo">
+      <Column Name="FlowTemplateUserCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="FlowTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateNextStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowTemplateAlowEditStep" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
   <Table Name="dbo.SA_FlowUser" Member="SA_FlowUser">
@@ -562,13 +596,15 @@
       <Column Name="FlowUserPreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowUserState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserAlowEditStep" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserUserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserUserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserOperationContent" Type="System.String" DbType="NVarChar(2000)" CanBeNull="true" />
+      <Column Name="FlowUserState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="TB_Article_SA_FlowUser" Member="TB_Article" ThisKey="FlowUserArticleID" OtherKey="ArticleID" Type="TB_Article" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.VW_SA_ArticleNeedHandle" Member="VW_SA_ArticleNeedHandle">
@@ -619,50 +655,7 @@
       <Column Name="FlowUserPreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserArticleID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="FlowUserStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.VW_SA_FlowInfo" Member="VW_SA_FlowInfo">
-    <Type Name="VW_SA_FlowInfo">
-      <Column Name="FlowTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowUserTemplateUserID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="FlowUserTemplateUserName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowUserTemplateID" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplatePreviousStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplatePreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-    </Type>
-  </Table>
-  <Table Name="dbo.VW_SA_WorkFlow" Member="VW_SA_WorkFlow">
-    <Type Name="VW_SA_WorkFlow">
-      <Column Name="ArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeParentID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeModel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeIsLock" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeOrder" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeLevel" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="ArticleTypeIsUp" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateArticleTypeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateNextStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateState" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateSendMoveMsg" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateAlowEdit" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplateIsSynergy" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="ParentArticleTypeName" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplatePreviousStatusID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="FlowTemplatePreviousStatusDesp" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FlowUserAlowEditStep" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
