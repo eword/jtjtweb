@@ -90,7 +90,7 @@ namespace eulei.shop.Areas.manage.Controllers
                 _result1.FlowTemplateIsSynergy = false;
                 _result1.FlowTemplateSendMoveMsg = collection["FlowTemplateSendMoveMsg"].ToString().Equals("false") ? false : true;
                 _result1.FlowTemplateArticleTypeID = int.Parse(collection["FlowTemplateArticleTypeID"].ToString());
-                _result1.FlowTemplateAlowEditStep = false;
+                _result1.FlowTemplateAlowEditStep = true;
                 _result1.FlowTemplateStatusDesp = "采编";
                 _result1.FlowTemplateStatusID = 1;
                 _result1.FlowTemplatePreviousStatusID = 0;

@@ -55,8 +55,8 @@
                     <%:Html.Hidden("_returnUrl", ViewData["_returnUrl"].ToString())%>
                     <%:Html.Hidden("NextUserIDList",(string)ViewBag.NextUserIDList)%>
                     下一步办理人：   
-                    
-                     <%:Html.TextBox("NextUserList", (string)ViewBag.NextUserList, )%><input type="submit" id="changeUser" class="btnsubmit  rmargin15" value="…" />
+                         <input id="NextUserListIDCombobox" type="text" />
+                    <%:Html.TextBox("NextUserList", (string)ViewBag.NextUserList)%><input type="submit" id="changeUser" class="btnsubmit  rmargin15" value="…" />
                     <br />
                     <input type="submit" id="tb_past" class="btnsubmit  rmargin15" value="<%:ViewBag.Title %>" />
                     =><%:Html.ActionLink("操作记录","GetArticleOperationgRecord","Article",new{@id=Model.ArticleID,@area="manage", @_returnUrl = Request.Url.PathAndQuery },new{@target="_blank",@class="tred",@title="点击查看操作记录"}) %><=
@@ -116,107 +116,26 @@
     </div>
     <script type="text/javascript">
         $(function () {
-            $("#dialog-form-SetUsers").dialog({
-                autoOpen: false,
-                height: 600,
+            $("#NextUserListIDCombobox").ligerComboBox({
                 width: 500,
-                modal: true,
-                close: function () {
-                    $("#userList").ligerTree().clear();
+                height: 20,             
+                selectBoxWidth: 500,
+                selectBoxHeight: 380,
+                isMultiSelect:true,
+                isShowCheckBox :true,
+                textField: 'textcontent', valueField: 'id', valueFieldID: 'nextUserIDList', treeLeafOnly: true,hideOnLoseFocus :true,readonly:<%=(bool)ViewBag.AlowEditStep? "false" : "true" %>,
+                tree: { url:'<%: Url.Content("~/manage/WorkFlow/GetJsonForUserList?id=")+(string)ViewBag.FlowTemplatNextID%>' +'&time=' + Math.random(),
+                    checkbox: true,
+                    textFieldName: "textcontent",
+                    idFieldName: "id",
+                                    parentIDFieldName: "fid"
                 },
-                buttons: {
-                    "提交": function () {
-
-                        var notes = $("#userList").ligerGetTreeManager().getChecked();
-                        var userList = "";
-                        for (var i = 0; i < notes.length; i++) {
-                            if (i == 0) {
-                                userList += notes[i].data.id;
-                            }
-                            else {
-                                userList += "," + notes[i].data.id;
-                            }
-                        }
-
-                        userList = encodeURI(userList);
-                        userList = encodeURI(userList);
-                        $.ajax({
-                            type: "get",
-                            url: "/manage/WorkFlow/SetUsers",
-                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                            data: "id=" + $("#FlowTemplateID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
-                            success: function (msg) {
-                                $("#dialog-form-SetUsers").dialog("close");
-                                alert("OK:" + msg);
-                                window.location.reload();
-                            },   //操作成功后的操作！msg是后台传过来的值
-                            error: function (msg) { alert("Error:" + msg); }   //操作成功后的操作！msg是后台传过来的值
-                        });
-
-                    },
-                    "取消": function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
-            $("#dialog-form-SetUsers").dialog({
-                autoOpen: false,
-                height: 600,
-                width: 500,
-                modal: true,
-                close: function () {
-                    $("#userList").ligerTree().clear();
-                },
-                buttons: {
-                    "提交": function () {
-
-                        var notes = $("#userList").ligerGetTreeManager().getChecked();
-                        var userList = "";
-                        for (var i = 0; i < notes.length; i++) {
-                            if (i == 0) {
-                                userList += notes[i].data.id;
-                            }
-                            else {
-                                userList += "," + notes[i].data.id;
-                            }
-                        }
-
-                        userList = encodeURI(userList);
-                        userList = encodeURI(userList);
-                        $.ajax({
-                            type: "get",
-                            url: "/manage/WorkFlow/SetUsers",
-                            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-                            data: "id=" + $("#FlowTemplateID").val() + "&userList=" + userList,//提交表单，相当于CheckCorpID.ashx?ID=XXX
-                            success: function (msg) {
-                                $("#dialog-form-SetUsers").dialog("close");
-                                alert("OK:" + msg);
-                                window.location.reload();
-                            },   //操作成功后的操作！msg是后台传过来的值
-                            error: function (msg) { alert("Error:" + msg); }   //操作成功后的操作！msg是后台传过来的值
-                        });
-
-                    },
-                    "取消": function () {
-                        $(this).dialog("close");
-                    }
-                }
-            });
+                <%if (ViewBag.NextUserIDList != null & !string.IsNullOrEmpty((string)ViewBag.NextUserIDList))
+                                  {%>
+                initValue:"<%=(string)ViewBag.NextUserIDList %>"
+                    <%}%>
+            });     
         });
-        function getUserList(id) {
-            $("#FlowTemplateID").val(id);
-            $("#userList").ligerTree({
-                nodeWidth: 180,
-                url: '<%: Url.Content("~/manage/WorkFlow/GetJsonForUserList?id=") %>' + id + '&time=' + Math.random(),
-                checkbox: true,
-                ischecked: true,
-                single: false,
-                textFieldName: "textcontent",
-                idFieldName: "id",
-                parentIDFieldName: "fid"
-            });
-            $("#dialog-form-SetUsers").dialog("open");
-        };
     </script>
     <div id="dialog-form-SetUsers" title="设置人员">
         <div id="SetUsersAjaxBox" class="widtPercent100">

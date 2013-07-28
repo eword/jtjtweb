@@ -396,8 +396,8 @@ namespace eulei.shop.Areas.manage.Controllers
 
         public ActionResult SendToNextAuditing(int id)
         {
-            try
-            {
+            //try
+            //{
                 this.GetAuthority(SystemMemberShip.ArticleBrowse);
                 string url = Request.QueryString["_returnUrl"].ToString();
                 ViewData["_returnUrl"] = url;
@@ -405,16 +405,24 @@ namespace eulei.shop.Areas.manage.Controllers
                 {
                     Linq_DefaultDataContext _dct = new Linq_DefaultDataContext();                   
                     var _query = _dct.TV_Article.Single(m => m.ArticleID.Equals(id));
-                    if (_dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_query.ArticleTypeID)).Count() > 1)
+                    var _currentFlowStep = _dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_query.ArticleTypeID) && m.FlowTemplateStatusID.Equals(_query.ArticleStatusID));
+                     if (_dct.SA_FlowTemplate.Where(m => m.FlowTemplateArticleTypeID.Equals(_query.ArticleTypeID)).Count<SA_FlowTemplate>() <2)
                     {
                         throw new Exception("流程未定义！");
                     }
-                    var _currentVW = _dct.VW_SA_ArticleNeedHandle.Where(m => m.ArticleID.Equals(id) && m.FlowUserUserName.Equals(User.Identity.Name));
+                    else
+                    {
+                        ViewBag.FlowTemplatNextID = _currentFlowStep.First().FlowTemplateNextStatusID.ToString();
+                        ViewBag.AlowEditStep = _currentFlowStep.First().FlowTemplateAlowEditStep;
+               
+                    }
+               
                     var _nextUsers = _dct.VW_SA_FlowInfo.Where(
                         m => m.FlowTemplateArticleTypeID.Equals(_query.ArticleTypeID)
                             &
-                            m.FlowTemplateStatusID.Equals(_currentVW.First().FlowUserNextStatusID)
+                            m.FlowTemplateStatusID.Equals(_currentFlowStep.First().FlowTemplateNextStatusID)
                             );
+                  //  throw new Exception(_currentFlowStep.Count()+"||"+_currentFlowStep.First().FlowTemplateNextStatusID+"||"+_nextUsers.Count());
                     if (_nextUsers != null)
                     {
                         int _i = 0;
@@ -429,7 +437,7 @@ namespace eulei.shop.Areas.manage.Controllers
                             else
                             {
                                 ViewBag.NextUserList += "," + _user.FriendlyName + "(" + _user.UserName + ")";
-                                ViewBag.NextUserIDList += "," + item.FlowUserTemplateUserID.ToString();
+                                ViewBag.NextUserIDList += ";" + item.FlowUserTemplateUserID.ToString();
                             }
                             _i++;
                         }
@@ -439,7 +447,7 @@ namespace eulei.shop.Areas.manage.Controllers
                         ViewBag.NextUserList = string.Empty;
                         ViewBag.NextUserIDList = string.Empty;
                     }
-                    if (_currentVW != null)
+                    if (_currentFlowStep != null)
                     {
                         if (_query.ArticleStatusID.Equals(1))
                         {
@@ -474,17 +482,12 @@ namespace eulei.shop.Areas.manage.Controllers
                 }
                 return View();
 
-            }
-            catch (AuthorityException ex)
-            {
-                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing”");
-                return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing”");
-                return RedirectToAction("Index", "Error", new { @area = "" });
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    LogHelper.WriteErrorLog(ex.Message + "@" + "“manage/Article/SendToNextAuditing”");
+            //    return RedirectToAction("Index", "Error", new { @area = "", @MyContent = ex.Message });
+            //}
         }
 
         [HttpPost]
@@ -493,9 +496,10 @@ namespace eulei.shop.Areas.manage.Controllers
         {
             try
             {
+                注意：流程判断应该从新表判断
                 this.GetAuthority(SystemMemberShip.ArticleBrowse);
                 string url = collection["_returnUrl"].ToString();
-                var _userList = collection["nextUserIDList"] == null ? null : collection["nextUserIDList"].ToString().Split(',');
+                var _userList = collection["nextUserIDList"] == null ? null : collection["nextUserIDList"].ToString().Split(';');
                 if (User.Identity.IsAuthenticated)
                 {
                     string _content = collection["ReturnInfo"] != null ? collection["ReturnInfo"].ToString() : "";
